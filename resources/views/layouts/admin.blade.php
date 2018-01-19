@@ -15,6 +15,8 @@
     <link href="{{asset('css/app.css')}}" rel="stylesheet"> {{--looks for app.css--}}
 
     <link href="{{asset('css/libs.css')}}" rel="stylesheet"> {{--looks for minified libs.css--}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
+
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -24,8 +26,14 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="shortcut icon" href="img/favicon.ico" />
 
-
+    <style>
+        body {
+            font-family: 'Raleway', sans-serif !important;
+        }
+    </style>
 
 </head>
 
@@ -118,7 +126,7 @@
                     </li>
 
                     <li>
-                        <a href="#"><i class="fa fa-wrench fa-fw"></i>Users<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-users fa-fw"></i> Users<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="{{route('admin.users.index')}}">All Users</a>
@@ -133,7 +141,7 @@
                     </li>
 
                     <li>
-                        <a href="#"><i class="fa fa-wrench fa-fw"></i> Posts<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-home fa-fw"></i> Developments<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="{{route('admin.developments.index')}}">All Developments</a>
@@ -311,7 +319,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Admin</h1>
+                <h1 class="page-header"></h1>
 
                 @yield('content')
             </div>
@@ -328,7 +336,14 @@
 
 <!-- jQuery -->
 <script src="{{asset('js/libs.js')}}"></script>
+{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>--}}
 
+{{--<script>--}}
+    {{--$(document).on('click', '[data-toggle="lightbox"]', function(event) {--}}
+        {{--event.preventDefault();--}}
+        {{--$(this).ekkoLightbox();--}}
+    {{--});--}}
+{{--</script>--}}
 
 @yield('footer')
 

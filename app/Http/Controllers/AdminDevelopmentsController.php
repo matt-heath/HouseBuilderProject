@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Development;
+use App\Http\Requests\DevelopmentsCreateRequest;
+use App\Photo;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class AdminDevelopmentsController extends Controller
 {
@@ -16,7 +20,10 @@ class AdminDevelopmentsController extends Controller
     public function index()
     {
         //
-        return view('admin.developments.index');
+
+        $developments = Development::all();
+
+        return view('admin.developments.index', compact('developments'));
     }
 
     /**
@@ -36,9 +43,28 @@ class AdminDevelopmentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DevelopmentsCreateRequest $request)
     {
         //
+        $input = $request->all();
+        $user = Auth::user();
+
+        if($file = $request->file('photo_id')){
+
+            $name = time() . $file->getClientOriginalName();
+
+            $file->move('images', $name);
+
+            $photo = Photo::create(['file'=> $name]);
+
+            $input['photo_id'] = $photo->id;
+
+        }
+
+        $user->developments()->create($input);
+
+        return redirect('/admin/developments');
+
     }
 
     /**
