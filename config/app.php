@@ -157,6 +157,9 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Collective\Html\HtmlServiceProvider::class,
+//        Artdarek\Toastr\Providers\ToastrServiceProvider::class,
+        Nahid\Talk\TalkServiceProvider::class,
+
 
     ],
 
@@ -205,7 +208,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-
+//        'Toastr'    => Artdarek\Toastr\Facades\Toastr::class,
+        'Talk'      => Nahid\Talk\Facades\Talk::class,
     ],
 
 ];
