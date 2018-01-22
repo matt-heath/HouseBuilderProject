@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Plot;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -16,6 +17,9 @@ class AdminPlotsController extends Controller
     public function index()
     {
         //
+        $plots = Plot::all();
+
+        return view('admin.plots.index', compact('plots'));
     }
 
     /**
@@ -37,6 +41,12 @@ class AdminPlotsController extends Controller
     public function store(Request $request)
     {
         //
+
+        Plot::create($request->all());
+
+
+        return redirect('/admin/plots');
+
     }
 
     /**

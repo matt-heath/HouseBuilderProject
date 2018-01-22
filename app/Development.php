@@ -19,9 +19,9 @@ class Development extends Model
     ];
 
 
-//    public function user(){
-//        return $this->belongsTo('App\User');
-//    }
+    public function plot(){
+        return $this->hasMany('App\Plot');
+    }
 
     // each development has one photo (example picture).
     public function photo (){

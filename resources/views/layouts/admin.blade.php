@@ -150,6 +150,9 @@
                             <li>
                                 <a href="{{route('admin.developments.create')}}">Create a Development</a>
                             </li>
+                            <li>
+                                <a href="{{route('admin.plots.index')}}">Add Plots to development</a>
+                            </li>
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
