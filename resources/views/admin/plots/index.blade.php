@@ -61,7 +61,7 @@
                     <tr>
                         <td>{{$plot->id}}</td>
                         <td>{{$plot->development_id}}</td>
-                        <td>{{$plot->plot_name}}</td>
+                        <td><a href="{{route('admin.plots.edit', $plot->id)}}">{{$plot->plot_name}}</a></td>
                         <td>{{$plot->house_type}}</td>
                         <td>{{$plot->sqft}}</td>
                         <td>{{$plot->phase}}</td>
@@ -80,10 +80,7 @@
     <script>
         $(document).ready(function(){
             $('#myTable').DataTable({
-                responsive: true,
-                "columnDefs": [
-                    { "orderable": false, "targets": 4 }
-                ]
+                responsive: true
 
             });
         });

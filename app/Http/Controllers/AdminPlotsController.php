@@ -69,6 +69,10 @@ class AdminPlotsController extends Controller
     public function edit($id)
     {
         //
+
+        $plot = Plot::findOrFail($id);
+
+        return view('admin.plots.edit', compact('plot'));
     }
 
     /**
@@ -92,5 +96,9 @@ class AdminPlotsController extends Controller
     public function destroy($id)
     {
         //
+        Plot::findOrFail($id)->delete();
+
+
+        return redirect('/admin/plots');
     }
 }

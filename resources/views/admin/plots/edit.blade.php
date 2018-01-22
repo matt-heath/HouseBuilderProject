@@ -6,9 +6,9 @@
 
 
 
-    <div class="col-sm-3">
+    <div class="col-sm-6">
 
-        {!! Form::model([$plot, 'method'=>'PATCH', 'action'=>'AdminPlotsController@update', $plot->id])!!}
+        {!! Form::model($plot, ['method'=>'PATCH', 'action'=> ['AdminPlotsController@update', $plot->id]]) !!}
         <div class="form-group">
             {!! Form::label('development_id', 'Development ID:')!!}
             {!! Form::number('development_id', null, ['class'=>'form-control']) !!}
@@ -35,27 +35,16 @@
         </div>
 
         <div class="form-group">
-            {!! Form::submit('Update Plot', ['class'=>'btn btn-primary']) !!}
+            {!! Form::submit('Update Plot', ['class'=>'btn btn-primary col-sm-6']) !!}
         </div>
         {!! Form::close() !!}
 
 
+        {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminPlotsController@destroy', $plot->id]]) !!}
+            <div class="form-group">
+                {!! Form::submit('Delete Plot', ['class'=>'btn btn-danger col-sm-6']) !!}
+            </div>
+        {!! Form::close() !!}
+
     </div>
-
-@endsection
-
-@section('script')
-
-    <script>
-        $(document).ready(function(){
-            $('#myTable').DataTable({
-                responsive: true,
-                "columnDefs": [
-                    { "orderable": false, "targets": 4 }
-                ]
-
-            });
-        });
-    </script>
-
 @endsection
