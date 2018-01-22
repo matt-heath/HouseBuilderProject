@@ -11,7 +11,7 @@
         {!! Form::model($plot, ['method'=>'PATCH', 'action'=> ['AdminPlotsController@update', $plot->id]]) !!}
         <div class="form-group">
             {!! Form::label('development_id', 'Development ID:')!!}
-            {!! Form::number('development_id', null, ['class'=>'form-control']) !!}
+            {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('plot_name', 'Plot Name:')!!}

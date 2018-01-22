@@ -22,4 +22,8 @@ class Plot extends Model
         return $this->belongsTo('App\Development');
     }
 
+    public function houseType(){
+        return $this->hasMany('App\HouseType');
+    }
+
 }

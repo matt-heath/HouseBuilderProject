@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Development;
-use App\Plot;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class AdminPlotsController extends Controller
+class AdminHouseTypesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +16,6 @@ class AdminPlotsController extends Controller
     public function index()
     {
         //
-        $plots = Plot::all();
-        $developments = Development::lists('development_name', 'id')->all();
-
-        return view('admin.plots.index', compact('plots', 'developments'));
     }
 
     /**
@@ -43,10 +37,6 @@ class AdminPlotsController extends Controller
     public function store(Request $request)
     {
         //
-
-        Plot::create($request->all());
-
-        return redirect('/admin/plots');
     }
 
     /**
@@ -69,11 +59,6 @@ class AdminPlotsController extends Controller
     public function edit($id)
     {
         //
-
-        $plot = Plot::findOrFail($id);
-        $developments = Development::lists('development_name', 'id')->all();
-
-        return view('admin.plots.edit', compact('plot', 'developments'));
     }
 
     /**
@@ -86,13 +71,6 @@ class AdminPlotsController extends Controller
     public function update(Request $request, $id)
     {
         //
-
-        $plot = Plot::findOrFail($id);
-
-        $plot->update($request->all());
-
-        return redirect('/admin/plots');
-
     }
 
     /**
@@ -104,9 +82,5 @@ class AdminPlotsController extends Controller
     public function destroy($id)
     {
         //
-        Plot::findOrFail($id)->delete();
-
-
-        return redirect('/admin/plots');
     }
 }

@@ -150,28 +150,20 @@
                             <li>
                                 <a href="{{route('admin.developments.create')}}">Create a Development</a>
                             </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+
+
+                    <li>
+                        <a href="#"><i class="fa fa-map-marker fa-fw"></i> Plots<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
                             <li>
                                 <a href="{{route('admin.plots.index')}}">Add Plots to development</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
-
-
-                    {{--<li>--}}
-                        {{--<a href="#"><i class="fa fa-wrench fa-fw"></i>Categories<span class="fa arrow"></span></a>--}}
-                        {{--<ul class="nav nav-second-level">--}}
-                            {{--<li>--}}
-                                {{--<a href="/categories">All Categories</a>--}}
-                            {{--</li>--}}
-
-                            {{--<li>--}}
-                                {{--<a href="/categories/create">Create Category</a>--}}
-                            {{--</li>--}}
-
-                        {{--</ul>--}}
-                        {{--<!-- /.nav-second-level -->--}}
-                    {{--</li>--}}
 
 
                     {{--<li>--}}

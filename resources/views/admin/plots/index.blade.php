@@ -10,8 +10,8 @@
 
         {!! Form::open(['method'=>'POST', 'action'=>'AdminPlotsController@store'])!!}
             <div class="form-group">
-                {!! Form::label('development_id', 'Development ID:')!!}
-                {!! Form::number('development_id', null, ['class'=>'form-control']) !!}
+                {!! Form::label('development_id', 'Development Name:')!!}
+                {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control']) !!}
             </div>
             <div class="form-group">
                 {!! Form::label('plot_name', 'Plot Name:')!!}
@@ -47,8 +47,7 @@
             <table class="table" id="myTable">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Development ID</th>
+                    <th>Development Name</th>
                     <th>Plot Name</th>
                     <th>House Type</th>
                     <th>SqFt</th>
@@ -59,8 +58,7 @@
                 <tbody>
                 @foreach($plots as $plot)
                     <tr>
-                        <td>{{$plot->id}}</td>
-                        <td>{{$plot->development_id}}</td>
+                        <td>{{$plot->development ? $plot->development->development_name : "Development Not Set" }}</td>
                         <td><a href="{{route('admin.plots.edit', $plot->id)}}">{{$plot->plot_name}}</a></td>
                         <td>{{$plot->house_type}}</td>
                         <td>{{$plot->sqft}}</td>
