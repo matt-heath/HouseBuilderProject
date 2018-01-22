@@ -21,6 +21,8 @@ elixir(function(mix) {
             'libs/bootstrap.css',
             'libs/font-awesome.css',
             'libs/metisMenu.css',
+            // 'libs/dataTables.css',
+            // 'libs/dataTables.responsive.css',
             'libs/sb-admin-2.css',
             'libs/lightbox.css',
             'libs/styles.css'

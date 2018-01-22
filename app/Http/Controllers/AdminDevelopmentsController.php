@@ -48,7 +48,7 @@ class AdminDevelopmentsController extends Controller
     {
         //
         $input = $request->all();
-        $user = Auth::user();
+
 
         if($file = $request->file('photo_id')){
 
@@ -62,7 +62,7 @@ class AdminDevelopmentsController extends Controller
 
         }
 
-        $user->developments()->create($input);
+        Development::create($input);
 
         return redirect('/admin/developments');
 
@@ -106,6 +106,7 @@ class AdminDevelopmentsController extends Controller
         //
 
         $input = $request->all();
+        $development = Development::findOrFail($id);
 
         if($file = $request->file('photo_id')){
 
@@ -119,7 +120,9 @@ class AdminDevelopmentsController extends Controller
 
         }
 
-        Auth::user()->developments()->whereId($id)->first()->update($input);
+//        dd(Auth::user()->developments()->whereId($id)->first()->update($input);
+
+        $development->update($input);
 
         return redirect('/admin/developments');
     }

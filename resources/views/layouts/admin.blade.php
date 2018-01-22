@@ -15,7 +15,7 @@
     <link href="{{asset('css/app.css')}}" rel="stylesheet"> {{--looks for app.css--}}
 
     <link href="{{asset('css/libs.css')}}" rel="stylesheet"> {{--looks for minified libs.css--}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
 
 
 
@@ -336,6 +336,10 @@
 
 <!-- jQuery -->
 <script src="{{asset('js/libs.js')}}"></script>
+<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+
+
 {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>--}}
 
 {{--<script>--}}
@@ -345,9 +349,9 @@
     {{--});--}}
 {{--</script>--}}
 
+@yield('script')
+
 @yield('footer')
-
-
 
 
 

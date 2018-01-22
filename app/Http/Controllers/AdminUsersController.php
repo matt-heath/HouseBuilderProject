@@ -37,9 +37,12 @@ class AdminUsersController extends Controller
     {
         //
 
-        $roles = Role::lists('name', 'id')->all();
 
-        return view('admin.users.create', compact('roles')); //takes to create users view.
+        $roles = Role::pluck('name','id')->all();
+
+
+        return view('admin.users.create', compact('roles'));
+
     }
 
     /**
@@ -62,37 +65,43 @@ class AdminUsersController extends Controller
 
             $input = $request->all();
 
+            $this->validate($request, [
+                    'name' => 'required|max:255',
+                    'email' => 'required|email|max:255|unique:users',
+                    'password' => 'required|min:6',
+                ]);
+
             $input['password'] = bcrypt($request->password);
 
         }
 
 
 
-        if($file = $request->file('photo_id')) {
-
-
-            $name = time() . $file->getClientOriginalName();
-
-
-            $file->move('img', $name);
-
-            $photo = Photo::create(['file'=>$name]);
-
-
-            $input['photo_id'] = $photo->id;
-
-
-        }
+//        if($file = $request->file('photo_id')) {
+//
+//
+//            $name = time() . $file->getClientOriginalName();
+//
+//
+//            $file->move('images', $name);
+//
+//            $photo = Photo::create(['file'=>$name]);
+//
+//
+//            $input['photo_id'] = $photo->id;
+//
+//
+//        }
 
 
         User::create($input);
 
 
-
-
         return redirect('/admin/users');
 
+
 //        return $request->all();
+
 
     }
 
@@ -135,6 +144,8 @@ class AdminUsersController extends Controller
     public function update(UsersEditRequest $request, $id)
     {
 
+        $user = User::findOrFail($id);
+
         if(trim($request->password) == ''){
 
             $input = $request->except('password');
@@ -146,19 +157,16 @@ class AdminUsersController extends Controller
 
         }
 
-        $user = User::findOrFail($id);
-
-        $input = $request->all();
-
-        if($file = $request->file('photo_id')){
-            $name = time() .$file->getClientOriginalName();
-
-            $file->move('img', $name);
-
-            $photo = Photo::create(['file'=>$name]);
-
-            $input['photo_id'] = $photo->id;
-        }
+//
+//        if($file = $request->file('photo_id')){
+//            $name = time() .$file->getClientOriginalName();
+//
+//            $file->move('images', $name);
+//
+//            $photo = Photo::create(['file'=>$name]);
+//
+//            $input['photo_id'] = $photo->id;
+//        }
 
         $user->update($input);
 

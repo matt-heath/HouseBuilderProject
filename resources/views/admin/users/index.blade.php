@@ -1,11 +1,6 @@
 @extends('layouts.admin')
 
-
-
-
-
 @section('content')
-
 
     @if(Session::has('deleted_user'))
         <p class="bg-danger">{{session('deleted_user')}}</p>
@@ -15,11 +10,10 @@
     <h1>Users</h1>
 
 
-    <table class="table">
+    <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
         <thead>
         <tr>
             <th>Id</th>
-            <th>Photo</th>
             <th>Name</th>
             <th>Email</th>
             <th>Role</th>
@@ -31,14 +25,9 @@
         <tbody>
 
         @if($users)
-
-
             @foreach($users as $user)
-
-
                 <tr>
                     <td>{{$user->id}}</td>
-                    <td><img height="50" src="{{$user->photo ? $user->photo->file : 'http://placehold.it/400x400'}}" alt=""></td>
                     <td><a href="{{route('admin.users.edit', $user->id)}}">{{$user->name}}</a></td>
                     <td>{{$user->email}}</td>
                     <td>{{$user->role ? $user->role->name : 'User has no role'}}</td>
@@ -46,15 +35,23 @@
                     <td>{{$user->created_at->diffForHumans()}}</td>
                     <td>{{$user->updated_at->diffForHumans()}}</td>
                 </tr>
-
             @endforeach
-
-
         @endif
-
 
         </tbody>
     </table>
 
+@endsection
 
-@stop
+@section('script')
+
+    <script>
+        $(document).ready(function(){
+            $('#myTable').DataTable({
+                responsive: true,
+
+            });
+        });
+    </script>
+
+@endsection

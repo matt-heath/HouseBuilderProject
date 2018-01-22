@@ -35,13 +35,13 @@ class User extends Authenticatable
 
 
 
-    public function photo(){
-
-
-        return $this->belongsTo('App\Photo');
-
-
-    }
+//    public function photo(){
+//
+//
+//        return $this->belongsTo('App\Photo');
+//
+//
+//    }
 
 
 
@@ -85,11 +85,11 @@ class User extends Authenticatable
 
     }
 
-    public function developments(){
-
-        return $this->hasMany('App\Development');
-
-    }
+//    public function developments(){
+//
+//        return $this->hasMany('App\Development');
+//
+//    }
 
 
     public function getGravatarAttribute(){
