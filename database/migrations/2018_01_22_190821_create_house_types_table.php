@@ -17,8 +17,8 @@ class CreateHouseTypesTable extends Migration
             $table->integer('development_id')->unsigned()->index();
             $table->string('house_type_name');
             $table->string('house_type_desc');
-            $table->string('floor_plan');
-            $table->string('house_img');
+            $table->integer('floor_plan')->unsigned()->index();
+            $table->integer('house_img')->unsigned()->index();
             $table->timestamps();
         });
     }

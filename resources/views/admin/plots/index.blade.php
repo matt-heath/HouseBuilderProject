@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 {!! Form::label('house_type', 'House Type:')!!}
-                {!! Form::number('house_type', null, ['class'=>'form-control']) !!}
+                {!! Form::select('house_type', [''=>'Choose House Type'] + $houseTypes, null, ['class'=>'form-control']) !!}
             </div>
             <div class="form-group">
                 {!! Form::label('sqft', 'SqFt:')!!}
@@ -58,9 +58,10 @@
                 <tbody>
                 @foreach($plots as $plot)
                     <tr>
+
                         <td>{{$plot->development ? $plot->development->development_name : "Development Not Set" }}</td>
                         <td><a href="{{route('admin.plots.edit', $plot->id)}}">{{$plot->plot_name}}</a></td>
-                        <td>{{$plot->house_type}}</td>
+                        <td>{{$plot->houseTypes ? $plot->houseTypes->house_type_name : "NOT FOUND"}}</td>
                         <td>{{$plot->sqft}}</td>
                         <td>{{$plot->phase}}</td>
                         <td>{{$plot->status}}</td>

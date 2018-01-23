@@ -23,6 +23,10 @@ class Development extends Model
         return $this->hasMany('App\Plot');
     }
 
+    public function houseTypes(){
+        return $this->hasMany('App\HouseType');
+    }
+
     // each development has one photo (example picture).
     public function photo (){
         return $this->belongsTo('App\Photo');

@@ -166,25 +166,20 @@
                     </li>
 
 
-                    {{--<li>--}}
-                        {{--<a href="#"><i class="fa fa-wrench fa-fw"></i>Media<span class="fa arrow"></span></a>--}}
-                        {{--<ul class="nav nav-second-level">--}}
-                            {{--<li>--}}
-                                {{--<a href="/media">All Media</a>--}}
-                            {{--</li>--}}
+                    <li>
+                        <a href="#"><i class="fa fa-building fa-fw"></i>House Types<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="{{route('admin.housetypes.index')}}">All House Types</a>
+                            </li>
 
-                            {{--<li>--}}
-                                {{--<a href="">Upload Media</a>--}}
-                            {{--</li>--}}
+                            <li>
+                                <a href="{{route('admin.housetypes.create')}}">Create House Types</a>
+                            </li>
 
-                        {{--</ul>--}}
-                        {{--<!-- /.nav-second-level -->--}}
-                    {{--</li>--}}
-
-
-
-
-
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
 
 
                     {{--<li>--}}

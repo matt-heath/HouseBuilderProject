@@ -22,8 +22,13 @@ class Plot extends Model
         return $this->belongsTo('App\Development');
     }
 
-    public function houseType(){
-        return $this->hasMany('App\HouseType');
+    public function houseTypes(){
+        return $this->hasOne('App\HouseType', 'id', 'house_type');
     }
 
+
+//    // each development has one photo (example picture).
+//    public function photo (){
+//        return $this->belongsTo('App\Photo');
+//    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Development;
+use App\HouseType;
 use App\Plot;
 use Illuminate\Http\Request;
 
@@ -20,8 +21,9 @@ class AdminPlotsController extends Controller
         //
         $plots = Plot::all();
         $developments = Development::lists('development_name', 'id')->all();
+        $houseTypes = HouseType::lists('house_type_name', 'id')->all();
 
-        return view('admin.plots.index', compact('plots', 'developments'));
+        return view('admin.plots.index', compact('plots', 'developments', 'houseTypes'));
     }
 
     /**
