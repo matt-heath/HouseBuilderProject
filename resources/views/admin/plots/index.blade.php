@@ -4,45 +4,7 @@
 
     <h1>Plots</h1>
 
-
-
-    <div class="col-sm-3">
-
-        {!! Form::open(['method'=>'POST', 'action'=>'AdminPlotsController@store'])!!}
-            <div class="form-group">
-                {!! Form::label('development_id', 'Development Name:')!!}
-                {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control']) !!}
-            </div>
-            <div class="form-group">
-                {!! Form::label('plot_name', 'Plot Name:')!!}
-                {!! Form::text('plot_name', null, ['class'=>'form-control']) !!}
-            </div>
-            <div class="form-group">
-                {!! Form::label('house_type', 'House Type:')!!}
-                {!! Form::select('house_type', [''=>'Choose House Type'] + $houseTypes, null, ['class'=>'form-control']) !!}
-            </div>
-            <div class="form-group">
-                {!! Form::label('sqft', 'SqFt:')!!}
-                {!! Form::number('sqft', null, ['class'=>'form-control']) !!}
-            </div>
-            <div class="form-group">
-                {!! Form::label('phase', 'Phase:')!!}
-                {!! Form::number('phase', null, ['class'=>'form-control']) !!}
-            </div>
-            <div class="form-group">
-                {!! Form::label('status', 'Status:')!!}
-                {!! Form::text('status', null, ['class'=>'form-control']) !!}
-            </div>
-
-            <div class="form-group">
-                {!! Form::submit('Create Plot', ['class'=>'btn btn-primary']) !!}
-            </div>
-        {!! Form::close() !!}
-
-
-    </div>
-
-    <div class="col-sm-9">
+    <div class="col-sm-12">
         @if($plots)
             <table class="table" id="myTable">
                 <thead>
