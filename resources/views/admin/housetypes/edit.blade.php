@@ -4,6 +4,16 @@
 
     <h1>Edit House Type</h1>
 
+    <div class="col-sm-6">
+        {{-- TODO: Add image(s) of floor plan/house example here --}}
+
+        <a href="{{$houseTypes->floor_plan ? $houseTypes->photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image" data-title="Floor plan image for: {{$houseTypes->house_type_name}}">
+            <img src="{{$houseTypes->floor_plan ? $houseTypes->photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
+        </a>
+        <a href="{{$houseTypes->house_img ? $houseTypes->house_photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image" data-title="Example house image for: {{$houseTypes->house_type_name}} ">
+            <img src="{{$houseTypes->house_img ? $houseTypes->house_photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
+        </a>
+    </div>
 
 
     <div class="col-sm-6">
@@ -11,7 +21,7 @@
         {!! Form::model($houseTypes, ['method'=>'PATCH', 'action'=> ['AdminHouseTypesController@update', $houseTypes->id], 'files' => true]) !!}
         <div class="form-group">
             {!! Form::label('development_id', 'Development Name:')!!}
-            {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control']) !!}
+            {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control selectHouseType']) !!}
         </div>
 
         <div class="form-group">
@@ -47,4 +57,12 @@
         {!! Form::close() !!}
 
     </div>
+@endsection
+
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('.selectHouseType').select2();
+        });
+    </script>
 @endsection

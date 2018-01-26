@@ -9,7 +9,7 @@
 
         <div class="form-group">
             {!! Form::label('development_id', 'Development Name:')!!}
-            {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control']) !!}
+            {!! Form::select('development_id', [''=>'Choose Development'] + $developments, 'default', ['class'=>'form-control', 'id'=>'developments', 'style'=>'height: 34px !important']) !!}
         </div>
 
         <div class="form-group">
@@ -41,5 +41,15 @@
     <div class="row">
         @include('includes.form_error')
     </div>
+
+@endsection
+
+@section('script')
+
+    <script>
+        $(document).ready(function(){
+            $('#developments').select2();
+        });
+    </script>
 
 @endsection

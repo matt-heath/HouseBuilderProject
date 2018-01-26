@@ -42,7 +42,7 @@
                         <div class="row">
                             <div class="form-group">
                                 {!! Form::label('development_id', 'Development Name:')!!}
-                                {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control']) !!}
+                                {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control selectPlot']) !!}
                             </div>
                         </div>
                     </div>
@@ -56,8 +56,10 @@
                             <div class="row">
                                 <div class="form-group">
                                     {!! Form::label('house_type', 'House Type:')!!}
-                                    {!! Form::select('house_type', [''=>'Choose House Type'] + $houseTypes, null, ['class'=>'form-control']) !!}
+                                    {!! Form::select('house_type', [''=>'Choose House Type'] + $houseTypes, null, ['class'=>'form-control selectPlot']) !!}
                                 </div>
+
+                                {{-- TODO: Add number of phases to migration? --}}
                                 <div class="form-group">
                                     {!! Form::label('phase', 'Phase:')!!}
                                     {!! Form::number('phase', null, ['class'=>'form-control']) !!}
@@ -105,12 +107,8 @@
 
     <script>
         $(document).ready(function(){
-            $('#myTable').DataTable({
-                responsive: true
+            $('.selectPlot').select2();
 
-            });
-        });
-        $(document).ready(function () {
             //Initialize tooltips
             $('.nav-tabs > li a[title]').tooltip();
 
@@ -144,33 +142,30 @@
         function prevTab(elem) {
             $(elem).prev().find('a[data-toggle="tab"]').click();
         }
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            var i=1;
 
-            $('#add').click(function(){
-                i++;
-                $('#dynamic_field').append('' +
-                    '<tr id="row'+i+'" class="dynamic-added">' +
-                    '   <td>{!! Form::text('plot_name', null, ['class'=>'form-control name_list', 'name'=>'plot_name[]', 'placeholder' => 'Plot name']) !!}</td>' +
-                    '   <td>{!! Form::number('sqft', null, ['class'=>'form-control name_list', 'name' => 'sqft[]', 'placeholder' => 'SqFt']) !!}</td>' +
-                    '   <td>{!! Form::text('status', null, ['class'=>'form-control name_list', 'name' => 'status[]', 'placeholder' => 'Status']) !!}</td>' +
-                    '   <td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>'
-                );
-            });
+        var i=1;
 
-            $(document).on('click', '.btn_remove', function(){
-                var button_id = $(this).attr("id");
-                $('#row'+button_id+'').remove();
-            });
+        $('#add').click(function(){
+            i++;
+            $('#dynamic_field').append('' +
+                '<tr id="row'+i+'" class="dynamic-added">' +
+                '   <td>{!! Form::text('plot_name', null, ['class'=>'form-control name_list', 'name'=>'plot_name[]', 'placeholder' => 'Plot name']) !!}</td>' +
+                '   <td>{!! Form::number('sqft', null, ['class'=>'form-control name_list', 'name' => 'sqft[]', 'placeholder' => 'SqFt']) !!}</td>' +
+                '   <td>{!! Form::text('status', null, ['class'=>'form-control name_list', 'name' => 'status[]', 'placeholder' => 'Status']) !!}</td>' +
+                '   <td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>'
+            );
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
 
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
     </script>
 @endsection

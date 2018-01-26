@@ -25,6 +25,7 @@ elixir(function(mix) {
             // 'libs/dataTables.responsive.css',
             'libs/sb-admin-2.css',
             'libs/lightbox.css',
+            'libs/select2.min.css',
             'libs/styles.css'
 
         ], './public/css/libs.css')
@@ -35,6 +36,7 @@ elixir(function(mix) {
             'libs/metisMenu.js',
             'libs/sb-admin-2.js',
             'libs/lightbox.js',
+            'libs/select2.full.min.js',
             'libs/scripts.js'
 
         ], './public/js/libs.js')

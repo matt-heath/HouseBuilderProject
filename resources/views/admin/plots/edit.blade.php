@@ -7,16 +7,14 @@
     <div class="row">
         <div class="col-sm-6">
             {{-- TODO: Add house type image to plot edit --}}
-            {{--<a href="{{$houseType->house_img ? $houseType->house_photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image-{{$count}}" data-title="Example house image for: {{$houseType->house_type_name}} ">--}}
-                {{--<img src="{{$houseType->house_img ? $houseType->house_photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">--}}
-            {{--</a>--}}
+
         </div>
         <div class="col-sm-6">
 
             {!! Form::model($plot, ['method'=>'PATCH', 'action'=> ['AdminPlotsController@update', $plot->id]]) !!}
             <div class="form-group">
                 {!! Form::label('development_id', 'Development:')!!}
-                {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control']) !!}
+                {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control selectPlot']) !!}
             </div>
             <div class="form-group">
                 {!! Form::label('plot_name', 'Plot Name:')!!}
@@ -24,7 +22,7 @@
             </div>
             <div class="form-group">
                 {!! Form::label('house_type', 'House Type:')!!}
-                {!! Form::select('house_type', [''=>'Choose House Type'] + $houseType, null, ['class'=>'form-control']) !!}
+                {!! Form::select('house_type', [''=>'Choose House Type'] + $houseType, null, ['class'=>'form-control selectPlot']) !!}
             </div>
             <div class="form-group">
                 {!! Form::label('sqft', 'SqFt:')!!}
@@ -58,4 +56,11 @@
         @include('includes.form_error')
     </div>
 
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function(){
+            $('.selectPlot').select2();
+        });
+    </script>
 @endsection
