@@ -79,34 +79,6 @@
         </ul>
 
 
-
-
-
-
-        {{--<ul class="nav navbar-nav navbar-right">--}}
-        {{--@if(auth()->guest())--}}
-        {{--@if(!Request::is('auth/login'))--}}
-        {{--<li><a href="{{ url('/auth/login') }}">Login</a></li>--}}
-        {{--@endif--}}
-        {{--@if(!Request::is('auth/register'))--}}
-        {{--<li><a href="{{ url('/auth/register') }}">Register</a></li>--}}
-        {{--@endif--}}
-        {{--@else--}}
-        {{--<li class="dropdown">--}}
-        {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ auth()->user()->name }} <span class="caret"></span></a>--}}
-        {{--<ul class="dropdown-menu" role="menu">--}}
-        {{--<li><a href="{{ url('/auth/logout') }}">Logout</a></li>--}}
-
-        {{--<li><a href="{{ url('/admin/profile') }}/{{auth()->user()->id}}">Profile</a></li>--}}
-        {{--</ul>--}}
-        {{--</li>--}}
-        {{--@endif--}}
-        {{--</ul>--}}
-
-
-
-
-
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
@@ -121,68 +93,92 @@
                         </div>
                         <!-- /input-group -->
                     </li>
-                    <li>
-                        <a href="/admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                    </li>
+                    @if(Auth::user()->isAdmin())
 
-                    <li>
-                        <a href="#"><i class="fa fa-users fa-fw"></i> Users<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="{{route('admin.users.index')}}">All Users</a>
-                            </li>
+                        <li>
+                            <a href="/admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
 
-                            <li>
-                                <a href="{{route('admin.users.create')}}">Create User</a>
-                            </li>
+                        <li>
+                            <a href="#"><i class="fa fa-users fa-fw"></i> Users<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{route('admin.users.index')}}">All Users</a>
+                                </li>
 
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
+                                <li>
+                                    <a href="{{route('admin.users.create')}}">Create User</a>
+                                </li>
 
-                    <li>
-                        <a href="#"><i class="fa fa-home fa-fw"></i> Developments<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="{{route('admin.developments.index')}}">All Developments</a>
-                            </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
 
-                            <li>
-                                <a href="{{route('admin.developments.create')}}">Create a Development</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
+                        <li>
+                            <a href="#"><i class="fa fa-home fa-fw"></i> Developments<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{route('admin.developments.index')}}">All Developments</a>
+                                </li>
 
-
-                    <li>
-                        <a href="#"><i class="fa fa-map-marker fa-fw"></i> Plots<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="{{route('admin.plots.index')}}">All Plots</a>
-                            </li>
-                            <li>
-                                <a href="{{route('admin.plots.create')}}">Add Plots to development</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
+                                <li>
+                                    <a href="{{route('admin.developments.create')}}">Create a Development</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
 
 
-                    <li>
-                        <a href="#"><i class="fa fa-building fa-fw"></i>House Types<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="{{route('admin.housetypes.index')}}">All House Types</a>
-                            </li>
+                        <li>
+                            <a href="#"><i class="fa fa-map-marker fa-fw"></i> Plots<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{route('admin.plots.index')}}">All Plots</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('admin.plots.create')}}">Add Plots to development</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
 
-                            <li>
-                                <a href="{{route('admin.housetypes.create')}}">Create House Types</a>
-                            </li>
 
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
+                        <li>
+                            <a href="#"><i class="fa fa-building fa-fw"></i>House Types<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{route('admin.housetypes.index')}}">All House Types</a>
+                                </li>
+
+                                <li>
+                                    <a href="{{route('admin.housetypes.create')}}">Create House Types</a>
+                                </li>
+
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+
+                    @elseif (Auth::user()->isEstateAgent())
+                        <li>
+                            <a href="/estateagent"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-users fa-fw"></i> Users<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{route('estateagent.users.index')}}">All Users</a>
+                                </li>
+
+                                <li>
+                                    <a href="{{route('estateagent.users.create')}}">Create User</a>
+                                </li>
+
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                    @endif
+
 
 
                     {{--<li>--}}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -28,8 +29,20 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin';
+//    protected $redirectTo = '/admin';
 
+
+    protected function authenticated()
+    {
+        if(Auth::user()->isAdmin()) {
+            return redirect()->intended('/admin');
+        }elseif (Auth::user()->isEstateAgent()){
+           return redirect()->intended('/estateagent');
+        }else{
+            return redirect()->intended('/');
+        }
+
+    }
     /**
      * Create a new authentication controller instance.
      *

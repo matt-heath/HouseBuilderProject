@@ -37,6 +37,19 @@ Route::group(['middleware'=>'admin'], function(){
 
 });
 
+Route::group(['middleware'=>'estateagent'], function() {
+
+
+    Route::get('/estateagent', function(){
+
+        return view('estateagent.index');
+
+    });
+
+    Route::resource('estateagent/users', 'EstateAgentUsersController');
+
+});
+
 
 
 Route::get('/home', 'HomeController@index');

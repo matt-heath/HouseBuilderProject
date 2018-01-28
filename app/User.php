@@ -69,20 +69,19 @@ class User extends Authenticatable
 
 
     public function isAdmin(){
-
-
         if($this->role->name  == "Administrator" && $this->is_active == 1){
-
-
             return true;
-
         }
 
+        return false;
+    }
+
+    public function isEstateAgent(){
+        if($this->role->name  == "Estate Agent" && $this->is_active == 1){
+            return true;
+        }
 
         return false;
-
-
-
     }
 
 //    public function developments(){
