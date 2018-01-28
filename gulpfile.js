@@ -37,6 +37,7 @@ elixir(function(mix) {
             'libs/sb-admin-2.js',
             'libs/lightbox.js',
             'libs/select2.full.min.js',
+            'libs/clipboard.min.js',
             'libs/scripts.js'
 
         ], './public/js/libs.js')

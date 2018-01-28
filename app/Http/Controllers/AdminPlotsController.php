@@ -98,9 +98,11 @@ class AdminPlotsController extends Controller
 
         $plot = Plot::findOrFail($id);
         $developments = Development::lists('development_name', 'id')->all();
-        $houseType = HouseType::lists('house_type_name', 'id','house_img')->all();
+        $houseType = HouseType::lists('house_type_name', 'id')->all();
 
-        return view('admin.plots.edit', compact('plot', 'developments', 'houseType'));
+        $image = HouseType::where('id', $plot->house_type)->first();
+
+        return view('admin.plots.edit', compact('plot', 'developments', 'houseType','image'));
     }
 
     /**

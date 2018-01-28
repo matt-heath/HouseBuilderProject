@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Development;
 use App\Http\Requests\DevelopmentsCreateRequest;
 use App\Photo;
+use App\Plot;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -148,5 +149,16 @@ class AdminDevelopmentsController extends Controller
 
         return redirect('/admin/developments'); // upon deletion, redirect to users table.
 
+    }
+
+
+    public function development($id) {
+        $development = Development::findOrFail($id);
+
+         $plots = Plot::where('development_id', $id)->get();
+//         $plots->where('development_id', '=', $id);
+
+
+        return view('development', compact('development', 'plots'));
     }
 }

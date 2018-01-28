@@ -5,14 +5,28 @@
     <h1>Edit House Type</h1>
 
     <div class="col-sm-6">
-        {{-- TODO: Add image(s) of floor plan/house example here --}}
-
-        <a href="{{$houseTypes->floor_plan ? $houseTypes->photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image" data-title="Floor plan image for: {{$houseTypes->house_type_name}}">
-            <img src="{{$houseTypes->floor_plan ? $houseTypes->photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
-        </a>
-        <a href="{{$houseTypes->house_img ? $houseTypes->house_photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image" data-title="Example house image for: {{$houseTypes->house_type_name}} ">
-            <img src="{{$houseTypes->house_img ? $houseTypes->house_photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
-        </a>
+        <table class="table table-responsive">
+            <thead>
+            <tr>
+                <th>Example House Photo</th>
+                <th>Floor Plan</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="{{$houseTypes->house_img ? $houseTypes->house_photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image" data-title="Example house image for: {{$houseTypes->house_type_name}} ">
+                            <img src="{{$houseTypes->house_img ? $houseTypes->house_photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{$houseTypes->floor_plan ? $houseTypes->photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image" data-title="Floor plan image for: {{$houseTypes->house_type_name}}">
+                            <img src="{{$houseTypes->floor_plan ? $houseTypes->photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 

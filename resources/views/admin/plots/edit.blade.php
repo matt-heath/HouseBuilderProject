@@ -6,7 +6,31 @@
 
     <div class="row">
         <div class="col-sm-6">
-            {{-- TODO: Add house type image to plot edit --}}
+            {{--{{$image->floor_plan}}--}}
+
+            {{--<img src="{{$image->photo->file ? $image->photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">}}--}}
+            <table class="table table-responsive">
+               <thead>
+                 <tr>
+                  <th>Example House Photo</th>
+                  <th>Floor Plan</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                     <td>
+                       <a href="{{$image->house_img ? $image->house_photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image" data-title="Example house image for: {{$image->house_type_name}}">
+                           <img src="{{$image->house_img ? $image->house_photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
+                       </a>
+                     </td>
+                     <td><a href="{{$image->floor_plan ? $image->photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image" data-title="Floor plan image for: {{$image->house_type_name}}">
+                             <img src="{{$image->floor_plan ? $image->photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
+
+                         </a>
+                     </td>
+                 </tr>
+               </tbody>
+             </table>
 
         </div>
         <div class="col-sm-6">
