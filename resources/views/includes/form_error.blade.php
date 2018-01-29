@@ -12,3 +12,19 @@
 
 @endif
 
+@section('script')
+    {{--<script>--}}
+        {{--var has_errors = {{ $errors->count() > 0 ? 'true' : 'false'}};--}}
+
+        {{--if(has_errors){--}}
+            {{--swal({--}}
+                {{--title: 'Errors',--}}
+                {{--type: 'error',--}}
+                {{--html: jQuery("#error").html(),--}}
+                {{--showCloseButton: true--}}
+            {{--})--}}
+        {{--}--}}
+        {{----}}
+    {{--</script>--}}
+@endsection
+

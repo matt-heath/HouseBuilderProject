@@ -2,13 +2,7 @@
 
 @section('content')
 
-    @if(Session::has('deleted_user'))
-        <p class="bg-danger">{{session('deleted_user')}}</p>
-    @endif
-
-
-    <h1>Users</h1>
-
+    <h1>Users by {{$role_name}}</h1>
 
     <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
         <thead>
@@ -35,21 +29,16 @@
                 </tr>
             @endforeach
         @endif
-
         </tbody>
     </table>
-
 @endsection
 
 @section('script')
-
     <script>
         $(document).ready(function(){
             $('#myTable').DataTable({
-                responsive: true,
-
+                responsive: true
             });
         });
     </script>
-
 @endsection

@@ -191,4 +191,12 @@ class AdminUsersController extends Controller
 
         return redirect('/admin/users'); // upon deletion, redirect to users table.
     }
+
+    public function viewUserByRole($id){
+        $users = User::where('role_id', $id)->get();
+//        $development_name = Development::where('id', $id)->pluck('development_name')->first();
+        $role_name = Role::where('id', $id)->pluck('name')->first();
+
+        return view('/admin/users/viewuserbyrole', compact('users', 'role_name'));
+    }
 }

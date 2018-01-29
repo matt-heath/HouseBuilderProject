@@ -27,6 +27,7 @@ class Plot extends Model
     }
 
 
+
 //    // each development has one photo (example picture).
 //    public function photo (){
 //        return $this->belongsTo('App\Photo');

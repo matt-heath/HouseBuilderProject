@@ -34,6 +34,8 @@ Route::group(['middleware'=>'admin'], function(){
     Route::resource('admin/developments', 'AdminDevelopmentsController');
     Route::resource('admin/plots', 'AdminPlotsController');
     Route::resource('admin/housetypes', 'AdminHouseTypesController');
+    Route::get('admin/viewuserbyrole/{id}', ['as'=>'admin.viewuserbyrole', 'uses'=>'AdminUsersController@viewUserByRole']);
+    Route::get('admin/plotsbydevelopment/{id}', ['as'=>'admin.plotsbydevelopment', 'uses'=>'AdminPlotsController@plotsByDevelopment']);
 
 });
 
@@ -47,6 +49,12 @@ Route::group(['middleware'=>'estateagent'], function() {
     });
 
     Route::resource('estateagent/users', 'EstateAgentUsersController');
+    Route::resource('estateagent/developments', 'EstateAgentDevelopmentsController');
+    Route::resource('estateagent/booking', 'EstateAgentBookingsController');
+    Route::get('estateagent/viewplots/{id}', ['as'=>'development.viewplots', 'uses'=>'EstateAgentDevelopmentsController@viewplots']);
+    Route::get('estateagent/createbooking/{id}', ['as'=>'booking.create', 'uses'=>'EstateAgentBookingsController@create']);
+
+
 
 });
 

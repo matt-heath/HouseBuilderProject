@@ -2,7 +2,9 @@
 
 @section('content')
 
-    <h1>Plots</h1>
+
+    <h1>{{$plots ? "Plots in ".$development_name : "Plots"}}</h1>
+
 
     <div class="col-sm-12">
         @if($plots)
@@ -15,18 +17,23 @@
                     <th>SqFt</th>
                     <th>Phase</th>
                     <th>Status</th>
+                    <th>Booking</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($plots as $plot)
                     <tr>
-
-                        <td><a href="{{route('admin.plotsbydevelopment', ['id'=>$plot->development_id])}}">{{$plot->development ? $plot->development->development_name : "Development Not Set"}}</a></td>
-                        <td><a href="{{route('admin.plots.edit', $plot->id)}}">{{$plot->plot_name}}</a></td>
+                        <td>{{$plot->development ? $plot->development->development_name : "Development Not Set" }}</td>
+                        <td>{{$plot->plot_name}}</td>
                         <td>{{$plot->houseTypes ? $plot->houseTypes->house_type_name : "NOT FOUND"}}</td>
                         <td>{{$plot->sqft}}</td>
                         <td>{{$plot->phase}}</td>
                         <td>{{$plot->status}}</td>
+                        @if($plot->status == 'Sold' || $plot->status == 'Reserved')
+                            <td><a href="" class="btn btn-danger" disabled="disabled">Not Available</a> </td>
+                        @else
+                            <td><a href="{{route('booking.create', $plot->id)}}" class="btn btn-primary" >Book Property Here</a> </td>
+                        @endif
                     </tr>
                 @endforeach
                 </tbody>
@@ -42,7 +49,6 @@
         $(document).ready(function(){
             $('#myTable').DataTable({
                 responsive: true
-
             });
         });
     </script>

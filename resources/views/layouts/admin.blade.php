@@ -105,11 +105,29 @@
                                 <li>
                                     <a href="{{route('admin.users.index')}}">All Users</a>
                                 </li>
-
                                 <li>
                                     <a href="{{route('admin.users.create')}}">Create User</a>
                                 </li>
-
+                                <li>
+                                    <a href="#">Users By Role <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="{{route('admin.viewuserbyrole', ['id' => 1])}}">Administrators</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('admin.viewuserbyrole', ['id' => 2])}}">Estate Agents</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('admin.viewuserbyrole', ['id' => 3])}}">Suppliers</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('admin.viewuserbyrole', ['id' => 4])}}">Buyers</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('admin.viewuserbyrole', ['id' => 5])}}">External Consultants</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -177,6 +195,27 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        <li>
+                            <a href="#"><i class="fa fa-home fa-fw"></i> Developments<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{route('estateagent.developments.index')}}">All Developments</a>
+                                </li>
+                                <li>
+                                    {{--<a href="{{route('estateagent.booking.create')}}">Booking Form</a>--}}
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-home fa-fw"></i> Bookings<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{route('estateagent.booking.index')}}">All Bookings</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
                     @endif
 
 
@@ -220,27 +259,7 @@
                     {{--<li>--}}
                     {{--<a href="#">Second Level Item</a>--}}
                     {{--</li>--}}
-                    {{--<li>--}}
-                    {{--<a href="#">Third Level <span class="fa arrow"></span></a>--}}
-                    {{--<ul class="nav nav-third-level">--}}
-                    {{--<li>--}}
-                    {{--<a href="#">Third Level Item</a>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                    {{--<a href="#">Third Level Item</a>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                    {{--<a href="#">Third Level Item</a>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                    {{--<a href="#">Third Level Item</a>--}}
-                    {{--</li>--}}
-                    {{--</ul>--}}
-                    {{--<!-- /.nav-third-level -->--}}
-                    {{--</li>--}}
-                    {{--</ul>--}}
-                    {{--<!-- /.nav-second-level -->--}}
-                    {{--</li>--}}
+
                     {{--<li class="active">--}}
                     {{--<a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>--}}
                     {{--<ul class="nav nav-second-level">--}}

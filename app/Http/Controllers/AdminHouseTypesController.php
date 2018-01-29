@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Development;
 use App\HouseType;
+use App\Http\Requests\HouseTypesRequest;
 use App\Photo;
 use App\Plot;
 use Illuminate\Http\Request;
@@ -50,7 +51,7 @@ class AdminHouseTypesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(HouseTypesRequest $request)
     {
         //
 
@@ -110,7 +111,7 @@ class AdminHouseTypesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(HouseTypesRequest $request, $id)
     {
         //
 

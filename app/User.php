@@ -33,6 +33,10 @@ class User extends Authenticatable
 
     }
 
+    public function booking(){
+        return $this->hasOne('App\Booking');
+    }
+
 
 
 //    public function photo(){

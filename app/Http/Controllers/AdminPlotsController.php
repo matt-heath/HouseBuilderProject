@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Development;
 use App\HouseType;
+use App\Http\Requests\PlotsRequest;
 use App\Plot;
 use Illuminate\Http\Request;
 
@@ -45,7 +46,7 @@ class AdminPlotsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PlotsRequest $request)
     {
         $all = $request->all();
 
@@ -112,7 +113,7 @@ class AdminPlotsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PlotsRequest $request, $id)
     {
         //
 
@@ -137,5 +138,16 @@ class AdminPlotsController extends Controller
 
 
         return redirect('/admin/plots');
+    }
+
+
+    public function plotsByDevelopment($id) {
+        $development = Development::findOrFail($id);
+
+        $plots = Plot::where('development_id', $id)->get();
+//         $plots->where('development_id', '=', $id);
+
+
+        return view('/admin/plots/plotsbydevelopment', compact('development', 'plots'));
     }
 }

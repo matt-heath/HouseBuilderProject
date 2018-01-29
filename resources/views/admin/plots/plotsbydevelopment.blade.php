@@ -20,8 +20,7 @@
                 <tbody>
                 @foreach($plots as $plot)
                     <tr>
-
-                        <td><a href="{{route('admin.plotsbydevelopment', ['id'=>$plot->development_id])}}">{{$plot->development ? $plot->development->development_name : "Development Not Set"}}</a></td>
+                        <td>{{$plot->development ? $plot->development->development_name : "Development Not Set"}}</td>
                         <td><a href="{{route('admin.plots.edit', $plot->id)}}">{{$plot->plot_name}}</a></td>
                         <td>{{$plot->houseTypes ? $plot->houseTypes->house_type_name : "NOT FOUND"}}</td>
                         <td>{{$plot->sqft}}</td>
@@ -42,7 +41,6 @@
         $(document).ready(function(){
             $('#myTable').DataTable({
                 responsive: true
-
             });
         });
     </script>

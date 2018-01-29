@@ -38,6 +38,7 @@ elixir(function(mix) {
             'libs/lightbox.js',
             'libs/select2.full.min.js',
             'libs/clipboard.min.js',
+            'libs/sweetalert2.js',
             'libs/scripts.js'
 
         ], './public/js/libs.js')
