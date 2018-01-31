@@ -22,8 +22,8 @@
          </tr>
        </thead>
         <tbody>
-           @if($developments)
 
+           @if($developments)
                {{--Declares the variable count as 0 without printing to the screen --}}
                {{--*/ $count = 0 /*--}}
                @foreach($developments as $development)

@@ -18,7 +18,7 @@ class CreateBookingsTable extends Migration
             $table->integer('plot_id')->unsigned()->index();
             $table->string('title');
             $table->string('correspondence_address');
-            $table->integer('telephone_num')->unsigned();
+            $table->string('telephone_num');
             $table->string('email_address');
             $table->string('buyer_status');
             $table->timestamps();

@@ -52,7 +52,7 @@ class AdminPlotsController extends Controller
 
         $plotsArray = $request->plot_name;
         $sqftArray = $request->input('sqft');
-        $statusArray = $request->input('status');
+//        $statusArray = $request->input('status');
 
         $items = array();
 
@@ -64,11 +64,13 @@ class AdminPlotsController extends Controller
                 'house_type'=> $all['house_type'],
                 'sqft' => $sqftArray[$i],
                 'phase' => $all['phase'],
-                'status' => $statusArray[$i]
+                'status' => $all['status']
             );
 
             $items[] = $item;
         }
+
+//        return $items;
 
 
         Plot::insert($items);
@@ -149,5 +151,11 @@ class AdminPlotsController extends Controller
 
 
         return view('/admin/plots/plotsbydevelopment', compact('development', 'plots'));
+    }
+
+    public function findHouseTypes(Request $request) {
+//        return $request->id;
+        $data = HouseType::where('development_id', $request->id)->get();
+        return response()->json($data);
     }
 }

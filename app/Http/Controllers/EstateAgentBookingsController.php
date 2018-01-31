@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Prologue\Alerts\Facades\Alert;
 
 class EstateAgentBookingsController extends Controller
 {
@@ -38,7 +39,7 @@ class EstateAgentBookingsController extends Controller
 //        $plots = Plot::where('id', $id)->pluck('development_id');
 //        $developments = Development::where('id', $plots)->get();
 //        $houseTypes = HouseType::lists('house_type_name', 'id')->all();
-        return view('/estateagent/booking/create', compact('users','id'));
+        return view('/estateagent/booking/create', compact('users','id', 'plots', 'development_name'));
     }
 
     /**
@@ -107,7 +108,7 @@ class EstateAgentBookingsController extends Controller
 
         $booking->update($input);
 
-        return 'Booking updated';
+        return redirect('/estateagent/booking');
     }
 
     /**
@@ -119,5 +120,20 @@ class EstateAgentBookingsController extends Controller
     public function destroy($id)
     {
         //
+        $booking = Booking::findOrFail($id);
+        $plot = Plot::where('id', $booking->plot_id)->first();
+        $plot->status = 'For Sale';
+        $plot->save();
+        $booking->delete();
+
+        Alert::success('Booking deleted from the system.')->flash();
+
+        return redirect('/estateagent/booking');
+    }
+
+    public function findUsersEmail(Request $request) {
+//        return $request->id;
+        $data = User::where('id', $request->id)->pluck('email')->first();
+        return response()->json($data);
     }
 }

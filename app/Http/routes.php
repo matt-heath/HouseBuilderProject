@@ -36,12 +36,10 @@ Route::group(['middleware'=>'admin'], function(){
     Route::resource('admin/housetypes', 'AdminHouseTypesController');
     Route::get('admin/viewuserbyrole/{id}', ['as'=>'admin.viewuserbyrole', 'uses'=>'AdminUsersController@viewUserByRole']);
     Route::get('admin/plotsbydevelopment/{id}', ['as'=>'admin.plotsbydevelopment', 'uses'=>'AdminPlotsController@plotsByDevelopment']);
-
+    Route::get('/findHouseTypes', 'AdminPlotsController@findHouseTypes');
 });
 
 Route::group(['middleware'=>'estateagent'], function() {
-
-
     Route::get('/estateagent', function(){
 
         return view('estateagent.index');
@@ -53,9 +51,15 @@ Route::group(['middleware'=>'estateagent'], function() {
     Route::resource('estateagent/booking', 'EstateAgentBookingsController');
     Route::get('estateagent/viewplots/{id}', ['as'=>'development.viewplots', 'uses'=>'EstateAgentDevelopmentsController@viewplots']);
     Route::get('estateagent/createbooking/{id}', ['as'=>'booking.create', 'uses'=>'EstateAgentBookingsController@create']);
+    Route::get('/findUsersEmail', 'EstateAgentBookingsController@findUsersEmail');
+});
 
+Route::group(['middleware'=>'externalconsultant'], function() {
+    Route::get('/externalconsultant', function(){
 
+        return view('externalconsultant.index');
 
+    });
 });
 
 

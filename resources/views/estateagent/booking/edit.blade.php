@@ -36,41 +36,45 @@
             {!! Form::model($booking, ['method'=>'PATCH', 'action'=>['EstateAgentBookingsController@update', $booking->id]])!!}
 
             <div class="form-group">
-                {!! Form::label('user_id', 'Buyers Name:')!!}
-                {!! Form::text('user_id', $booking->user->name, ['class'=>'form-control']) !!}
+                {!! Form::label('title', 'Buyer Name:')!!}
+                {!! Form::select('title', ['Mr'=>'Mr', 'Mrs'=>'Mrs', 'Miss'=>'Miss', 'DR.'=>'DR.'], $booking->title, ['class'=>'form-control selectPlot']) !!}
             </div>
 
-            {{--<div class="form-group">--}}
-                {{--{!! Form::label('development_location', 'Development Location:')!!}--}}
-                {{--{!! Form::text('development_location', null, ['class'=>'form-control']) !!}--}}
-            {{--</div>--}}
+            <div class="form-group">
+                {!! Form::label('user_id', 'Buyers Name:')!!}
+                {!! Form::text('user_id_disabled', $booking->user->name, ['class'=>'form-control', 'disabled']) !!}
+                {!! Form::text('user_id', $booking->user_id, ['class'=>'form-control hidden']) !!}
+            </div>
 
-            {{--<div class="form-group">--}}
-                {{--{!! Form::label('development_num_plots', 'Number of Plots:')!!}--}}
-                {{--{!! Form::number('development_num_plots', null, ['class'=>'form-control']) !!}--}}
-            {{--</div>--}}
+            <div class="form-group">
+                {!! Form::label('correspondence_address', 'Correspondence Address')!!}
+                {!! Form::text('correspondence_address', null, ['class'=>'form-control']) !!}
+            </div>
+            <div class="form-group">
+                {!! Form::label('telephone_num', 'Telephone Number:')!!}
+                {!! Form::text('telephone_num', null, ['class'=>'form-control']) !!}
+            </div>
+            <div class="form-group">
+                {!! Form::label('email_address', 'Email Address:')!!}
+                {!! Form::email('email_address_disabled', $booking->user->email, ['class'=>'form-control', 'disabled']) !!}
+                {!! Form::email('email_address', $booking->user->email, ['class'=>'form-control hidden']) !!}
 
-            {{--<div class="form-group">--}}
-                {{--{!! Form::label('development_description', 'Development Description:')!!}--}}
-                {{--{!! Form::text('development_description', null, ['class'=>'form-control']) !!}--}}
-            {{--</div>--}}
+            </div>
+            <div class="form-group">
+                {!! Form::label('buyer_status', 'Buyer Status:')!!}
+                {!! Form::select('buyer_status',['First Time Buyer'] , null, ['class'=>'form-control']) !!}
+            </div>
+            <div class="form-group">
+                {!! Form::submit('Update Booking', ['class'=>'btn btn-primary col-sm-6']) !!}
+            </div>
+            {!! Form::close() !!}
 
-            {{--<div class="form-group">--}}
-                {{--{!! Form::label('photo_id', 'Example Development Photo:')!!}--}}
-                {{--{!! Form::file('photo_id', null, ['class'=>'form-control']) !!}--}}
-            {{--</div>--}}
+            {!! Form::open(['method'=>'DELETE', 'action'=>['EstateAgentBookingsController@destroy', $booking->id]])!!}
 
-            {{--<div class="form-group">--}}
-                {{--{!! Form::submit('Update Development', ['class'=>'btn btn-primary col-sm-6']) !!}--}}
-            {{--</div>--}}
-            {{--{!! Form::close() !!}--}}
-
-            {{--{!! Form::open(['method'=>'DELETE', 'action'=>['AdminDevelopmentsController@destroy', $development->id]])!!}--}}
-
-            {{--<div class="form-group">--}}
-                {{--{!! Form::submit('Delete Post', ['class'=>'btn btn-danger col-sm-6']) !!}--}}
-            {{--</div>--}}
-            {{--{!! Form::close() !!}--}}
+            <div class="form-group">
+                {!! Form::submit('Delete Post', ['class'=>'btn btn-danger col-sm-6']) !!}
+            </div>
+            {!! Form::close() !!}
         </div>
 
     </div>

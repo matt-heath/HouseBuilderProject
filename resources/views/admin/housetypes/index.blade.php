@@ -15,8 +15,8 @@
             <th>Development Name</th>
             <th>House Type Name</th>
             <th>House Type Description</th>
-            <th>Floor Plan Image</th>
             <th>House Image</th>
+            <th>Floor Plan Image</th>
         </tr>
         </thead>
         <tbody>
@@ -34,12 +34,12 @@
                     <td>{{$houseType->house_type_desc}}</td>
                     {{--<td>{{$houseType->floor_plan}}</td>--}}
                     {{--<td>{{$houseType->house_img}}</td>--}}
-                    <td><a href="{{$houseType->floor_plan ? $houseType->photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image-{{$count}}" data-title="Floor plan image for: {{$houseType->house_type_name}}">
-                            <img src="{{$houseType->floor_plan ? $houseType->photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
-                        </a>
-                    </td>
                     <td><a href="{{$houseType->house_img ? $houseType->house_photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image-{{$count}}" data-title="Example house image for: {{$houseType->house_type_name}} ">
                             <img src="{{$houseType->house_img ? $houseType->house_photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
+                        </a>
+                    </td>
+                    <td><a href="{{$houseType->floor_plan ? $houseType->photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image-{{$count}}" data-title="Floor plan image for: {{$houseType->house_type_name}}">
+                            <img src="{{$houseType->floor_plan ? $houseType->photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
                         </a>
                     </td>
                     {{--<td><a href="{{$houseType->floor_plan ? $houseType->photo->file : 'http://placehold.it/400x400' }} " data-lightbox="image-{{$count}}" data-title="Example development image for: ">--}}

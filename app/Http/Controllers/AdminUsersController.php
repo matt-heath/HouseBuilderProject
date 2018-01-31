@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Session;
+use Prologue\Alerts\Facades\Alert;
 
 class AdminUsersController extends Controller
 {
@@ -169,6 +170,7 @@ class AdminUsersController extends Controller
 //        }
 
         $user->update($input);
+        Alert::success('User details successfully edited!')->flash();
 
         return redirect('/admin/users');
 //        return $request->all();

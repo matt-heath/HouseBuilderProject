@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Prologue\Alerts\Facades\Alert;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -36,8 +37,10 @@ class AuthController extends Controller
     {
         if(Auth::user()->isAdmin()) {
             return redirect()->intended('/admin');
-        }elseif (Auth::user()->isEstateAgent()){
-           return redirect()->intended('/estateagent');
+        }elseif (Auth::user()->isEstateAgent()) {
+            return redirect()->intended('/estateagent');
+        }elseif(Auth::user()->isExternalConsultant()) {
+            return redirect()->intended('/externalconsultant');
         }else{
             return redirect()->intended('/');
         }

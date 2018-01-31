@@ -13,8 +13,6 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
     mix.sass('app.scss')
-
-
         .styles([
 
             'libs/blog-post.css',
@@ -26,6 +24,7 @@ elixir(function(mix) {
             'libs/sb-admin-2.css',
             'libs/lightbox.css',
             'libs/select2.min.css',
+            'libs/pnotify.custom.min.css',
             'libs/styles.css'
 
         ], './public/css/libs.css')
@@ -39,6 +38,7 @@ elixir(function(mix) {
             'libs/select2.full.min.js',
             'libs/clipboard.min.js',
             'libs/sweetalert2.js',
+            'libs/pnotify.custom.min.js',
             'libs/scripts.js'
 
         ], './public/js/libs.js')

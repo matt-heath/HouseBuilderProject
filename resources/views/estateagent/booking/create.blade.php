@@ -22,92 +22,44 @@
        </tbody>
     </table>
 
-
     <div class="row">
-        <div class="wizard">
-            <div class="wizard-inner">
-                <div class="connecting-line"></div>
-                <ul class="nav nav-tabs" role="tablist">
+        {!! Form::open(['method'=>'POST', 'action'=>'EstateAgentBookingsController@store'])!!}
 
-                    <li role="presentation" class="active">
-                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1">
-                            <span class="round-tab">
-                                <i class="fa fa-home"></i>
-                            </span>
-                        </a>
-                    </li>
-
-                    <li role="presentation" class="disabled">
-                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2">
-                            <span class="round-tab">
-                                <i class="fa fa-building"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li role="presentation" class="disabled">
-                        <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3">
-                            <span class="round-tab">
-                                <i class="fa fa-map-marker"></i>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            {!! Form::open(['method'=>'POST', 'action'=>'EstateAgentBookingsController@store'])!!}
-            <div class="tab-content">
-                <div class="tab-pane active" role="tabpanel" id="step1">
-                    <div class="step1">
-                        <div class="row">
-                            <div class="form-group">
-                                {!! Form::label('id', 'ID:')!!}
-                                {!! Form::text('id_disabled', $id, ['class'=>'form-control', 'disabled']) !!}
-                                {!! Form::text('id', $id, ['class'=>'form-control hidden']) !!}
-                            </div>
-                            <div class="form-group">
-                                {!! Form::label('title', 'Buyer Name:')!!}
-                                {!! Form::select('title', ['Mr'=>'Mr', 'Mrs'=>'Mrs', 'Miss'=>'Miss', 'DR.'=>'DR.'], null, ['class'=>'form-control selectPlot']) !!}
-                            </div>
-                            <div class="form-group">
-                                {!! Form::label('user_id', 'Buyer Name:')!!}
-                                {!! Form::select('user_id', [''=>'Choose Buyer'] + $users, null, ['class'=>'form-control selectPlot']) !!}
-                            </div>
-                        </div>
-                    </div>
-                    <ul class="list-inline pull-right">
-                        <li><button type="button" class="btn btn-primary next-step">Save and continue</button></li>
-                    </ul>
-                </div>
-                <div class="tab-pane" role="tabpanel" id="step2">
-                    <div class="step2">
-                        <div class="step_21">
-                            <div class="row">
-                                <div class="form-group">
-                                    {!! Form::label('correspondence_address', 'Correspondence Address')!!}
-                                    {!! Form::text('correspondence_address', null, ['class'=>'form-control']) !!}
-                                </div>
-                                <div class="form-group">
-                                    {!! Form::label('telephone_num', 'Telephone Number:')!!}
-                                    {!! Form::text('telephone_num', null, ['class'=>'form-control']) !!}
-                                </div>
-                                <div class="form-group">
-                                    {!! Form::label('email_address', 'Email Address:')!!}
-                                    {!! Form::email('email_address', null, ['class'=>'form-control']) !!}
-                                </div>
-                                <div class="form-group">
-                                    {!! Form::label('buyer_status', 'Buyer Status:')!!}
-                                    {!! Form::select('buyer_status',['First Time Buyer'] , null, ['class'=>'form-control']) !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {!! Form::submit('Create Plot', ['class'=>'btn btn-primary']) !!}
-                    </div>
-                    {!! Form::close() !!}
-                </div>
-            </div>
+        <div class="form-group">
+            {{--{!! Form::label('id', 'ID:')!!}--}}
+            {{--{!! Form::text('id_disabled', $id, ['class'=>'form-control', 'disabled']) !!}--}}
+            {!! Form::text('id', $id, ['class'=>'form-control hidden']) !!}
         </div>
+        <div class="form-group">
+            {!! Form::label('title', 'Buyer Name:')!!}
+            {!! Form::select('title', ['Mr'=>'Mr', 'Mrs'=>'Mrs', 'Miss'=>'Miss', 'DR.'=>'DR.'], null, ['class'=>'form-control selectPlot']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('user_id', 'Buyer Name:')!!}
+            {!! Form::select('user_id', [''=>'Choose Buyer'] + $users, null, ['class'=>'form-control selectPlot buyerSelect']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('correspondence_address', 'Correspondence Address')!!}
+            {!! Form::text('correspondence_address', null, ['class'=>'form-control']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('telephone_num', 'Telephone Number:')!!}
+            {!! Form::text('telephone_num', null, ['class'=>'form-control']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('email_address', 'Email Address:')!!}
+            {!! Form::text('email_address_disabled', null, ['class'=>'form-control emailInput', 'disabled']) !!}
+            {!! Form::text('email_address', null, ['class'=>'form-control emailInput hidden']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('buyer_status', 'Buyer Status:')!!}
+            {!! Form::select('buyer_status',['First Time Buyer'] , null, ['class'=>'form-control']) !!}
+        </div>
+
+        <div class="form-group">
+            {!! Form::submit('Create Plot', ['class'=>'btn btn-primary']) !!}
+        </div>
+        {!! Form::close() !!}
     </div>
 @endsection
 
@@ -150,5 +102,27 @@
         function prevTab(elem) {
             $(elem).prev().find('a[data-toggle="tab"]').click();
         }
+
+        //Adapted from: https://gitlab.com/Bons/laravel5.3_dynamic_dropdown/blob/master/readme.md
+        $(document).on('change', '.buyerSelect', function(){
+            // console.log("Changed");
+            var buyer_id=$(this).val();
+            var option = "";
+
+            $.ajax({
+                type: 'get',
+                url: '{!! URL::to('findUsersEmail') !!}',
+                data: {'id': buyer_id},
+                success: function (data) {
+                    // console.log('Success!!');
+                    // console.log(data);
+
+                    $(".emailInput").html(data).val(data);
+                },
+                error: function () {
+                    console.log("Failed...")
+                }
+            })
+        });
     </script>
 @endsection

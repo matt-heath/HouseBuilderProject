@@ -216,6 +216,9 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                    @elseif(Auth::user()->isExternalConsultant())
+
+                        <h1>EXTERNAL CONSULTANT</h1>
                     @endif
 
 
@@ -332,24 +335,14 @@
 
 <!-- jQuery -->
 <script src="{{asset('js/libs.js')}}"></script>
+@include('includes.alerts')
 <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
 
 
-{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>--}}
-
-{{--<script>--}}
-{{--$(document).on('click', '[data-toggle="lightbox"]', function(event) {--}}
-{{--event.preventDefault();--}}
-{{--$(this).ekkoLightbox();--}}
-{{--});--}}
-{{--</script>--}}
-
 @yield('script')
 
 @yield('footer')
-
-
 
 </body>
 

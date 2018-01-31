@@ -20,7 +20,7 @@ class Development extends Model
 
 
     public function plot(){
-        return $this->hasMany('App\Plot');
+        return $this->hasMany('App\Plot', 'development_id');
     }
 
     public function houseTypes(){

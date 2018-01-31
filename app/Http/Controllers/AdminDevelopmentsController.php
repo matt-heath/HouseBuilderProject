@@ -25,7 +25,22 @@ class AdminDevelopmentsController extends Controller
 
         $developments = Development::all();
 
-        return view('admin.developments.index', compact('developments'));
+//        $ids = array();
+
+//        foreach ($developments as $development){
+//            $item = array(
+//                $id = $development['id']
+//            );
+//
+//            print_r($ids[] = $id);
+//        }
+//
+//        $ids[] = $item;
+
+
+//        $num_of_plots_available = Plot::all();
+
+        return view('admin.developments.index', compact('developments', 'num_of_plots_available'));
     }
 
     /**

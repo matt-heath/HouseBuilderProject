@@ -5,6 +5,21 @@
     @if(Session::has('deleted_user'))
         <p class="bg-danger">{{session('deleted_user')}}</p>
     @endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->count())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $e)
+                    <li>{{ $e }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
 
     <h1>Users</h1>

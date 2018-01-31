@@ -9,7 +9,6 @@
     <h1>Edit User</h1>
 
     <div class="row">
-
         <div class="col-sm-12">
 
             {!! Form::model($user,['method'=>'PATCH', 'action'=> ['AdminUsersController@update', $user->id],'files'=>true]) !!}

@@ -76,7 +76,6 @@ class User extends Authenticatable
         if($this->role->name  == "Administrator" && $this->is_active == 1){
             return true;
         }
-
         return false;
     }
 
@@ -84,7 +83,13 @@ class User extends Authenticatable
         if($this->role->name  == "Estate Agent" && $this->is_active == 1){
             return true;
         }
+        return false;
+    }
 
+    public function isExternalConsultant(){
+        if($this->role->name  == "External Consultant" && $this->is_active == 1){
+            return true;
+        }
         return false;
     }
 

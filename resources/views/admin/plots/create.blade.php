@@ -42,7 +42,7 @@
                         <div class="row">
                             <div class="form-group">
                                 {!! Form::label('development_id', 'Development Name:')!!}
-                                {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control selectPlot']) !!}
+                                {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control selectPlot developmentSelect']) !!}
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,13 @@
                             <div class="row">
                                 <div class="form-group">
                                     {!! Form::label('house_type', 'House Type:')!!}
-                                    {!! Form::select('house_type', [''=>'Choose House Type'] + $houseTypes, null, ['class'=>'form-control selectPlot']) !!}
+                                    {!! Form::select('house_type', [''=>'Choose House Type'], null, ['class'=>'form-control selectPlot houseTypeSelect']) !!}
+                                    {{--<span>Product Name: </span>--}}
+                                    {{--<select style="width: 200px" class="houseTypeSelect">--}}
+
+                                        {{--<option value="0" disabled="true" selected="true">Product Name</option>--}}
+                                    {{--</select>--}}
+
                                 </div>
 
                                 {{-- TODO: Add number of phases to migration? --}}
@@ -82,7 +88,7 @@
                                     <tr>
                                         <td>{!! Form::text('plot_name', null, ['class'=>'form-control name_list', 'name'=>'plot_name[]', 'placeholder' => 'Plot name']) !!}</td>
                                         <td>{!! Form::number('sqft', null, ['class'=>'form-control name_list', 'name' => 'sqft[]', 'placeholder' => 'SqFt']) !!}</td>
-                                        <td>{!! Form::text('status', null, ['class'=>'form-control name_list', 'name' => 'status[]', 'placeholder' => 'Status']) !!}</td>
+                                        <td>{!! Form::text('status', 'For Sale', ['class'=>'form-control name_list', 'placeholder' => 'Status']) !!}</td>
                                         {{--<td><input type="text" name="name[]" placeholder="Enter Plot Name" class="form-control name_list" /></td>--}}
                                         {{--<td><input type="text" name="sqft[]" placeholder="SqFt" class="form-control name_list" /></td>--}}
                                         {{--<td><input type="text" name="status[]" placeholder="Status" class="form-control name_list" /></td>--}}
@@ -151,7 +157,7 @@
                 '<tr id="row'+i+'" class="dynamic-added">' +
                 '   <td>{!! Form::text('plot_name', null, ['class'=>'form-control name_list', 'name'=>'plot_name[]', 'placeholder' => 'Plot name']) !!}</td>' +
                 '   <td>{!! Form::number('sqft', null, ['class'=>'form-control name_list', 'name' => 'sqft[]', 'placeholder' => 'SqFt']) !!}</td>' +
-                '   <td>{!! Form::text('status', null, ['class'=>'form-control name_list', 'name' => 'status[]', 'placeholder' => 'Status']) !!}</td>' +
+                '   <td>{!! Form::text('status', 'For Sale', ['class'=>'form-control name_list', 'placeholder' => 'Status']) !!}</td>' +
                 '   <td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>'
             );
         });
@@ -166,6 +172,44 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+
+        //Adapted from: https://gitlab.com/Bons/laravel5.3_dynamic_dropdown/blob/master/readme.md
+        $(document).on('change', '.developmentSelect', function(){
+           // console.log("Changed");
+
+            var dev_id=$(this).val();
+            // console.log(dev_id);
+            var option = "";
+
+            $.ajax({
+                type: 'get',
+                url: '{!! URL::to('findHouseTypes') !!}',
+                data: {'id': dev_id},
+                success: function (data) {
+                    console.log('Success!!');
+                    console.log(data);
+                    console.log(data.length);
+                    if(data.length != 0){
+                        option +='<option value="" selected disabled>Choose House Type</option>';
+                    }else{
+                        option +='<option value="" selected disabled>No House types available - Create one!</option>';
+                    }
+
+                    for(var i = 0; i < data.length; i++){
+                        option+='<option value="'+data[i].id+'">'+data[i].house_type_name+'</option>';
+                    }
+
+
+                    $(".houseTypeSelect").html(" ").append(option);
+
+                    // console.log(option);
+
+                },
+                error: function () {
+                    console.log("Failed...")
+                }
+            })
         });
     </script>
 @endsection
