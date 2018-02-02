@@ -69,7 +69,9 @@ class User extends Authenticatable
 //
 //    }
 
-
+    public function consultant() {
+        return $this->hasOne('App\Consultant');
+    }
 
 
     public function isAdmin(){

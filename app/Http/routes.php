@@ -34,6 +34,9 @@ Route::group(['middleware'=>'admin'], function(){
     Route::resource('admin/developments', 'AdminDevelopmentsController');
     Route::resource('admin/plots', 'AdminPlotsController');
     Route::resource('admin/housetypes', 'AdminHouseTypesController');
+    Route::resource('admin/certificates', 'AdminCertificatesController');
+    Route::resource('admin/certificatecategories', 'AdminCertificateCategoriesController');
+//    Route::post('/deleteCategory', 'AdminCertificateCategoriesController@destroy');
     Route::get('admin/viewuserbyrole/{id}', ['as'=>'admin.viewuserbyrole', 'uses'=>'AdminUsersController@viewUserByRole']);
     Route::get('admin/plotsbydevelopment/{id}', ['as'=>'admin.plotsbydevelopment', 'uses'=>'AdminPlotsController@plotsByDevelopment']);
     Route::get('/findHouseTypes', 'AdminPlotsController@findHouseTypes');
@@ -61,7 +64,5 @@ Route::group(['middleware'=>'externalconsultant'], function() {
 
     });
 });
-
-
 
 Route::get('/home', 'HomeController@index');

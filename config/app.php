@@ -160,7 +160,6 @@ return [
 //        Artdarek\Toastr\Providers\ToastrServiceProvider::class,
 //        Nahid\Talk\TalkServiceProvider::class,
         Prologue\Alerts\AlertsServiceProvider::class,
-
     ],
 
     /*
@@ -209,7 +208,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
 //        'Toastr'    => Artdarek\Toastr\Facades\Toastr::class,
-        'Talk'      => Nahid\Talk\Facades\Talk::class,
+//        'Talk'      => Nahid\Talk\Facades\Talk::class,
         'Alert' => Prologue\Alerts\Facades\Alert::class,
     ],
 

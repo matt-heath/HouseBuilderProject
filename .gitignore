@@ -6,4 +6,4 @@ Homestead.json
 .env
 public/images
 .DS_Store
-.idea
+.idea/

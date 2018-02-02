@@ -175,6 +175,28 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        <li>
+                            <a href="#"><i class="fa fa-certificate fa-fw"></i>Certificate Management<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="#">Certificate Categories <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="{{route('admin.certificatecategories.index')}}">All Categories</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('admin.certificatecategories.create')}}">Create Categories</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--<li>--}}
+                                    {{--<a href="{{route('admin.housetypes.create')}}">Create House Types</a>--}}
+                                {{--</li>--}}
+
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
 
                     @elseif (Auth::user()->isEstateAgent())
                         <li>
@@ -191,7 +213,6 @@
                                 <li>
                                     <a href="{{route('estateagent.users.create')}}">Create User</a>
                                 </li>
-
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -212,6 +233,15 @@
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="{{route('estateagent.booking.index')}}">All Bookings</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-envelope fa-fw"></i> Messages<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="">All Chats</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

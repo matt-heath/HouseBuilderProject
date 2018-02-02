@@ -26,6 +26,10 @@ class Plot extends Model
         return $this->hasOne('App\HouseType', 'id', 'house_type');
     }
 
+    public function certificates() {
+        return $this->belongsToMany('App\Certificate');
+    }
+
 
 
 //    // each development has one photo (example picture).
