@@ -24,6 +24,7 @@ elixir(function(mix) {
             'libs/sb-admin-2.css',
             'libs/lightbox.css',
             'libs/select2.min.css',
+            'libs/dropzone.min.css',
             'libs/pnotify.custom.min.css',
             'libs/styles.css'
 
@@ -39,6 +40,7 @@ elixir(function(mix) {
             'libs/clipboard.min.js',
             'libs/sweetalert2.js',
             'libs/pnotify.custom.min.js',
+            'libs/dropzone.js',
             'libs/scripts.js'
 
         ], './public/js/libs.js')

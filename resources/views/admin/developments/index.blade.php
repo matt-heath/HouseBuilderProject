@@ -17,8 +17,7 @@
               <th>Number of plots</th>
               <th>Development Description</th>
               <th>Photo</th>
-              <th>Created At</th>
-              <th>Updated At</th>
+             <th></th>
          </tr>
        </thead>
         <tbody>
@@ -28,16 +27,28 @@
                {{--*/ $count = 0 /*--}}
                @foreach($developments as $development)
                      <tr>
-                         <td><a href="{{route('admin.developments.edit', $development->id)}}">{{$development->development_name}}</a></td>
+                         <td>{{$development->development_name}}</td>
                          <td><a href="https://www.google.co.uk/maps/place/{{$development->development_location}}" target="_blank"><address>{{$development->development_location}}</address></a></td>
-                         <td>{{$development->development_num_plots}}</td>
+                         <td>{{$num_of_plots_available->where('development_id', $development->id)->count().'/'.$development->development_num_plots}}</td>
                          <td>{{$development->development_description}}</td>
                          <td><a href="{{$development->photo_id ? $development->photo->file : 'http://placehold.it/400x400' }} " data-lightbox="image-{{$count}}" data-title="Example development image for: {{$development->development_name}}">
                                  <img src="{{$development->photo_id ? $development->photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
                              </a>
                          </td>
-                         <td>{{$development->created_at->diffForHumans()}}</td>
-                         <td>{{$development->updated_at->diffForHumans()}}</td>
+                         <td>
+                             <div class="btn-group">
+                                 <a href="{{route('home.development', $development->id)}}" class="btn btn-warning"><i class="fa fa-fw fa-eye fa-sm"></i></a>
+                             </div>
+                             <div class="btn-group">
+                                 <a href="{{route('admin.developments.edit', $development->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
+                             </div>
+                             <div class="btn-group">
+                                 {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminCertificatesController@destroy', $development->id], 'id'=> 'confirm_delete_'.$development->id]) !!}
+                                 {!! Form::button('<i class="fa fa-fw fa-trash"></i>', ['type'=> 'submit' ,'class'=>'btn btn-danger', 'onclick'=>'confirmDelete(' .$development->id .')']) !!}
+                                 {!! Form::close() !!}
+                             </div>
+                         </td>
+
                      </tr>
                      {{--*/ $count++ /*--}}
                @endforeach

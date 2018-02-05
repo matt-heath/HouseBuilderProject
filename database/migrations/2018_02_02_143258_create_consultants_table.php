@@ -16,7 +16,7 @@ class CreateConsultantsTable extends Migration
         //
         Schema::create('consultants', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('consultant_name');
+            $table->string('user_id');
             $table->string('consultant_description');
             $table->timestamps();
         });

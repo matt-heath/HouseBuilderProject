@@ -17,6 +17,7 @@
             <th>House Type Description</th>
             <th>House Image</th>
             <th>Floor Plan Image</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -27,14 +28,17 @@
             @foreach($houseTypes as $houseType)
                 {{--{{ $houseType->photo}}--}}
                 <tr>
-                    {{--<td>{{$houseType}}</td>--}}
-
-                    <td>{{$houseType->development_id ? $houseType->development->development_name : "Development Not Set" }}</td>
-                    <td><a href="{{route('admin.housetypes.edit', $houseType->id)}}">{{$houseType->house_type_name}}</a></td>
-                    <td>{{$houseType->house_type_desc}}</td>
-                    {{--<td>{{$houseType->floor_plan}}</td>--}}
-                    {{--<td>{{$houseType->house_img}}</td>--}}
-                    <td><a href="{{$houseType->house_img ? $houseType->house_photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image-{{$count}}" data-title="Example house image for: {{$houseType->house_type_name}} ">
+                    <td>
+                        {{$houseType->development_id ? $houseType->development->development_name : "Development Not Set" }}
+                    </td>
+                    <td>
+                        <a href="{{route('admin.housetypes.edit', $houseType->id)}}">{{$houseType->house_type_name}}</a>
+                    </td>
+                    <td>
+                        {{$houseType->house_type_desc}}
+                    </td>
+                    <td>
+                        <a href="{{$houseType->house_img ? $houseType->house_photo->file : 'http://placehold.it/400x400' }}" data-lightbox="image-{{$count}}" data-title="Example house image for: {{$houseType->house_type_name}} ">
                             <img src="{{$houseType->house_img ? $houseType->house_photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
                         </a>
                     </td>
@@ -42,12 +46,16 @@
                             <img src="{{$houseType->floor_plan ? $houseType->photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
                         </a>
                     </td>
-                    {{--<td><a href="{{$houseType->floor_plan ? $houseType->photo->file : 'http://placehold.it/400x400' }} " data-lightbox="image-{{$count}}" data-title="Example development image for: ">--}}
-                            {{--<img src="{{$houseType->floor_plan ? $houseType->photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">--}}
-                        {{--</a>--}}
-                    {{--</td>--}}
-                    {{--<td>{{$development->created_at->diffForHumans()}}</td>--}}
-                    {{--<td>{{$development->updated_at->diffForHumans()}}</td>--}}
+                    <td>
+                        <div class="btn-group-vertical">
+                            <a href="{{route('admin.housetypes.edit', $houseType->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
+                        </div>
+                        <div class="btn-group-vertical">
+                            {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminHouseTypesController@destroy', $houseType->id], 'id'=> 'confirm_delete_'.$houseType->id]) !!}
+                                {!! Form::button('<i class="fa fa-fw fa-trash"></i>', ['type'=> 'submit' ,'class'=>'btn btn-danger', 'onclick'=>'confirmDelete(' .$houseType->id .')']) !!}
+                            {!! Form::close() !!}
+                        </div>
+                    </td>
                 </tr>
                 {{--*/ $count++ /*--}}
 
@@ -65,10 +73,40 @@
             $('#myTable').DataTable({
                 responsive: true,
                 "columnDefs": [
-                    { "orderable": false, "targets": [3,4] }
+                    { "orderable": false, "targets": [3,4,5] }
                 ]
             });
         });
+
+        function confirmDelete(id) {
+            // console.log(id);
+            event.preventDefault();
+
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                buttonsStyling: true
+            }).then((result) => {
+                if (result.value) {
+                swal(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+                $("#confirm_delete_"+id).off("submit").submit()
+                // result.dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+            } else if (result.dismiss === 'cancel') {
+
+            }
+        })
+        }
     </script>
 
 @endsection

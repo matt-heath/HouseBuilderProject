@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Certificate extends Model
 {
     //
-    protected $fillable = [];
+    protected $fillable = [
+        'certificate_name',
+        'certificate_check',
+        'certificate_doc',
+        'certificate_category_id'
+    ];
 
     //Set up many-to-many relationship - one
     public function plots() {
@@ -15,6 +20,10 @@ class Certificate extends Model
     }
 
     public function category() {
-        return $this->hasOne('App\CertificateCategory');
+        return $this->belongsTo('App\CertificateCategory', 'certificate_category_id', 'id');
+    }
+
+    public function consultant() {
+        return $this->hasOne('App\Consultant');
     }
 }

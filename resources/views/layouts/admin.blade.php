@@ -179,6 +179,12 @@
                             <a href="#"><i class="fa fa-certificate fa-fw"></i>Certificate Management<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
+                                    <a href="{{route('admin.certificates.index')}}">All Certificates</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('admin.certificates.create')}}">Create Required Certificates</a>
+                                </li>
+                                <li>
                                     <a href="#">Certificate Categories <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
@@ -188,6 +194,20 @@
                                             <a href="{{route('admin.certificatecategories.create')}}">Create Categories</a>
                                         </li>
                                     </ul>
+                                </li>
+
+                                {{--<li>--}}
+                                    {{--<a href="{{route('admin.housetypes.create')}}">Create House Types</a>--}}
+                                {{--</li>--}}
+
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-building fa-fw"></i>Bookings<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{route('admin.booking.index')}}">All Bookings</a>
                                 </li>
 
                                 {{--<li>--}}

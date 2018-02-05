@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Consultant;
 use App\Http\Requests\UsersEditRequest;
 use App\Http\Requests\UsersRequest;
 use App\Photo;
@@ -55,7 +56,8 @@ class AdminUsersController extends Controller
     public function store(UsersRequest $request)
     {
         //
-
+//        return $request->all();
+        $userModel = new User();
 
         if(trim($request->password) == ''){
 
@@ -64,7 +66,7 @@ class AdminUsersController extends Controller
         } else{
 
 
-            $input = $request->all();
+            $input = $request->except('consultant_description');
 
             $this->validate($request, [
                     'name' => 'required|max:255',
@@ -75,27 +77,23 @@ class AdminUsersController extends Controller
             $input['password'] = bcrypt($request->password);
 
         }
+//        return $input;
 
+        $userModel->fill($input);
+        $userModel->save();
 
+        $consultant_user_id = $userModel->id;
 
-//        if($file = $request->file('photo_id')) {
-//
-//
-//            $name = time() . $file->getClientOriginalName();
-//
-//
-//            $file->move('images', $name);
-//
-//            $photo = Photo::create(['file'=>$name]);
-//
-//
-//            $input['photo_id'] = $photo->id;
-//
-//
-//        }
+        if($request->consultant_description){
+            $consultant_description = $request->consultant_description;
+            $data = [
+                'user_id' => $consultant_user_id,
+                'consultant_description' => $consultant_description
+            ];
 
-
-        User::create($input);
+//            return $data;
+            Consultant::create($data);
+        }
 
 
         return redirect('/admin/users');

@@ -14,6 +14,6 @@ class CertificateCategory extends Model
     ];
 
     public function certificates(){
-        return $this->belongsTo('App\Certificate');
+        return $this->HasMany('App\Certificate');
     }
 }

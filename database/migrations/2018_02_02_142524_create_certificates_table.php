@@ -17,8 +17,8 @@ class CreateCertificatesTable extends Migration
         Schema::create('certificates', function (Blueprint $table) {
             $table->increments('id');
             $table->string('certificate_name');
-            $table->boolean('certificate_check');
-            $table->string('certificate_doc');
+            $table->boolean('certificate_check')->default(false);
+            $table->string('certificate_doc')->nullable();
             $table->integer('certificate_category_id')->unsigned()->index();
             $table->timestamps();
         });

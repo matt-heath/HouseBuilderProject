@@ -40,6 +40,7 @@ Route::group(['middleware'=>'admin'], function(){
     Route::get('admin/viewuserbyrole/{id}', ['as'=>'admin.viewuserbyrole', 'uses'=>'AdminUsersController@viewUserByRole']);
     Route::get('admin/plotsbydevelopment/{id}', ['as'=>'admin.plotsbydevelopment', 'uses'=>'AdminPlotsController@plotsByDevelopment']);
     Route::get('/findHouseTypes', 'AdminPlotsController@findHouseTypes');
+    Route::resource('admin/booking', 'AdminBookingsController');
 });
 
 Route::group(['middleware'=>'estateagent'], function() {

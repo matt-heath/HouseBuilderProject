@@ -25,20 +25,19 @@ class AdminDevelopmentsController extends Controller
 
         $developments = Development::all();
 
-//        $ids = array();
+        $ids = array();
 
-//        foreach ($developments as $development){
-//            $item = array(
-//                $id = $development['id']
-//            );
-//
-//            print_r($ids[] = $id);
-//        }
-//
-//        $ids[] = $item;
+        foreach ($developments as $development){
+            $id = $development['id'];
 
+            $ids[] = $id;
+        }
 
-//        $num_of_plots_available = Plot::all();
+//        $ids[] = $id;
+
+        $num_of_plots_available = Plot::whereIn('development_id', $ids)->get();
+
+//        return ($num_of_plots_available);
 
         return view('admin.developments.index', compact('developments', 'num_of_plots_available'));
     }
@@ -93,6 +92,7 @@ class AdminDevelopmentsController extends Controller
     public function show($id)
     {
         //
+        return view('admin.developments.show');
     }
 
     /**

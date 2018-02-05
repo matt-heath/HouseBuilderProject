@@ -60,9 +60,17 @@
         </div>
 
     </div>
-
-
-    <div class="row">
-        @include('includes.form_error')
-    </div>
+    {{--<div class="row">--}}
+        {{--@include('includes.form_error')--}}
+    {{--</div>--}}
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function(){
+            $('#myTable').DataTable({
+                responsive: true
+            });
+            console.log('page loaded....');
+        });
+    </script>
 @endsection
