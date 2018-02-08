@@ -68,7 +68,16 @@
                                 {{-- TODO: Add number of phases to migration? --}}
                                 <div class="form-group">
                                     {!! Form::label('phase', 'Phase:')!!}
-                                    {!! Form::number('phase', null, ['class'=>'form-control']) !!}
+                                    {!! Form::number('phase', null, ['class'=>'form-control', 'placeholder' => 'Phase']) !!}
+                                </div>
+                                <div class="form-group">
+                                    {!! Form::label('sqft', 'SqFt:') !!}
+                                    {!! Form::number('sqft', null, ['class'=>'form-control name_list', 'placeholder' => 'SqFt']) !!}
+                                </div>
+                                <div class="form-group">
+                                    {!! Form::label('status', 'Status:') !!}
+                                    {!! Form::text('status_disabled', 'For Sale', ['class'=>'form-control name_list', 'placeholder' => 'Status', 'disabled']) !!}
+                                    {!! Form::text('status', 'For Sale', ['class'=>'form-control name_list hidden', 'placeholder' => 'Status']) !!}
                                 </div>
                             </div>
                         </div>
@@ -86,9 +95,11 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped" id="dynamic_field">
                                     <tr>
-                                        <td>{!! Form::text('plot_name', null, ['class'=>'form-control name_list', 'name'=>'plot_name[]', 'placeholder' => 'Plot name']) !!}</td>
-                                        <td>{!! Form::number('sqft', null, ['class'=>'form-control name_list', 'name' => 'sqft[]', 'placeholder' => 'SqFt']) !!}</td>
-                                        <td>{!! Form::text('status', 'For Sale', ['class'=>'form-control name_list', 'placeholder' => 'Status']) !!}</td>
+                                        <td>
+                                            {!! Form::label('num_of_plots', 'Number of plots to generate:') !!}
+                                            {!! Form::number('num_of_plots', null, ['class' => 'form-control', 'placeholder' => 'Number of plots to generate']) !!}
+                                        </td>
+{{--                                        <td>{!! Form::text('plot_name', null, ['class'=>'form-control name_list', 'name'=>'plot_name[]', 'placeholder' => 'Plot name']) !!}</td>--}}
                                         {{--<td><input type="text" name="name[]" placeholder="Enter Plot Name" class="form-control name_list" /></td>--}}
                                         {{--<td><input type="text" name="sqft[]" placeholder="SqFt" class="form-control name_list" /></td>--}}
                                         {{--<td><input type="text" name="status[]" placeholder="Status" class="form-control name_list" /></td>--}}
@@ -151,16 +162,14 @@
 
         var i=1;
 
-        $('#add').click(function(){
-            i++;
-            $('#dynamic_field').append('' +
-                '<tr id="row'+i+'" class="dynamic-added">' +
-                '   <td>{!! Form::text('plot_name', null, ['class'=>'form-control name_list', 'name'=>'plot_name[]', 'placeholder' => 'Plot name']) !!}</td>' +
-                '   <td>{!! Form::number('sqft', null, ['class'=>'form-control name_list', 'name' => 'sqft[]', 'placeholder' => 'SqFt']) !!}</td>' +
-                '   <td>{!! Form::text('status', 'For Sale', ['class'=>'form-control name_list', 'placeholder' => 'Status']) !!}</td>' +
-                '   <td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>'
-            );
-        });
+        {{--$('#add').click(function(){--}}
+            {{--i++;--}}
+            {{--$('#dynamic_field').append('' +--}}
+                {{--'<tr id="row'+i+'" class="dynamic-added">' +--}}
+                {{--'   <td>{!! Form::text('plot_name', null, ['class'=>'form-control name_list', 'name'=>'plot_name[]', 'placeholder' => 'Plot name']) !!}</td>' +--}}
+                {{--'   <td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>'--}}
+            {{--);--}}
+        {{--});--}}
 
         $(document).on('click', '.btn_remove', function(){
             var button_id = $(this).attr("id");

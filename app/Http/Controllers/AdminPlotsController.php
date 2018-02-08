@@ -50,31 +50,54 @@ class AdminPlotsController extends Controller
     {
         $all = $request->all();
 
-        $plotsArray = $request->plot_name;
-        $sqftArray = $request->input('sqft');
+        $houseType = HouseType::where('id', $all['house_type'])->pluck('house_type_name')->first();
+
+        $plots = Plot::where('house_type', $all['house_type'])->pluck('plot_name_id')->last();
+
+        if($plots){
+            $plotsArray = $request->num_of_plots + $plots;
+            $plots = $plots + 1;
+        }else{
+            $plotsArray = $request->num_of_plots;
+            $plots = 1;
+        }
+
+
+
+//        $plotsArr = array();
+//        for($x = 0; $x < count($plots); $x++){
+//            $plotsItem = array(
+//              'plot_name' => $plots[$x]
+//            );
+//
+//            $plotsArr[] = $plotsItem;
+//        }
+
+//        return $plotsArr;
+
+        $houseType = str_replace(' ', '_', $houseType);
+//        $sqftArray = $request->input('sqft');
 //        $statusArray = $request->input('status');
 
         $items = array();
 
-
-        for($i = 0; $i < count($plotsArray); $i++){
+        for($i = $plots; $i <= $plotsArray; $i++){
             $item = array(
                 'development_id' => $all['development_id'],
-                'plot_name' => $plotsArray[$i],
+                'plot_name' => 'Braidwater_'.$houseType.'_'.$i,
                 'house_type'=> $all['house_type'],
-                'sqft' => $sqftArray[$i],
+                'sqft' => $all['sqft'],
                 'phase' => $all['phase'],
-                'status' => $all['status']
+                'status' => $all['status'],
+                'plot_name_id' => $i
             );
-
             $items[] = $item;
         }
+//        var_dump( $items);
 
-//        return $items;
-
-
+//
         Plot::insert($items);
-
+//
         return redirect('/admin/plots');
     }
 

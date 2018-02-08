@@ -156,6 +156,9 @@
                                 <li>
                                     <a href="{{route('admin.plots.create')}}">Add Plots to development</a>
                                 </li>
+                                <li>
+                                    <a href="{{route('admin.consultants.index')}}">Assign Consultant to phase in development</a>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>

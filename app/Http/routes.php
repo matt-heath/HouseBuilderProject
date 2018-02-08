@@ -33,6 +33,7 @@ Route::group(['middleware'=>'admin'], function(){
     Route::resource('admin/users', 'AdminUsersController');
     Route::resource('admin/developments', 'AdminDevelopmentsController');
     Route::resource('admin/plots', 'AdminPlotsController');
+    Route::resource('admin/consultants', 'AdminConsultantsController');
     Route::resource('admin/housetypes', 'AdminHouseTypesController');
     Route::resource('admin/certificates', 'AdminCertificatesController');
     Route::resource('admin/certificatecategories', 'AdminCertificateCategoriesController');
@@ -40,6 +41,8 @@ Route::group(['middleware'=>'admin'], function(){
     Route::get('admin/viewuserbyrole/{id}', ['as'=>'admin.viewuserbyrole', 'uses'=>'AdminUsersController@viewUserByRole']);
     Route::get('admin/plotsbydevelopment/{id}', ['as'=>'admin.plotsbydevelopment', 'uses'=>'AdminPlotsController@plotsByDevelopment']);
     Route::get('/findHouseTypes', 'AdminPlotsController@findHouseTypes');
+    Route::get('/findPhases', 'AdminConsultantsController@findPhases');
+    Route::get('/findPlots', 'AdminConsultantsController@findPlots');
     Route::resource('admin/booking', 'AdminBookingsController');
 });
 
