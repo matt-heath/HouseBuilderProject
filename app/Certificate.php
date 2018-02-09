@@ -16,7 +16,7 @@ class Certificate extends Model
 
     //Set up many-to-many relationship - one
     public function plots() {
-        return $this->belongsToMany('App\Plot');
+        return $this->hasMany('App\Plot');
     }
 
     public function category() {

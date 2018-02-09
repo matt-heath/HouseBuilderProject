@@ -122,8 +122,7 @@
                         <div class="row">
 
                             <div class="form-group hidden" id="plotSelect">
-                                {!! Form::label('selected_plots', 'Development Phase:')!!}
-                                {!! Form::select('selected_plots[]', [''=>'Choose Plots To Assign'], null, ['class'=>'form-control selectMultiple plotSelect', 'multiple'=> 'multiple']) !!}
+
                             </div>
 
 
@@ -330,20 +329,23 @@
                         console.log('Success!!');
                         console.log(data);
                         console.log(data.length);
-                        if(data.length != 0){
+                        if(data.length == 0){
                             $(".plotSelect").prop("disabled", false);
-                            option +='<option value="" disabled>Choose Development Phase</option>';
+                            option += '{!! Form::label('selected_plots', 'Number of plots to assign to:')!!}';
+                            option +='{!! Form::number('selected_plots', null, ['class'=>'form-control plotSelect', 'placeholder'=>'No plots available to assign to']) !!}';
+
                         }else{
                             $(".plotSelect").prop("disabled", true);
-                            option +='<option value="" selected disabled>No Phases available - Create plots associated to one!</option>';
+                            option += '{!! Form::label('selected_plots', 'Number of plots to assign to:')!!}';
+                            option += '{!! Form::number('selected_plots', null, ['class'=>'form-control plotSelect']) !!}';
                         }
 
-                        for(var i = 0; i < data.length; i++){
-                            option+='<option value="'+data[i].plot_name_id+'">'+data[i].plot_name_id+'</option>';
-                        }
+                        // for(var i = 0; i < data.length; i++){
+                        //     option+='<option value="'+data[i].plot_name_id+'">'+data[i].plot_name_id+'</option>';
+                        // }
 
 
-                        $(".plotSelect").html(" ").append(option);
+                        $("#plotSelect").html(" ").append(option);
                         $("#plotSelect").removeClass("hidden");
 
                         // console.log(option);

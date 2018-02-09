@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Certificate;
 use App\CertificateCategory;
 use App\Consultant;
+use App\Plot;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -46,41 +47,61 @@ class AdminCertificatesController extends Controller
     public function store(Request $request)
     {
         //
-        $certificatesModel = new Certificate();
+//        return $request->all();
+//        $certificatesModel = new Certificate();
         $input = $request->all();
 
+        $items = array();
+        $ids = array();
+        $plot_arr = array();
 
-        if($file = $request->file('certificate_doc')){
+        $plots = Plot::where('plot_name_id', '<=', $request->selected_plots)->where('house_type', $request->house_type)->get();
 
-            $name = time() . $file->getClientOriginalName();
 
-            $file->move('documents', $name);
+        for($i = 1; $i <= $request->selected_plots; $i++) {
 
-//            Certificate::create(['certificate_doc'=> $name]);
+            $certificatesModel[$i] = new Certificate();
 
-            $input['certificate_doc'] = $name;
+            $item = array(
+                'certificate_name' => '',
+                'certificate_check' => 'False',
+                'certificate_doc' => '',
+                'certificate_category_id' => $input['certificate_category_id']
+            );
 
+
+            $certificatesModel[$i]->fill($item);
+
+
+            $items[] = $item;
+
+            $certificatesModel[$i]->save($item);
+
+
+            if ($request) {
+                $consultant = Consultant::find($request->consultant_id);
+                $consultant->certificates()->attach($certificatesModel[$i]->id);
+            }
+
+            foreach ($plots as $plot){
+                $plot_certificates = $plot->certificates();
+                $certificatesModel[$i]->id;
+                $plot_id = $plot->id;
+                $plot_arr[] = $plot_id;
+            }
+
+             echo $ids[] = $certificatesModel[$i]->id;
         }
 
-//        Certificate::create($input);
+        for($z = 0; $z < count($ids); $z++){
 
-        $certificatesModel->fill($input);
-        $certificatesModel->save();
+            $plot_id = $plot_arr[$z];
 
-//        return $input;
+            var_dump( $plot_id);
 
-        if($request){
-//            $data = [
-//                'user_id' => $consultant_user_id,
-//                'consultant_description' => $consultant_description
-//            ];
-
-//            $certificate = Certificate::find($certificatesModel->id);
-//            $certificate->consultant()->attach($request->consultant_id);
-
-            $consultant = Consultant::find($request->consultant_id);
-            $consultant->certificates()->attach($certificatesModel->id);
+            $plot_certificates->attach($ids[$z], ['plot_id'=> $plot_id]);
         }
+
 
         return redirect('/admin/certificates');
     }

@@ -42,7 +42,7 @@ class AdminConsultantsController extends Controller
 
 //        $phases = Plot::where('house_type', $request->id)->lists('phase')->distinct()->all();
 
-        return $phases = Plot::where('house_type', $request->id)->distinct()->orderBy('phase', 'asc')->get(['phase']);
+         $phases = Plot::where('house_type', $request->id)->distinct()->orderBy('phase', 'asc')->get(['phase']);
         return response()->json($phases);
 
     }

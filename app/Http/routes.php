@@ -67,6 +67,8 @@ Route::group(['middleware'=>'externalconsultant'], function() {
         return view('externalconsultant.index');
 
     });
+
+    Route::resource('externalconsultant/plots', 'ExternalConsultantPlotsController');
 });
 
 Route::get('/home', 'HomeController@index');
