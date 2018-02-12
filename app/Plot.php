@@ -14,7 +14,8 @@ class Plot extends Model
         'house_type',
         'sqft',
         'phase',
-        'status'
+        'status',
+        'build_status'
     ];
 
 

@@ -13,6 +13,7 @@
                     <th>Certificate Checked?</th>
                     <th>Document</th>
                     <th>Certificate Category</th>
+                    <th>Status</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -23,16 +24,43 @@
                         <td>{{$certificate->certificate_name}}</td>
                         <td>{{$certificate->certificate_check}}</td>
                         <td>{{$certificate->certificate_doc ? $certificate->certificate_doc : "No certificate uploaded" }}</td>
-                        <td><a href={{ $certificate->certificate_doc }}>{{$certificate->category['name']}}</a></td>
+
+                        {{--TODO:: make downloads controller allowing user to download and check the uploaded file before approval--}}
+                        <td>
+                            {{--<a href={{ $certificate->certificate_doc }}>{{$certificate->category['name']}}</a>--}}
+                            @if(isset($certificate->certificate_doc))
+                                {!! Html::link('download/'.$certificate->certificate_doc, $certificate->category['name']) !!}
+                            @else
+                                {{$certificate->category['name']}}
+                            @endif
+                        </td>
+                        <td>{{$certificate->build_status}}</td>
                         <td>
                             {{--<div class="btn-group">--}}
                                 {{--<a href="{{route('admin.certificates.edit', $certificate->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>--}}
                             {{--</div>--}}
                             <div class="btn-group">
-                                {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminCertificatesController@destroy', $certificate->id], 'id'=> 'confirm_delete_'.$certificate->id]) !!}
-                                    {!! Form::button('<i class="fa fa-fw fa-trash"></i>', ['type'=> 'submit' ,'class'=>'btn btn-danger', 'onclick'=>'confirmDelete(' .$certificate->id .')']) !!}
-                                {!! Form::close() !!}
+                                @if($certificate->build_status === 'Awaiting approval' && $certificate->certificate_check == 0)
+                                    {!! Form::open(['method'=>'PATCH', 'action'=> ['AdminCertificatesController@update', $certificate->id]]) !!}
+                                        <input type="hidden" name="certificate_check" value="1">
+                                        <div class="form-group">
+                                            {!! Form::submit('Approve', ['class'=>'btn btn-info']) !!}
+                                        </div>
+                                    {!! Form::close() !!}
+                                @elseif($certificate->certificate_check == 1)
+                                    {!! Form::open(['method'=>'PATCH', 'action'=> ['AdminCertificatesController@update', $certificate->id]]) !!}
+                                        <input type="hidden" name="certificate_check" value="0">
+                                        <div class="form-group">
+                                            {!! Form::submit('Un-approve', ['class'=>'btn btn-success']) !!}
+                                        </div>
+                                    {!! Form::close() !!}
+                                @endif
                             </div>
+                            {{--<div class="btn-group">--}}
+                                {{--{!! Form::open(['method'=>'DELETE', 'action'=> ['AdminCertificatesController@destroy', $certificate->id], 'id'=> 'confirm_delete_'.$certificate->id]) !!}--}}
+                                    {{--{!! Form::button('<i class="fa fa-fw fa-trash"></i>', ['type'=> 'submit' ,'class'=>'btn btn-danger', 'onclick'=>'confirmDelete(' .$certificate->id .')']) !!}--}}
+                                {{--{!! Form::close() !!}--}}
+                            {{--</div>--}}
                         </td>
                     </tr>
                 @endforeach

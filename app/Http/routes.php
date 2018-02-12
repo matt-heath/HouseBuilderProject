@@ -44,6 +44,7 @@ Route::group(['middleware'=>'admin'], function(){
     Route::get('/findPhases', 'AdminConsultantsController@findPhases');
     Route::get('/findPlots', 'AdminConsultantsController@findPlots');
     Route::resource('admin/booking', 'AdminBookingsController');
+    Route::get('/download/{file}', 'DownloadsController@download');
 });
 
 Route::group(['middleware'=>'estateagent'], function() {
@@ -69,6 +70,7 @@ Route::group(['middleware'=>'externalconsultant'], function() {
     });
 
     Route::resource('externalconsultant/plots', 'ExternalConsultantPlotsController');
+    Route::resource('externalconsultant/certificates', 'ExternalConsultantCertificatesController');
 });
 
 Route::get('/home', 'HomeController@index');

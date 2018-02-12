@@ -19,7 +19,9 @@ class AdminPlotsController extends Controller
      */
     public function index()
     {
-        $plots = Plot::all();
+//        $plots = Plot::all();
+
+        $plots = Plot::with('certificates')->get();
 //        $developments = Development::lists('development_name', 'id')->all();
 //        $houseTypes = HouseType::lists('house_type_name', 'id')->all();
 

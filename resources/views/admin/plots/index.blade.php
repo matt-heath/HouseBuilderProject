@@ -21,7 +21,6 @@
                 <tbody>
                 @foreach($plots as $plot)
                     <tr>
-
                         <td><a href="{{route('admin.plotsbydevelopment', ['id'=>$plot->development_id])}}">{{$plot->development ? $plot->development->development_name : "Development Not Set"}}</a></td>
                         <td>{{$plot->plot_name}}</td>
                         <td>{{$plot->houseTypes ? $plot->houseTypes->house_type_name : "NOT FOUND"}}</td>
@@ -29,6 +28,11 @@
                         <td>{{$plot->phase}}</td>
                         <td>{{$plot->status}}</td>
                         <td>
+                            @if(!$plot->certificates->isEmpty())
+                                <div class="btn-group">
+                                    <a href="{{route('admin.certificates.edit', $plot->id)}}" class="btn btn-warning"><i class="fa fa-fw fa-certificate fa-sm"></i></a>
+                                </div>
+                            @endif
                             <div class="btn-group">
                                 <a href="{{route('admin.plots.edit', $plot->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
                             </div>

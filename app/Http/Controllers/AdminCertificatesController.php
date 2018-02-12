@@ -49,15 +49,19 @@ class AdminCertificatesController extends Controller
         //
 //        return $request->all();
 //        $certificatesModel = new Certificate();
+
+        //Get all form submitted data.
         $input = $request->all();
 
+        //Declare arrays to be used.
         $items = array();
         $ids = array();
         $plot_arr = array();
 
+        //Search for plots where the name ID is less than/equal to the num of plots selected and where housetype is the same as form submitted one.
         $plots = Plot::where('plot_name_id', '<=', $request->selected_plots)->where('house_type', $request->house_type)->get();
 
-
+        //Loop to create multiple certificateModels and assign items to an item array.
         for($i = 1; $i <= $request->selected_plots; $i++) {
 
             $certificatesModel[$i] = new Certificate();
@@ -69,12 +73,10 @@ class AdminCertificatesController extends Controller
                 'certificate_category_id' => $input['certificate_category_id']
             );
 
-
             $certificatesModel[$i]->fill($item);
-
-
             $items[] = $item;
 
+            //save certificate model item to Certificates table
             $certificatesModel[$i]->save($item);
 
 
@@ -97,11 +99,10 @@ class AdminCertificatesController extends Controller
 
             $plot_id = $plot_arr[$z];
 
-            var_dump( $plot_id);
+//            var_dump( $plot_id);
 
             $plot_certificates->attach($ids[$z], ['plot_id'=> $plot_id]);
         }
-
 
         return redirect('/admin/certificates');
     }
@@ -127,7 +128,13 @@ class AdminCertificatesController extends Controller
     {
         //
 
-        return view('admin.certificates.index');
+        $plots = Plot::with('certificates')->where('id', $id)->get();
+
+        foreach($plots as $plot){
+            $certificates = $plot->certificates;
+        }
+
+        return view('admin.certificates.edit', compact('plots', 'certificates'));
     }
 
     /**
@@ -140,6 +147,48 @@ class AdminCertificatesController extends Controller
     public function update(Request $request, $id)
     {
         //
+//        return $id;
+//        return $request->all();
+
+        $certificate_check = $request->certificate_check;
+        $status = $request->status;
+
+
+
+        if($status === 'yes'){
+            $status = 'Ready for inspection';
+            $certificate = Certificate::findOrFail($id);
+
+            $certificate->build_status = $status;
+            $certificate->save();
+
+//            $certificate->update(['build_status' => $status]);
+
+//            return 'DONE';
+        }else if(isset($certificate_check)){
+//            return "hi";
+//            return $request->all();
+            $certificate = Certificate::findOrFail($id);
+
+            if($certificate_check == 1){
+                $certificate->certificate_check = $certificate_check;
+                $certificate->build_status = 'Accepted';
+                $certificate->save();
+                return redirect()->back();
+            }else if ($certificate_check == 0){
+                $certificate->certificate_check = $certificate_check;
+                $certificate->build_status = 'Awaiting approval';
+                $certificate->save();
+
+                return redirect()->back();
+            }
+
+//            return 'NOT DONE';
+        }else{
+            return redirect()->back();
+        }
+
+        return redirect()->back();
     }
 
     /**

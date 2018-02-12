@@ -271,7 +271,22 @@
                         </li>
                     @elseif(Auth::user()->isExternalConsultant())
 
-                        <h1>EXTERNAL CONSULTANT</h1>
+                        <li>
+                            <a href="/estateagent"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-map-marker fa-fw"></i> Plots<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{route('externalconsultant.plots.index')}}">All Plots</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('externalconsultant.plots.create')}}">Add Plots to development</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
                     @endif
 
 
