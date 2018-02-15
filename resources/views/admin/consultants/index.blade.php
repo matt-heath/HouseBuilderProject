@@ -127,7 +127,7 @@
 
 
                             <div class="form-group">
-                                {!! Form::submit('Create House Type', ['class'=>'btn btn-primary']) !!}
+                                {!! Form::submit('Upload Certificate', ['class'=>'btn btn-primary']) !!}
                             </div>
                             {!! Form::close() !!}
                         </div>
@@ -240,7 +240,7 @@
                     success: function (data) {
                         console.log('Success!!');
                         console.log(data);
-                        console.log(data.length);
+                        console.log('Phase' + data.length);
                         if(data.length != 0){
                             $(".phaseSelect").prop("disabled", false);
                             option +='<option value="" selected disabled>Choose Development Phase</option>';
@@ -249,8 +249,11 @@
                             option +='<option value="" selected disabled>No Phases available - Create plots associated to one!</option>';
                         }
 
+                        // console.log("DATA PHASE"+data.phase);
+
                         for(var i = 0; i < data.length; i++){
                             option+='<option value="'+data[i].phase+'">'+data[i].phase+'</option>';
+                            console.log(option);
                         }
 
 

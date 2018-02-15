@@ -25,7 +25,7 @@
 
     <div class="form-group">
         {!! Form::label('role_id', 'Role:') !!}
-        {!! Form::select('role_id', [''=>'Choose Options'] + $roles , null, ['class'=>'form-control roleSelect'])!!}
+        {!! Form::select('role_id', [''=>'Choose Options'] + $roles , null, ['class'=>'form-control roleSelect select'])!!}
     </div>
 
     <div class="form-group" id="consultantDetails">
@@ -54,9 +54,6 @@
 
 
     {{--@include('includes.form_error')--}}
-
-
-
 @endsection
 
 @section('script')
@@ -81,6 +78,7 @@
         //     }
         // });
         $(document).ready(function() {
+            $('.select').select2();
 
             $('.roleSelect').on('change',function(e) {
                 e.preventDefault();
@@ -89,12 +87,11 @@
                 var role = $(this).val();
 
                 // console.log(role);
-
                 if(role === '5') {
                     console.log("EXTERNAL CONSULTANT!!!!");
                     $('#consultantDetails').append('' +
                         '{!! Form::label('consultant_description', 'Consultant Description:') !!}' +
-                        '{!! Form::text('consultant_description', null, ['class'=>'form-control name_list', 'placeholder' => 'Consultant Description']) !!}'
+                        '{!! Form::textarea('consultant_description', null, ['class'=>'form-control name_list', 'placeholder' => 'Consultant Description', 'rows' => 2, 'cols' => 40]) !!}'
                     );
                 }else{
                     console.log("NOT EXT CONSULTANT");

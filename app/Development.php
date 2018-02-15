@@ -14,13 +14,14 @@ class Development extends Model
         'development_location',
         'development_num_plots',
         'development_description',
-        'photo_id'
+        'photo_id',
+//        'phase'
 
     ];
 
 
     public function plot(){
-        return $this->hasMany('App\Plot', 'development_id');
+        return $this->belongsToMany('App\Plot');
     }
 
     public function houseTypes(){

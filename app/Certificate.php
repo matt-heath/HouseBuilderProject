@@ -26,4 +26,8 @@ class Certificate extends Model
     public function consultant() {
         return $this->hasOne('App\Consultant');
     }
+
+    public function rejection(){
+        return $this->hasMany('App\CertificateRejection');
+    }
 }

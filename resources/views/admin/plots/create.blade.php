@@ -91,26 +91,14 @@
                     <div class="step33">
                         <h5><strong>Plot Details</strong></h5>
                         <hr>
-                        <div class="row">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped" id="dynamic_field">
-                                    <tr>
-                                        <td>
-                                            {!! Form::label('num_of_plots', 'Number of plots to generate:') !!}
-                                            {!! Form::number('num_of_plots', null, ['class' => 'form-control', 'placeholder' => 'Number of plots to generate']) !!}
-                                        </td>
-{{--                                        <td>{!! Form::text('plot_name', null, ['class'=>'form-control name_list', 'name'=>'plot_name[]', 'placeholder' => 'Plot name']) !!}</td>--}}
-                                        {{--<td><input type="text" name="name[]" placeholder="Enter Plot Name" class="form-control name_list" /></td>--}}
-                                        {{--<td><input type="text" name="sqft[]" placeholder="SqFt" class="form-control name_list" /></td>--}}
-                                        {{--<td><input type="text" name="status[]" placeholder="Status" class="form-control name_list" /></td>--}}
-                                        <td><button type="button" name="add" id="add" class="btn btn-success">Add More</button></td>
-                                    </tr>
-                                </table>
-                            </div>
+                        <div class="form-group">
+                            {!! Form::label('num_of_plots', 'Number of plots to generate:') !!}
+                            {!! Form::number('num_of_plots', null, ['class' => 'form-control', 'placeholder' => 'Number of plots to generate']) !!}
+                        </div>
 
-                            <div class="form-group">
-                                {!! Form::submit('Create Plot', ['class'=>'btn btn-primary']) !!}
-                            </div>
+                        <div class="form-group">
+                            {!! Form::submit('Create Plot', ['class'=>'btn btn-primary']) !!}
+                        </div>
                             {!! Form::close() !!}
                         </div>
                     </div>

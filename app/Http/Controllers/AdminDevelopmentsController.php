@@ -64,6 +64,8 @@ class AdminDevelopmentsController extends Controller
         //
         $input = $request->all();
 
+//        return $input;
+
 
         if($file = $request->file('photo_id')){
 
@@ -80,7 +82,6 @@ class AdminDevelopmentsController extends Controller
         Development::create($input);
 
         return redirect('/admin/developments');
-
     }
 
     /**

@@ -73,6 +73,9 @@
         $(document).ready(function(){
             $('#myTable').DataTable({
                 responsive: true,
+                "columnDefs": [
+                    { "orderable": false, "targets": [6] }
+                ]
 
             });
         });
@@ -93,7 +96,7 @@
                 if (result.value) {
                 swal({
                     title: 'Deleted!',
-                    text: 'Your file has been deleted.',
+                    text: 'User has been deleted.',
                     type: 'success',
                     showConfirmButton: false,
                     timer: 3000

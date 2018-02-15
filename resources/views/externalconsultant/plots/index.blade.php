@@ -51,10 +51,13 @@
                                 <div class="btn-group">
                                     <a href="{{route('externalconsultant.certificates.edit', $cert_ids[$count])}}" class="btn btn-warning"><i class="fa fa-fw fa-certificate fa-sm"></i></a>
                                 </div>
+
+                            @elseif($status ==="Rejected")
+                                <div class="btn-group">
+                                    <a href='' class="btn btn-danger" data-toggle='modal' data-target='#rejectionModal' id='rejectionClick' data-id={{$certificate->id}}>Rejection Reasons</a>
+                                </div>
+
                             @endif
-                            <div class="btn-group">
-                                <a href="{{route('admin.plots.edit', $plot->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
-                            </div>
                         </td>
                     </tr>
 
@@ -62,6 +65,28 @@
                 @endforeach
                 </tbody>
             </table>
+
+            <div class="modal fade" id="rejectionModal" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Rejection Reasons</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="certificate_check" value="3">
+                            <div class="form-group">
+                                {!! Form::label('rejection_reason', 'Certificate Rejection Notes:') !!}
+                                {!! Form::textarea('rejection_reason', null, ['class'=>'form-control reject']) !!}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="modal fade" id="myModal" role="dialog">
                 <div class="modal-dialog">
@@ -162,6 +187,34 @@
 
                     // console.log(option);
 
+                },
+                error: function () {
+                    console.log("Failed...")
+                }
+            })
+        });
+
+        $('#rejectionClick').on('click', function () {
+            var cert_id=$(this).data('id');
+            console.log(cert_id);
+
+            $.ajax({
+                type: 'get',
+                url: '{!! URL::to('getRejectionReasons') !!}',
+                data: {'id': cert_id},
+                success: function (data) {
+                    // console.log('Success!!');
+                    console.log(data);
+                    // console.log(data.length);
+                    // console.log(data);
+                    if(data.length != 0) {
+                        console.log('Success!!');
+                        for(var i = 0; i < data.length; i++){
+                            console.log(data[i].rejection_reason);
+                            $(".reject").html(" ").append(data[i].rejection_reason).attr('disabled', true);
+                        }
+                    }
+                    // console.log(option);
                 },
                 error: function () {
                     console.log("Failed...")

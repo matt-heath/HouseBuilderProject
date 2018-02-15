@@ -24,7 +24,7 @@
         </div>
 
         <div class="form-group">
-            {!! Form::submit('Create House Type', ['class'=>'btn btn-primary']) !!}
+            {!! Form::submit('Upload Certificate', ['class'=>'btn btn-primary']) !!}
         </div>
     {!! Form::close() !!}
     </div>

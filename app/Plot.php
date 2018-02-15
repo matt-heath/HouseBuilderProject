@@ -15,7 +15,8 @@ class Plot extends Model
         'sqft',
         'phase',
         'status',
-        'build_status'
+        'build_status',
+        'plot_name_id'
     ];
 
 

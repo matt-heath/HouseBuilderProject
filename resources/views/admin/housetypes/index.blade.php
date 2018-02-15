@@ -32,7 +32,7 @@
                         {{$houseType->development_id ? $houseType->development->development_name : "Development Not Set" }}
                     </td>
                     <td>
-                        <a href="{{route('admin.housetypes.edit', $houseType->id)}}">{{$houseType->house_type_name}}</a>
+                        {{$houseType->house_type_name}}
                     </td>
                     <td>
                         {{$houseType->house_type_desc}}

@@ -150,7 +150,7 @@ class ExternalConsultantCertificatesController extends Controller
 //        return $ids->plot_id->where('certificate_id', $id);
 
 
-        return redirect('/externalconsultant/certificates');
+        return redirect('/externalconsultant/plots');
 
     }
 

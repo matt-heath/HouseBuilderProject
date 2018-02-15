@@ -31,7 +31,8 @@
                          <td><a href="https://www.google.co.uk/maps/place/{{$development->development_location}}" target="_blank"><address>{{$development->development_location}}</address></a></td>
                          <td>{{$num_of_plots_available->where('development_id', $development->id)->count().'/'.$development->development_num_plots}}</td>
                          <td>{{$development->development_description}}</td>
-                         <td><a href="{{$development->photo_id ? $development->photo->file : 'http://placehold.it/400x400' }} " data-lightbox="image-{{$count}}" data-title="Example development image for: {{$development->development_name}}">
+                         <td>
+                             <a href="{{$development->photo_id ? $development->photo->file : 'http://placehold.it/400x400' }} " data-lightbox="image-{{$count}}" data-title="Example development image for: {{$development->development_name}}">
                                  <img src="{{$development->photo_id ? $development->photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
                              </a>
                          </td>
@@ -65,11 +66,41 @@
             $('#myTable').DataTable({
                 responsive: true,
                 "columnDefs": [
-                    { "orderable": false, "targets": 4 }
+                    { "orderable": false, "targets": [4,5] }
                 ]
 
             });
         });
+
+        function confirmDelete(id) {
+            console.log(id);
+            event.preventDefault();
+
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                buttonsStyling: true
+            }).then((result) => {
+                if (result.value) {
+                swal(
+                    'Deleted!',
+                    'Development has been deleted.',
+                    'success'
+                )
+                $("#confirm_delete_"+id).off("submit").submit()
+                // result.dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+            } else if (result.dismiss === 'cancel') {
+
+            }
+        })
+        }
     </script>
 
 @endsection

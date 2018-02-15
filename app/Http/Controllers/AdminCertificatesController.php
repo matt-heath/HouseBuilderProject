@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Certificate;
 use App\CertificateCategory;
+use App\CertificateRejection;
 use App\Consultant;
 use App\Plot;
 use Illuminate\Http\Request;
@@ -92,12 +93,14 @@ class AdminCertificatesController extends Controller
                 $plot_arr[] = $plot_id;
             }
 
-             echo $ids[] = $certificatesModel[$i]->id;
+            $ids[] = $certificatesModel[$i]->id;
         }
+//        return $ids
+
 
         for($z = 0; $z < count($ids); $z++){
 
-            $plot_id = $plot_arr[$z];
+           echo $plot_id = $plot_arr[$z];
 
 //            var_dump( $plot_id);
 
@@ -133,6 +136,8 @@ class AdminCertificatesController extends Controller
         foreach($plots as $plot){
             $certificates = $plot->certificates;
         }
+
+//        echo $certificates;
 
         return view('admin.certificates.edit', compact('plots', 'certificates'));
     }
@@ -181,6 +186,17 @@ class AdminCertificatesController extends Controller
                 $certificate->save();
 
                 return redirect()->back();
+            }else if($certificate_check == 3){
+                $certificate->certificate_check = 1;
+                $certificate->build_status = 'Rejected';
+                $certificate->save();
+
+
+                $input = [
+                    'certificate_id' => $id,
+                    'rejection_reason' => $request->rejection_reason
+                ];
+                CertificateRejection::create($input);
             }
 
 //            return 'NOT DONE';
@@ -205,5 +221,12 @@ class AdminCertificatesController extends Controller
 //        $consultant = Consultant::all();
 //
 //        $consultant->certificates()->detach($consultant['id']);
+    }
+
+    public function getRejectionReasons(Request $request){
+//        return $request->id;
+        $certificate = CertificateRejection::where('certificate_id', $request->id)->get();
+
+        return response()->json($certificate);
     }
 }

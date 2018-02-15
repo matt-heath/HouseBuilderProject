@@ -38,8 +38,9 @@ class AdminPlotsController extends Controller
         //
         $plots = Plot::all();
         $developments = Development::lists('development_name', 'id')->all();
+//        $phases = Development::pluck('phase');
         $houseTypes = HouseType::lists('house_type_name', 'id')->all();
-        return view('admin.plots.create', compact('plots', 'developments', 'houseTypes'));
+        return view('admin.plots.create', compact('plots', 'developments', 'houseTypes', 'phases'));
     }
 
     /**
@@ -51,6 +52,8 @@ class AdminPlotsController extends Controller
     public function store(PlotsRequest $request)
     {
         $all = $request->all();
+
+//        return $all['phase'];
 
         $houseType = HouseType::where('id', $all['house_type'])->pluck('house_type_name')->first();
 
@@ -64,19 +67,6 @@ class AdminPlotsController extends Controller
             $plots = 1;
         }
 
-
-
-//        $plotsArr = array();
-//        for($x = 0; $x < count($plots); $x++){
-//            $plotsItem = array(
-//              'plot_name' => $plots[$x]
-//            );
-//
-//            $plotsArr[] = $plotsItem;
-//        }
-
-//        return $plotsArr;
-
         $houseType = str_replace(' ', '_', $houseType);
 //        $sqftArray = $request->input('sqft');
 //        $statusArray = $request->input('status');
@@ -86,12 +76,12 @@ class AdminPlotsController extends Controller
         for($i = $plots; $i <= $plotsArray; $i++){
             $item = array(
                 'development_id' => $all['development_id'],
-                'plot_name' => 'Braidwater_'.$houseType.'_'.$i,
-                'house_type'=> $all['house_type'],
-                'sqft' => $all['sqft'],
-                'phase' => $all['phase'],
-                'status' => $all['status'],
-                'plot_name_id' => $i
+                'plot_name'      => 'Braidwater_'.$houseType.'_'.$i,
+                'house_type'     => $all['house_type'],
+                'sqft'           => $all['sqft'],
+                'status'         => $all['status'],
+                'phase'          => $all['phase'],
+                'plot_name_id'   => $i
             );
             $items[] = $item;
         }
@@ -174,13 +164,18 @@ class AdminPlotsController extends Controller
         $plots = Plot::where('development_id', $id)->get();
 //         $plots->where('development_id', '=', $id);
 
-
         return view('/admin/plots/plotsbydevelopment', compact('development', 'plots'));
     }
 
     public function findHouseTypes(Request $request) {
 //        return $request->id;
+
         $data = HouseType::where('development_id', $request->id)->get();
         return response()->json($data);
+    }
+
+    public function developmentPhases(Request $request) {
+        $phases = Development::where('id', $request->id)->pluck('phase')->all();
+        return response()->json($phases);
     }
 }

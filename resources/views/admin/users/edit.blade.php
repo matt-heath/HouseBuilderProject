@@ -49,10 +49,10 @@
 
             {!! Form::close() !!}
 
-            {!! Form::open(['method'=>'DELETE', 'action'=>['AdminUsersController@destroy', $user->id]])!!}
+            {!! Form::open(['method'=>'DELETE', 'action'=>['AdminUsersController@destroy', $user->id], 'id'=> 'confirm_delete_'.$user->id])!!}
 
                 <div class="form-group">
-                    {!! Form::submit('Delete User', ['class'=>'btn btn-danger col-sm-3']) !!}
+                    {!! Form::submit('Delete User', ['class'=>'btn btn-danger col-sm-3', 'onclick'=>'confirmDelete(' .$user->id .')']) !!}
                 </div>
 
             {!! Form::close() !!}
@@ -66,11 +66,37 @@
 @endsection
 @section('script')
     <script>
-        $(document).ready(function(){
-            $('#myTable').DataTable({
-                responsive: true
-            });
-            console.log('page loaded....');
-        });
+        function confirmDelete(id) {
+            event.preventDefault();
+
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                buttonsStyling: true
+            }).then((result) => {
+                if (result.value) {
+                swal({
+                    title: 'Deleted!',
+                    text: 'User has been deleted.',
+                    type: 'success',
+                    showConfirmButton: false,
+                    timer: 3000
+                }).then(function () {
+                    $("#confirm_delete_"+id).off("submit").submit()
+                })
+                // $("#confirm_delete_"+id).off("submit").submit()
+                // result.dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+            } else if (result.dismiss === 'cancel') {
+
+            }
+        })
+        }
     </script>
 @endsection

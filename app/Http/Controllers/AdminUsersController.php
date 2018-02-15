@@ -98,10 +98,7 @@ class AdminUsersController extends Controller
 
         return redirect('/admin/users');
 
-
 //        return $request->all();
-
-
     }
 
     /**

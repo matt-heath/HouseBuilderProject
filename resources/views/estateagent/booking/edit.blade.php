@@ -37,7 +37,7 @@
 
             <div class="form-group">
                 {!! Form::label('title', 'Buyer Name:')!!}
-                {!! Form::select('title', ['Mr'=>'Mr', 'Mrs'=>'Mrs', 'Miss'=>'Miss', 'DR.'=>'DR.'], $booking->title, ['class'=>'form-control selectPlot']) !!}
+                {!! Form::select('title', ['Mr'=>'Mr', 'Mrs'=>'Mrs', 'Miss'=>'Miss', 'DR.'=>'DR.'], $booking->title, ['class'=>'form-control select']) !!}
             </div>
 
             <div class="form-group">
@@ -62,7 +62,7 @@
             </div>
             <div class="form-group">
                 {!! Form::label('buyer_status', 'Buyer Status:')!!}
-                {!! Form::select('buyer_status',['First Time Buyer'] , null, ['class'=>'form-control']) !!}
+                {!! Form::select('buyer_status',['First Time Buyer'] , null, ['class'=>'form-control select']) !!}
             </div>
             <div class="form-group">
                 {!! Form::submit('Update Booking', ['class'=>'btn btn-primary col-sm-6']) !!}
@@ -72,21 +72,21 @@
             {!! Form::open(['method'=>'DELETE', 'action'=>['EstateAgentBookingsController@destroy', $booking->id]])!!}
 
             <div class="form-group">
-                {!! Form::submit('Delete Post', ['class'=>'btn btn-danger col-sm-6']) !!}
+                {!! Form::submit('Delete Booking', ['class'=>'btn btn-danger col-sm-6']) !!}
             </div>
             {!! Form::close() !!}
         </div>
 
     </div>
-    <div class="row">
-        @include('includes.form_error')
-    </div>
+    {{--<div class="row">--}}
+        {{--@include('includes.form_error')--}}
+    {{--</div>--}}
 
 @endsection
 @section('script')
     <script>
         $(document).ready(function() {
-            $('.selectHouseType').select2();
+            $('.select').select2();
         });
     </script>
 @endsection

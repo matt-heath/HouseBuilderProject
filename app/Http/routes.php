@@ -41,9 +41,11 @@ Route::group(['middleware'=>'admin'], function(){
     Route::get('admin/viewuserbyrole/{id}', ['as'=>'admin.viewuserbyrole', 'uses'=>'AdminUsersController@viewUserByRole']);
     Route::get('admin/plotsbydevelopment/{id}', ['as'=>'admin.plotsbydevelopment', 'uses'=>'AdminPlotsController@plotsByDevelopment']);
     Route::get('/findHouseTypes', 'AdminPlotsController@findHouseTypes');
+    Route::get('/developmentPhases', 'AdminPlotsController@developmentPhases');
     Route::get('/findPhases', 'AdminConsultantsController@findPhases');
     Route::get('/findPlots', 'AdminConsultantsController@findPlots');
     Route::resource('admin/booking', 'AdminBookingsController');
+    Route::get('/getRejectionReasons', 'AdminCertificatesController@getRejectionReasons');
     Route::get('/download/{file}', 'DownloadsController@download');
 });
 
@@ -71,6 +73,7 @@ Route::group(['middleware'=>'externalconsultant'], function() {
 
     Route::resource('externalconsultant/plots', 'ExternalConsultantPlotsController');
     Route::resource('externalconsultant/certificates', 'ExternalConsultantCertificatesController');
+    Route::get('/getRejectionReasons', 'AdminCertificatesController@getRejectionReasons');
 });
 
 Route::get('/home', 'HomeController@index');

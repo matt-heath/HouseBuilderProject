@@ -51,11 +51,11 @@
 
             {!! Form::close() !!}
 
-            {!! Form::open(['method'=>'DELETE', 'action'=>['EstateAgentUsersController@destroy', $user->id]])!!}
+            {!! Form::open(['method'=>'DELETE', 'action'=>['EstateAgentUsersController@destroy', $user->id], 'id'=> 'confirm_delete_'.$user->id])!!}
 
-                <div class="form-group">
-                    {!! Form::submit('Delete User', ['class'=>'btn btn-danger col-sm-3']) !!}
-                </div>
+            <div class="form-group">
+                {!! Form::submit('Delete User', ['class'=>'btn btn-danger col-sm-3', 'onclick'=>'confirmDelete(' .$user->id .')']) !!}
+            </div>
 
             {!! Form::close() !!}
 
@@ -64,11 +64,42 @@
     </div>
 
 
-    <div class="row">
-        @include('includes.form_error')
-    </div>
+    {{--<div class="row">--}}
+        {{--@include('includes.form_error')--}}
+    {{--</div>--}}
+@endsection
 
+@section('script')
 
+    <script>
+        function confirmDelete(id) {
+            // console.log(id);
+            event.preventDefault();
 
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                buttonsStyling: true
+            }).then((result) => {
+                if (result.value) {
+                swal(
+                    'Deleted!',
+                    'User has been deleted.',
+                    'success'
+                )
+                $("#confirm_delete_"+id).off("submit").submit()
+                // result.dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+            } else if (result.dismiss === 'cancel') {
 
+            }
+        })
+        }
+    </script>
 @endsection

@@ -184,9 +184,9 @@
                                 <li>
                                     <a href="{{route('admin.certificates.index')}}">All Certificates</a>
                                 </li>
-                                <li>
-                                    <a href="{{route('admin.certificates.create')}}">Create Required Certificates</a>
-                                </li>
+                                {{--<li>--}}
+                                    {{--<a href="{{route('admin.certificates.create')}}">Create Required Certificates</a>--}}
+                                {{--</li>--}}
                                 <li>
                                     <a href="#">Certificate Categories <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
@@ -280,9 +280,6 @@
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="{{route('externalconsultant.plots.index')}}">All Plots</a>
-                                </li>
-                                <li>
-                                    <a href="{{route('externalconsultant.plots.create')}}">Add Plots to development</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

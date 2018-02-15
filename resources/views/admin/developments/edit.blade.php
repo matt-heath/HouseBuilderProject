@@ -37,7 +37,7 @@
 
             <div class="form-group">
                 {!! Form::label('development_description', 'Development Description:')!!}
-                {!! Form::text('development_description', null, ['class'=>'form-control']) !!}
+                {!! Form::textarea('development_description', null, ['class'=>'form-control','rows' => 3, 'cols' => 40]) !!}
             </div>
 
             <div class="form-group">
@@ -50,18 +50,52 @@
             </div>
             {!! Form::close() !!}
 
-            {!! Form::open(['method'=>'DELETE', 'action'=>['AdminDevelopmentsController@destroy', $development->id]])!!}
+            {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminDevelopmentsController@destroy', $development->id], 'id'=> 'confirm_delete_'.$development->id]) !!}
 
             <div class="form-group">
-                {!! Form::submit('Delete Post', ['class'=>'btn btn-danger col-sm-6']) !!}
+                {!! Form::submit('Delete Development', ['class'=>'btn btn-danger col-sm-6', 'onclick'=>'confirmDelete(' .$development->id .')']) !!}
             </div>
             {!! Form::close() !!}
         </div>
-
     </div>
 
-    <div class="row">
-        @include('includes.form_error')
-    </div>
+    {{--<div class="row">--}}
+        {{--@include('includes.form_error')--}}
+    {{--</div>--}}
 
+@endsection
+
+@section('script')
+
+    <script>
+        function confirmDelete(id) {
+        console.log(id);
+        event.preventDefault();
+
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            buttonsStyling: true
+        }).then((result) => {
+        if (result.value) {
+            swal(
+            'Deleted!',
+            'Development has been deleted.',
+            'success'
+            )
+            $("#confirm_delete_"+id).off("submit").submit()
+            // result.dismiss can be 'cancel', 'overlay',
+            // 'close', and 'timer'
+        } else if (result.dismiss === 'cancel') {
+
+        }
+        })
+        }
+    </script>
 @endsection

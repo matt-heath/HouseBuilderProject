@@ -56,7 +56,10 @@
     <script>
         $(document).ready(function(){
             $('#myTable').DataTable({
-                responsive: true
+                responsive: true,
+                "columnDefs": [
+                    { "orderable": false, "targets": 6 }
+                ]
 
             });
         });
@@ -78,7 +81,7 @@
                 if (result.value) {
                 swal({
                     title: 'Deleted!',
-                    text: 'Your file has been deleted.',
+                    text: 'Plot has been deleted.',
                     type: 'success',
                     showConfirmButton: false,
                     timer: 3000

@@ -18,7 +18,7 @@
             </div>
 
             <div class="form-group">
-                {!! Form::submit('Update category', ['class'=>'btn btn-primary col-sm-6']) !!}
+                {!! Form::submit('Update certificate', ['class'=>'btn btn-primary col-sm-6']) !!}
             </div>
             {!! Form::close() !!}
 
@@ -32,15 +32,15 @@
         </div>
     </div>
 
-    <div class="row">
-        @include('includes.form_error')
-    </div>
+    {{--<div class="row">--}}
+        {{--@include('includes.form_error')--}}
+    {{--</div>--}}
 
 @endsection
 @section('script')
     <script>
         $(document).ready(function(){
-            $('.selectPlot').select2();
+            // $('.selectPlot').select2();
         });
     </script>
 @endsection
