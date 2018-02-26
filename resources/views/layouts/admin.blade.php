@@ -12,9 +12,9 @@
     <title>Admin</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="{{asset('css/app.css')}}" rel="stylesheet"> {{--looks for app.css--}}
 
     <link href="{{asset('css/libs.css')}}" rel="stylesheet"> {{--looks for minified libs.css--}}
+    <link href="{{asset('css/app.css')}}" rel="stylesheet"> {{--looks for app.css--}}
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
 
 

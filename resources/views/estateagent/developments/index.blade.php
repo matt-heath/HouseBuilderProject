@@ -25,7 +25,7 @@
            @if($developments)
 
                {{--Declares the variable count as 0 without printing to the screen --}}
-               {{--*/ $count = 0 /*--}}
+               @php($count = 0)
                @foreach($developments as $development)
                      <tr>
                          <td><a href="{{route('development.viewplots', $development->id)}}">{{$development->development_name}}</a></td>
@@ -39,7 +39,7 @@
                          <td>{{$development->created_at->diffForHumans()}}</td>
                          <td>{{$development->updated_at->diffForHumans()}}</td>
                      </tr>
-                     {{--*/ $count++ /*--}}
+                     @php($count++)
                @endforeach
            @endif
         </tbody>

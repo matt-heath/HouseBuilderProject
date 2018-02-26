@@ -24,7 +24,7 @@
         @if($houseTypes)
 
             {{--Declares the variable count as 0 without printing to the screen --}}
-            {{--*/ $count = 0 /*--}}
+            @php($count = 0)
             @foreach($houseTypes as $houseType)
                 {{--{{ $houseType->photo}}--}}
                 <tr>
@@ -57,7 +57,7 @@
                         </div>
                     </td>
                 </tr>
-                {{--*/ $count++ /*--}}
+                @php($count++)
 
             @endforeach
         @endif
