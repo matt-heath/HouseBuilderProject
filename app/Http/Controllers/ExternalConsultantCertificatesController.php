@@ -72,7 +72,7 @@ class ExternalConsultantCertificatesController extends Controller
 //        return $id;
 
         $certificate = Certificate::where('id', $id)->first();
-        $category = CertificateCategory::where('id', $certificate->certificate_category_id )->lists('name', 'id')->all();
+        $category = CertificateCategory::where('id', $certificate->certificate_category_id )->pluck('name', 'id')->all();
 
 //        return $plots;
 
@@ -103,14 +103,12 @@ class ExternalConsultantCertificatesController extends Controller
 
             $name = time(). $file->getClientOriginalName();
             $file->move('documents', $name);
-            $certificate->update(['certificate_doc'=> $name]);
+            $certificate->update(['certificate_doc'=> $name, 'certificate_check'=> 0]);
 
             $certificate->build_status = $status;
             $certificate->save();
         }
 
-
-//        TODO:: Change build status/document to 'Awaiting approval'
 
         $plots = Plot::with('certificates')->get();
 

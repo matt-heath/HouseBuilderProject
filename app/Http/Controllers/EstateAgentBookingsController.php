@@ -35,10 +35,10 @@ class EstateAgentBookingsController extends Controller
     public function create($id)
     {
         //
-        $users = User::where('role_id', 4 )->lists('name', 'id')->all();
+        $users = User::where('role_id', 4 )->pluck('name', 'id')->all();
 //        $plots = Plot::where('id', $id)->pluck('development_id');
 //        $developments = Development::where('id', $plots)->get();
-//        $houseTypes = HouseType::lists('house_type_name', 'id')->all();
+//        $houseTypes = HouseType::pluck('house_type_name', 'id')->all();
         return view('/estateagent/booking/create', compact('users','id', 'plots', 'development_name'));
     }
 

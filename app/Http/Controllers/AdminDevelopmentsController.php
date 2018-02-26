@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Development;
+use App\HouseType;
 use App\Http\Requests\DevelopmentsCreateRequest;
 use App\Photo;
 use App\Plot;
@@ -59,14 +60,42 @@ class AdminDevelopmentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(DevelopmentsCreateRequest $request)
+    public function store(Request $request)
     {
         //
+//        dd( $request->input() );
+//        return $request->all();
         $input = $request->all();
+
+//        dd($input);
+//        $houseTypesArray = $request->input('house_type_name');
+
+
+//        return $houseTypesArray;
 
 //        return $input;
 
+//        $items = array();
+//
+//        for ($i = 0; $i < count($houseTypesArray); $i++){
+//            echo "hi";
+//
+//            $item = array(
+//                'house_type_name' => $request->house_type_name[$i],
+//                'house_type_desc' => $request->house_type_desc[$i],
+////                'floor_plan' => $request->photo_id[$i],
+////                'house_img' => $request->house_img[$i]
+//            );
+//
+//            $items[] = $item;
+//
+//        }
 
+//        echo count($items);
+
+//        HouseType::insert($items);
+//
+//
         if($file = $request->file('photo_id')){
 
             $name = time() . $file->getClientOriginalName();

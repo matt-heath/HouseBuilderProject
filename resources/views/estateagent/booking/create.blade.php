@@ -5,22 +5,6 @@
     <h1>Create Booking</h1>
     {{-- Wizard found and adapted from https://bootsnipp.com/snippets/featured/form-wizard-using-tabs --}}
 
-    <table class="table">
-       <thead>
-         <tr>
-          <th>Development Name</th>
-          <th>Lastname</th>
-          <th>Email</th>
-         </tr>
-       </thead>
-       <tbody>
-         <tr>
-           <td>{{}}</td>
-           <td>Doe</td>
-           <td>john@example.com</td>
-         </tr>
-       </tbody>
-    </table>
 
     <div class="row">
         {!! Form::open(['method'=>'POST', 'action'=>'EstateAgentBookingsController@store'])!!}

@@ -6,12 +6,11 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.2.45",
-        "laravelcollective/html": "5.2.6",
+        "laravel/framework": "5.3.*",
+        "laravelcollective/html": "5.3.*",
         "unisharp/laravel-filemanager": "^1.6",
         "intervention/image": "^2.3",
         "prologue/alerts": "^0.4.1"
-
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

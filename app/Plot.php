@@ -32,9 +32,4 @@ class Plot extends Model
         return $this->belongsToMany('App\Certificate');
     }
 
-
-//    // each development has one photo (example picture).
-//    public function photo (){
-//        return $this->belongsTo('App\Photo');
-//    }
 }

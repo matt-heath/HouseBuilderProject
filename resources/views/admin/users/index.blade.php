@@ -21,9 +21,7 @@
         </div>
     @endif
 
-
     <h1>Users</h1>
-
 
     <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
         <thead>
@@ -94,22 +92,22 @@
                 buttonsStyling: true
             }).then((result) => {
                 if (result.value) {
-                swal({
-                    title: 'Deleted!',
-                    text: 'User has been deleted.',
-                    type: 'success',
-                    showConfirmButton: false,
-                    timer: 3000
-                }).then(function () {
-                    $("#confirm_delete_"+id).off("submit").submit()
-                })
-                // $("#confirm_delete_"+id).off("submit").submit()
-                // result.dismiss can be 'cancel', 'overlay',
-                // 'close', and 'timer'
-            } else if (result.dismiss === 'cancel') {
+                    swal({
+                        title: 'Deleted!',
+                        text: 'User has been deleted.',
+                        type: 'success',
+                        showConfirmButton: false,
+                        timer: 3000
+                    }).then(function () {
+                        $("#confirm_delete_"+id).off("submit").submit()
+                    })
+                    // $("#confirm_delete_"+id).off("submit").submit()
+                    // result.dismiss can be 'cancel', 'overlay',
+                    // 'close', and 'timer'
+                }else if (result.dismiss === 'cancel') {
 
-            }
-        })
+                }
+            });
         }
     </script>
 

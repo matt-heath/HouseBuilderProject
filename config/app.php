@@ -2,6 +2,8 @@
 
 return [
 
+    'name' => 'House Building Portal',
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

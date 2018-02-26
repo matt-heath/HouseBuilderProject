@@ -79,7 +79,10 @@
             $('#myTable').DataTable({
                 responsive: true,
                 "columnDefs": [
-                    { "orderable": false, "targets": 8 }
+                    {
+                        "orderable": false, "targets": 8
+
+                    }
                 ]
             });
         });

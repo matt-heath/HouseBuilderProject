@@ -35,10 +35,10 @@ class AdminBookingsController extends Controller
     public function create($id)
     {
         //
-        $users = User::where('role_id', 4 )->lists('name', 'id')->all();
+        $users = User::where('role_id', 4 )->pluck('name', 'id')->all();
 //        $plots = Plot::where('id', $id)->pluck('development_id');
 //        $developments = Development::where('id', $plots)->get();
-//        $houseTypes = HouseType::lists('house_type_name', 'id')->all();
+//        $houseTypes = HouseType::pluck('house_type_name', 'id')->all();
         return view('/estateagent/booking/create', compact('users','id', 'plots', 'development_name'));
     }
 
@@ -77,7 +77,7 @@ class AdminBookingsController extends Controller
     {
         //
         $booking = Booking::findOrFail($id);
-        $certificates = CertificateCategory::lists('name', 'id')->all();
+        $certificates = CertificateCategory::pluck('name', 'id')->all();
         $consultants = Consultant::all();
 
 
@@ -95,7 +95,7 @@ class AdminBookingsController extends Controller
 //            $consultant_names[] = $name;
 //        }
 
-//        $users = User::whereIn('id', $consultant_names)->lists('name','id')->all();
+//        $users = User::whereIn('id', $consultant_names)->pluck('name','id')->all();
 
 //        $consultant_names[] = $names;
 
@@ -127,7 +127,7 @@ class AdminBookingsController extends Controller
 //        Consultant::has('user')->get();
 
 
-//        return $user = User::where('id', $consultants->user_id)->lists('id', 'name');
+//        return $user = User::where('id', $consultants->user_id)->pluck('id', 'name');
         return view('admin.booking.show', compact('booking', 'certificates', 'consultant_names', 'options'));
     }
 

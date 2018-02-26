@@ -16,9 +16,9 @@ class AdminConsultantsController extends Controller
 
     public function index()
     {
-        $certificates = CertificateCategory::lists('name', 'id')->all();
+        $certificates = CertificateCategory::pluck('name', 'id')->all();
         $consultants = Consultant::all();
-        $developments = Development::lists('development_name', 'id')->all();
+        $developments = Development::pluck('development_name', 'id')->all();
 
 
         $options = [];
@@ -40,7 +40,7 @@ class AdminConsultantsController extends Controller
 
 //        return $request->id;
 
-//        $phases = Plot::where('house_type', $request->id)->lists('phase')->distinct()->all();
+//        $phases = Plot::where('house_type', $request->id)->pluck('phase')->distinct()->all();
 
          $phases = Plot::where('house_type', $request->id)->distinct()->orderBy('phase', 'asc')->get(['phase']);
         return response()->json($phases);

@@ -19,11 +19,8 @@ class AdminPlotsController extends Controller
      */
     public function index()
     {
-//        $plots = Plot::all();
-
+        //get plots with a pivot relation certificates and return to plots index view
         $plots = Plot::with('certificates')->get();
-//        $developments = Development::lists('development_name', 'id')->all();
-//        $houseTypes = HouseType::lists('house_type_name', 'id')->all();
 
         return view('admin.plots.index', compact('plots'));
     }
@@ -35,11 +32,15 @@ class AdminPlotsController extends Controller
      */
     public function create()
     {
-        //
+        //get all plots
         $plots = Plot::all();
-        $developments = Development::lists('development_name', 'id')->all();
-//        $phases = Development::pluck('phase');
-        $houseTypes = HouseType::lists('house_type_name', 'id')->all();
+
+        //get development_name and id for use in the dropdown select box.
+        $developments = Development::pluck('development_name', 'id')->all();
+
+        //get housetype name and id for use in the dropdown select box.
+        $houseTypes = HouseType::pluck('house_type_name', 'id')->all();
+
         return view('admin.plots.create', compact('plots', 'developments', 'houseTypes', 'phases'));
     }
 
@@ -51,25 +52,28 @@ class AdminPlotsController extends Controller
      */
     public function store(PlotsRequest $request)
     {
+        //return all inputs from the form and assign to 'all'
         $all = $request->all();
 
-//        return $all['phase'];
-
+        //get housetype from housetype model where id = house type id and return the first house_type_name
         $houseType = HouseType::where('id', $all['house_type'])->pluck('house_type_name')->first();
 
+        //get the last entered plot name id to be used within the forloop as a starting value for $i
         $plots = Plot::where('house_type', $all['house_type'])->pluck('plot_name_id')->last();
 
         if($plots){
+            // add plots returned from query onto number of plots entered in form
             $plotsArray = $request->num_of_plots + $plots;
+
+            //add 1 onto last submitted plot_name_id to start for loop iterations.
             $plots = $plots + 1;
         }else{
             $plotsArray = $request->num_of_plots;
             $plots = 1;
         }
 
+        //replace spaces in housetype string with underscores
         $houseType = str_replace(' ', '_', $houseType);
-//        $sqftArray = $request->input('sqft');
-//        $statusArray = $request->input('status');
 
         $items = array();
 
@@ -115,8 +119,8 @@ class AdminPlotsController extends Controller
         //
 
         $plot = Plot::findOrFail($id);
-        $developments = Development::lists('development_name', 'id')->all();
-        $houseType = HouseType::lists('house_type_name', 'id')->all();
+        $developments = Development::pluck('development_name', 'id')->all();
+        $houseType = HouseType::pluck('house_type_name', 'id')->all();
 
         $image = HouseType::where('id', $plot->house_type)->first();
 

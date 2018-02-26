@@ -54,7 +54,7 @@
 
                             @elseif($status ==="Rejected")
                                 <div class="btn-group">
-                                    <a href='' class="btn btn-danger" data-toggle='modal' data-target='#rejectionModal' id='rejectionClick' data-id={{$certificate->id}}>Rejection Reasons</a>
+                                    <a href='' class="btn btn-danger rejectionClick" data-toggle='modal' data-target='#rejectionModal' id='rejectionClick' data-id={{$certificate->id}}>Rejection Reasons</a>
                                 </div>
 
                             @endif
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
                         </div>
                     </div>
                 </div>
@@ -194,7 +194,7 @@
             })
         });
 
-        $('#rejectionClick').on('click', function () {
+        $('.rejectionClick').on('click', function () {
             var cert_id=$(this).data('id');
             console.log(cert_id);
 
@@ -209,9 +209,20 @@
                     // console.log(data);
                     if(data.length != 0) {
                         console.log('Success!!');
+                        var url = '{{ route("externalconsultant.certificates.edit", ":id") }}';
+
                         for(var i = 0; i < data.length; i++){
+                            url = url.replace(':id', data[i].certificate_id);
                             console.log(data[i].rejection_reason);
                             $(".reject").html(" ").append(data[i].rejection_reason).attr('disabled', true);
+                            $(".modal-footer").html(" ").append("<div class=\"btn-group\">\n" +
+                                "                                <div class=\"btn-group\">\n" +
+                                "                                    <a href="+url+" class=\"btn btn-warning\"><i class=\"fa fa-fw fa-certificate fa-sm\"></i> Re-upload Certificate</a>\n" +
+                                "                                </div>\n" +
+                                "                            </div>\n" +
+                                "                            <div class=\"btn-group\">\n" +
+                                "                                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n" +
+                                "                            </div>")
                         }
                     }
                     // console.log(option);

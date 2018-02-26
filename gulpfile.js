@@ -26,6 +26,7 @@ elixir(function(mix) {
             'libs/select2.min.css',
             'libs/dropzone.min.css',
             'libs/pnotify.custom.min.css',
+            'libs/smart_wizard.min.css',
             'libs/styles.css'
 
         ], './public/css/libs.css')
@@ -41,6 +42,7 @@ elixir(function(mix) {
             'libs/sweetalert2.js',
             'libs/pnotify.custom.min.js',
             'libs/dropzone.js',
+            'libs/jquery.smartWizard.min.js',
             'libs/scripts.js'
 
         ], './public/js/libs.js')

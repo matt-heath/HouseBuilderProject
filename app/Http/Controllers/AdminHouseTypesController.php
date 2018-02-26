@@ -23,12 +23,12 @@ class AdminHouseTypesController extends Controller
         //
 
         $houseTypes = HouseType::all();
-        $plots = Plot::lists('development_id', 'id')->all();
+        $plots = Plot::pluck('development_id', 'id')->all();
 
         return view('admin.housetypes.index', compact('houseTypes', 'plots'));
 
 
-//        $developments = Development::lists('development_name', 'id')->all();
+//        $developments = Development::pluck('development_name', 'id')->all();
 //
 //        return view('admin.plots.index', compact('plots', 'developments'));
     }
@@ -41,7 +41,7 @@ class AdminHouseTypesController extends Controller
     public function create()
     {
         //
-        $developments = Development::lists('development_name', 'id')->all();
+        $developments = Development::pluck('development_name', 'id')->all();
         return view('admin.housetypes.create', compact('developments'));
     }
 
@@ -98,7 +98,7 @@ class AdminHouseTypesController extends Controller
         //
 
         $houseTypes = HouseType::findOrFail($id);
-        $developments = Development::lists('development_name', 'id')->all();
+        $developments = Development::pluck('development_name', 'id')->all();
 
         return view('admin.housetypes.edit', compact('houseTypes', 'developments'));
 

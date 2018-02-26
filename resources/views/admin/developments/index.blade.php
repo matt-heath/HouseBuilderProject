@@ -44,7 +44,7 @@
                                  <a href="{{route('admin.developments.edit', $development->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
                              </div>
                              <div class="btn-group">
-                                 {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminCertificatesController@destroy', $development->id], 'id'=> 'confirm_delete_'.$development->id]) !!}
+                                 {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminDevelopmentsController@destroy', $development->id], 'id'=> 'confirm_delete_'.$development->id]) !!}
                                  {!! Form::button('<i class="fa fa-fw fa-trash"></i>', ['type'=> 'submit' ,'class'=>'btn btn-danger', 'onclick'=>'confirmDelete(' .$development->id .')']) !!}
                                  {!! Form::close() !!}
                              </div>

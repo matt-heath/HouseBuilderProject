@@ -73,7 +73,7 @@ Route::group(['middleware'=>'externalconsultant'], function() {
 
     Route::resource('externalconsultant/plots', 'ExternalConsultantPlotsController');
     Route::resource('externalconsultant/certificates', 'ExternalConsultantCertificatesController');
-    Route::get('/getRejectionReasons', 'AdminCertificatesController@getRejectionReasons');
 });
 
 Route::get('/home', 'HomeController@index');
+Route::get('/getRejectionReasons', 'AdminCertificatesController@getRejectionReasons');

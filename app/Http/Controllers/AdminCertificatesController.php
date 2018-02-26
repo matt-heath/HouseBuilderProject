@@ -34,7 +34,7 @@ class AdminCertificatesController extends Controller
      */
     public function create()
     {
-        $certificates = CertificateCategory::lists('name', 'id')->all();
+        $certificates = CertificateCategory::pluck('name', 'id')->all();
 //        $certificates = CertificateCategory::all();
         return view('admin.certificates.create', compact('certificates'));
     }
@@ -157,8 +157,6 @@ class AdminCertificatesController extends Controller
 
         $certificate_check = $request->certificate_check;
         $status = $request->status;
-
-
 
         if($status === 'yes'){
             $status = 'Ready for inspection';

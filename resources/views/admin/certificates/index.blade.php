@@ -71,7 +71,7 @@
                                 @elseif($certificate->build_status==='Rejected')
                                     <div class="btn-group">
                                         {{--{!! Form::submit('Reject', ['class'=>'btn btn-danger']) !!}--}}
-                                        <a href='' class="btn btn-danger" data-toggle='modal' data-target='#rejectionModal' id='rejectionClick' data-id={{$certificate->id}}>Rejection Reasons</a>
+                                        <a href='' class="btn btn-danger rejectionClick" data-toggle='modal' data-target='#rejectionModal' id='rejectionClick' data-id={{$certificate->id}}>Rejection Reasons</a>
                                     </div>
                                 @endif
                             </div>
@@ -193,7 +193,7 @@
             $('.modalCertificate').attr('action', '/admin/certificates/'+$(this).data('id'));
         });
 
-        $('#rejectionClick').on('click', function () {
+        $('.rejectionClick').on('click', function () {
             var cert_id=$(this).data('id');
             console.log(cert_id);
 
@@ -202,15 +202,15 @@
                 url: '{!! URL::to('getRejectionReasons') !!}',
                 data: {'id': cert_id},
                 success: function (data) {
-                    console.log('Success!!');
+                    // console.log('Success!!');
                     console.log(data);
-                    console.log(data.length);
-                    console.log(data);
+                    // console.log(data.length);
+                    // console.log(data);
                     if(data.length != 0) {
-
+                        console.log('Success!!');
                         for(var i = 0; i < data.length; i++){
                             console.log(data[i].rejection_reason);
-                            $(".reject").append(data[i].rejection_reason).attr('disabled', true);
+                            $(".reject").html(" ").append(data[i].rejection_reason).attr('disabled', true);
                         }
                     }
                     // console.log(option);
