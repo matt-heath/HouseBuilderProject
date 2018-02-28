@@ -37,6 +37,11 @@ class User extends Authenticatable
         return $this->hasOne('App\Booking');
     }
 
+    public function getConsultantDetailsAttribute()
+    {
+        return $this->name . " (" . $this->email .")";
+    }
+
 
 
 //    public function photo(){

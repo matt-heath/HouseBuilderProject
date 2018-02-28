@@ -97,6 +97,7 @@ Route::group(['middleware'=>'admin'], function(){
     Route::get('/findPlots', 'AdminConsultantsController@findPlots');
     Route::get('/getRejectionReasons', 'AdminCertificatesController@getRejectionReasons');
     Route::get('/download/{file}', 'DownloadsController@download');
+    Route::post('/addUser', 'AdminUsersController@addUser');
 });
 
 

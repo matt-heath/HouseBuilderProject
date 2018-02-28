@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\CertificateCategory;
 use App\Development;
 use App\HouseType;
 use App\Http\Requests\DevelopmentsCreateRequest;
 use App\Photo;
 use App\Plot;
+use App\Role;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 
 class AdminDevelopmentsController extends Controller
@@ -51,7 +55,14 @@ class AdminDevelopmentsController extends Controller
     public function create()
     {
         //
-        return view('admin.developments.create');
+        $roles = Role::where('id', '=', 5)->pluck('name', 'id')->all();
+        $consultants = User::where('role_id', '=', 5)->get()->pluck('consultant_details', 'id')->all();
+
+        $certificates = CertificateCategory::all();
+
+//        return $consultantEmail = User::where('id', $consultants['id'])->pluck('email')->all();
+
+        return view('admin.developments.create', compact('roles', 'consultants', 'certificates'));
     }
 
     /**
@@ -64,40 +75,15 @@ class AdminDevelopmentsController extends Controller
     {
         //
 //        dd( $request->input() );
-//        return $request->all();
+        return $formInput = Input::all();
+
+        $floor_plan = $formInput['floor_plan'];
+        $houseImg = $formInput['house_img'];
         $input = $request->all();
-
-//        dd($input);
-//        $houseTypesArray = $request->input('house_type_name');
+        $houseTypesArray = $request->input('house_type_name');
 
 
-//        return $houseTypesArray;
-
-//        return $input;
-
-//        $items = array();
-//
-//        for ($i = 0; $i < count($houseTypesArray); $i++){
-//            echo "hi";
-//
-//            $item = array(
-//                'house_type_name' => $request->house_type_name[$i],
-//                'house_type_desc' => $request->house_type_desc[$i],
-////                'floor_plan' => $request->photo_id[$i],
-////                'house_img' => $request->house_img[$i]
-//            );
-//
-//            $items[] = $item;
-//
-//        }
-
-//        echo count($items);
-
-//        HouseType::insert($items);
-//
-//
         if($file = $request->file('photo_id')){
-
             $name = time() . $file->getClientOriginalName();
 
             $file->move('images', $name);
@@ -108,7 +94,108 @@ class AdminDevelopmentsController extends Controller
 
         }
 
-        Development::create($input);
+
+            if (Input::hasFile('floor_plan')) {
+                $floor_plan_count = 0;
+                foreach (Input::file('floor_plan') as $file) {
+                    if (!isset($file)) {
+                        $item[$floor_plan_count]['floor_plan'] = 0;
+                    } else {
+                        $name = time() . $file->getClientOriginalName();
+                        $file->move('images', $name);
+                        $floor_plan_photo = Photo::create(['file' => $name]);
+                        $item[$floor_plan_count]['floor_plan'] = $floor_plan_photo->id;
+
+                        echo $floor_plan_photo->id;
+                    }
+                    $floor_plan_count++;
+                }
+            }else {
+            $floor_plan_count = 0;
+            if (!isset(Input::file('floor_plan')[$floor_plan_count])) {
+                foreach ($houseTypesArray as $houseType) {
+                    $item[$floor_plan_count]['floor_plan'] = 0;
+                    $floor_plan_count++;
+                }
+            }
+        }
+
+//        dd( Input::file('house_img'));
+
+        if (Input::hasFile('house_img')) {
+            $count = 0;
+            foreach (Input::file('house_img') as $file) {
+                if ($file == '') {
+                    $item[$count]['house_img'] = 0;
+                } else {
+
+                    $name = time() . $file->getClientOriginalName();
+
+                    $file->move('images', $name);
+                    $photo = Photo::create(['file' => $name]);
+                    $item[$count]['house_img'] = $photo->id;
+                }
+                $count++;
+            }
+        } else {
+            $count = 0;
+            if (!isset(Input::file('house_img')[$count])) {
+                foreach ($houseTypesArray as $houseType) {
+                    $item[$count]['house_img'] = 0;
+                    $count++;
+                }
+            }
+        }
+
+        $development = Development::create($input);
+        $dev_id = $development->id;
+
+
+
+
+//        dd(Input::file('floor_plan'));
+
+        for ($i = 0; $i < count($houseTypesArray); $i++) {
+            if ($file = $request->file('floor_plan')) {
+
+                echo "hi";
+//                dd($request->file('floor_plan'));
+//                dd($request->file('house_img'));
+            }
+
+//            if($input['floor_plan'][$i] == ''){
+//                echo "SHIT";
+//            }
+
+            $item = array(
+                'development_id' => $dev_id,
+                'house_type_name' => $input['house_type_name'][$i],
+                'house_type_desc' => $input['house_type_desc'][$i],
+                'floor_plan' => !isset($floor_plan[$i]) ? 0 : $floor_plan_photo->id,
+                'house_img' => !isset($houseImg[$i]) ? 0 : $photo->id
+            );
+
+//            if (!isset(Input::all()->floor_plan[$i])) {
+//                $item[$i]['floor_plan'] = 0;
+//                echo $i;
+////                echo Input::all()->floor_plan[$i];
+//            }
+
+
+            $items[] = $item;
+//            dd( Input::all() );
+
+
+        }
+
+
+
+
+//
+//        dd( $items);
+//
+//
+        HouseType::insert($items);
 
         return redirect('/admin/developments');
     }

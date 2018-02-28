@@ -26,8 +26,9 @@ class AdminUsersController extends Controller
         //
 
         $users = User::all();
+        $roles = Role::pluck('name','id')->all();
 
-        return view('admin.users.index', compact('users'));
+        return view('admin.users.index', compact('users', 'roles'));
     }
 
     /**
@@ -195,5 +196,50 @@ class AdminUsersController extends Controller
         $role_name = Role::where('id', $id)->pluck('name')->first();
 
         return view('/admin/users/viewuserbyrole', compact('users', 'role_name'));
+    }
+
+    public function addUser(Request $request){
+//        $request->all();
+        $addUserModel = new User();
+
+        if(trim($request->password) == ''){
+
+            $input = $request->except('password');
+
+        } else{
+            $input = $request->except('consultant_description');
+
+            $this->validate($request, [
+                'name' => 'required|max:255',
+                'email' => 'required|email|max:255|unique:users',
+                'password' => 'required|min:6',
+            ]);
+
+            $input['password'] = bcrypt($request->password);
+
+        }
+//        return $input;
+
+        $addUserModel->fill($input);
+        $addUserModel->save();
+
+        $consultant_user_id = $addUserModel->id;
+
+        if($request->consultant_description){
+            $consultant_description = $request->consultant_description;
+            $data = [
+                'user_id' => $consultant_user_id,
+                'consultant_description' => $consultant_description
+            ];
+
+            Consultant::create($data);
+        }
+
+        $data = User::all();
+
+//        return $data;
+//        TODO:: add success notification
+        Alert::success('User added to the system.')->flash();
+        return response()->json($data);
     }
 }
