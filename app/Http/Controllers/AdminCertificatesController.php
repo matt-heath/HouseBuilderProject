@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Certificate;
 use App\CertificateCategory;
 use App\CertificateRejection;
+use App\CertificateRequired;
 use App\Consultant;
 use App\Plot;
 use Illuminate\Http\Request;
@@ -68,7 +69,6 @@ class AdminCertificatesController extends Controller
             $certificatesModel[$i] = new Certificate();
 
             $item = array(
-                'certificate_name' => '',
                 'certificate_check' => 'False',
                 'certificate_doc' => '',
                 'certificate_category_id' => $input['certificate_category_id']
@@ -226,5 +226,12 @@ class AdminCertificatesController extends Controller
         $certificate = CertificateRejection::where('certificate_id', $request->id)->get();
 
         return response()->json($certificate);
+    }
+
+    public function createCertificate(Request $request){
+        $input  = $request->all();
+
+        CertificateRequired::create($input);
+        return redirect()->back();
     }
 }

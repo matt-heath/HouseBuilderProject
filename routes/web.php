@@ -98,6 +98,8 @@ Route::group(['middleware'=>'admin'], function(){
     Route::get('/getRejectionReasons', 'AdminCertificatesController@getRejectionReasons');
     Route::get('/download/{file}', 'DownloadsController@download');
     Route::post('/addUser', 'AdminUsersController@addUser');
+    Route::get('/getUsers', 'AdminUsersController@getUsers');
+    Route::post('/createCertificate', 'AdminCertificatesController@createCertificate');
 });
 
 

@@ -11,7 +11,7 @@ class Certificate extends Model
         'certificate_name',
         'certificate_check',
         'certificate_doc',
-        'certificate_category_id'
+        'certificates_required_id'
     ];
 
     //Set up many-to-many relationship - one

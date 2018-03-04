@@ -16,4 +16,8 @@ class CertificateCategory extends Model
     public function certificates(){
         return $this->HasMany('App\Certificate');
     }
+
+    public function certificates_required(){
+        return $this->HasMany('App\CertificateRequired');
+    }
 }

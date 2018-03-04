@@ -27,6 +27,7 @@
             @php($count = 0)
             @foreach($houseTypes as $houseType)
                 {{--{{ $houseType->photo}}--}}
+                {{--{{$houseType}}--}}
                 <tr>
                     <td>
                         {{$houseType->development_id ? $houseType->development->development_name : "Development Not Set" }}
@@ -48,7 +49,7 @@
                     </td>
                     <td>
                         <div class="btn-group-vertical">
-                            <a href="{{route('admin.housetypes.edit', $houseType->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
+{{--                            <a href="{{route('admin.housetypes.edit', $houseType->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>--}}
                         </div>
                         <div class="btn-group-vertical">
                             {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminHouseTypesController@destroy', $houseType->id], 'id'=> 'confirm_delete_'.$houseType->id]) !!}

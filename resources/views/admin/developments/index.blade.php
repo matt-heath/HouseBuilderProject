@@ -1,13 +1,14 @@
 @extends('layouts.admin')
 
+@section('title')
+    <h1>Developments</h1>
+@endsection
+
 @section('content')
 
     @if(Session::has('deleted_development'))
         <p class="bg-danger">{{session('deleted_development')}}</p>
     @endif
-
-    <h1>Developments</h1>
-
 
     <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
        <thead>

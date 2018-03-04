@@ -199,47 +199,59 @@ class AdminUsersController extends Controller
     }
 
     public function addUser(Request $request){
-//        $request->all();
-        $addUserModel = new User();
+        $all = $request->all();
 
-        if(trim($request->password) == ''){
+        if(isset($all)) {
+            $addUserModel = new User();
 
-            $input = $request->except('password');
+            if (trim($request->password) == '') {
 
-        } else{
-            $input = $request->except('consultant_description');
+                $input = $request->except('password');
 
-            $this->validate($request, [
-                'name' => 'required|max:255',
-                'email' => 'required|email|max:255|unique:users',
-                'password' => 'required|min:6',
-            ]);
+            } else {
+                $input = $request->except('consultant_description');
 
-            $input['password'] = bcrypt($request->password);
+                $this->validate($request, [
+                    'name' => 'required|max:255',
+                    'email' => 'required|email|max:255|unique:users',
+                    'password' => 'required|min:6',
+                ]);
 
+                $input['password'] = bcrypt($request->password);
+
+            }
+            //        return $input;
+
+            $addUserModel->fill($input);
+            $addUserModel->save();
+
+            $consultant_user_id = $addUserModel->id;
+
+            if ($request->consultant_description) {
+                $consultant_description = $request->consultant_description;
+                $data = [
+                    'user_id' => $consultant_user_id,
+                    'consultant_description' => $consultant_description
+                ];
+
+                Consultant::create($data);
+            }
+
+            Alert::success('User added to the system.')->flash();
         }
-//        return $input;
 
-        $addUserModel->fill($input);
-        $addUserModel->save();
+//        $data = User::where('role_id', '=', 5)->all();
 
-        $consultant_user_id = $addUserModel->id;
-
-        if($request->consultant_description){
-            $consultant_description = $request->consultant_description;
-            $data = [
-                'user_id' => $consultant_user_id,
-                'consultant_description' => $consultant_description
-            ];
-
-            Consultant::create($data);
-        }
-
-        $data = User::all();
+//        $consultants = User::where('role_id', '=', 5)->get()->pluck('consultant_details', 'id')->all();
 
 //        return $data;
 //        TODO:: add success notification
-        Alert::success('User added to the system.')->flash();
-        return response()->json($data);
+        return response()->json($addUserModel);
+    }
+
+    public function getUsers(){
+        $users = User::all();
+
+        return $users;
     }
 }

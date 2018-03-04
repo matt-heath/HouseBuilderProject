@@ -120,7 +120,7 @@
                         <button type="button" class="btn btn-success" data-toggle='modal' data-target='#myModal' id='modalClick'><i class="fa fa-fw fa-plus"></i> Add consultant account</button>
                     </div>
                     <br><br>
-                    <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
+                    <table id="myTable" width="100%" class="table table-bordered table-hover">
                         <thead>
                         <tr>
                             <th>Consultant Description</th>
@@ -133,11 +133,13 @@
                             @foreach($certificates as $certificate)
                                 <tr>
                                     <td>
-                                        {{$certificate->name}}
+                                        {!! Form::text('certificate_name_disabled', null, ['class'=>'form-control name_list', 'name'=>'certificate_name[]', 'placeholder' =>  $certificate->name,'disabled']) !!}
+                                        {!! Form::text('certificate_name', $certificate->id, ['class'=>'form-control name_list hidden', 'name'=>'certificate_name[]']) !!}
+
                                     </td>
                                     <td>
                                         <div class="form-group">
-                                            {!! Form::select('consultant_id_'.$count, ['' => 'Select Constulant'] + $consultants, null, ['class'=>'form-control consultantSelect select'])!!}
+                                            {!! Form::select('consultant_id', ['' => 'Select Consultant Responsible'] + $consultants, null, ['class'=>'form-control consultantSelect select', 'name' => 'consultant_id[]'])!!}
                                         </div>
                                         <div class="form-group" id="consultantDetails">
 
@@ -204,11 +206,8 @@
                 success: function(data){
                     console.log(data);
                     console.log('USER ADDED'+ data.id + data.name);
-                    $('.consultantSelect').append('<option value="'+ data.id + '" selected="selected">' + data.name +'('+data.email+') </option>');
+                    $('.consultantSelect').append('<option value="'+ data.id + '">' + data.name +'('+data.email+') </option>');
                     $('#myModal').modal('hide');
-
-
-
                 },
                 error: function(data){
 

@@ -1,9 +1,10 @@
 @extends('layouts.admin')
 
-@section('content')
-
+@section('title')
     <h1>Users by {{$role_name}}</h1>
+@endsection
 
+@section('content')
     <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
         <thead>
         <tr>
