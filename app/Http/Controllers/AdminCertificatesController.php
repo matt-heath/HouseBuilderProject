@@ -63,15 +63,25 @@ class AdminCertificatesController extends Controller
         //Search for plots where the name ID is less than/equal to the num of plots selected and where housetype is the same as form submitted one.
         $plots = Plot::where('plot_name_id', '<=', $request->selected_plots)->where('house_type', $request->house_type)->get();
 
-        //Loop to create multiple certificateModels and assign items to an item array.
-        for($i = 1; $i <= $request->selected_plots; $i++) {
 
+        $certificatesRequired = CertificateRequired::all();
+
+        //Loop to create multiple certificateModels and assign items to an item array.
+        for ($i = 1; $i <= $request->selected_plots; $i++) {
+//
             $certificatesModel[$i] = new Certificate();
+
+            foreach ($plots as $plot) {
+                $plot_certificates = $plot->certificates();
+//                $certificatesModel[$i]->id;
+                $plot_id = $plot->id;
+                $plot_arr[] = $plot_id;
+            }
 
             $item = array(
                 'certificate_check' => 'False',
                 'certificate_doc' => '',
-                'certificate_category_id' => $input['certificate_category_id']
+                'certificates_required_id' => $input['certificate_category_id']
             );
 
             $certificatesModel[$i]->fill($item);
@@ -86,28 +96,56 @@ class AdminCertificatesController extends Controller
                 $consultant->certificates()->attach($certificatesModel[$i]->id);
             }
 
-            foreach ($plots as $plot){
-                $plot_certificates = $plot->certificates();
-                $certificatesModel[$i]->id;
-                $plot_id = $plot->id;
-                $plot_arr[] = $plot_id;
-            }
-
             $ids[] = $certificatesModel[$i]->id;
         }
-//        return $ids
 
 
-        for($z = 0; $z < count($ids); $z++){
+        for ($y = 0; $y < count($ids); $y++) {
 
-           echo $plot_id = $plot_arr[$z];
+//            echo $plot_id = $plot_arr[$y];
+
+            $plot_certificates->attach($ids[$y], ['plot_id' => $plot_id]);
+        }
+//
+//
+//
+//
+//        }
+//        return count($ids);
+//        return $plot_arr;
+        for ($a = 1; $a <= $request->selected_plots; $a++) {
+            $count = 0;
+            foreach ($certificatesRequired as $required) {
+                $certificates = Certificate::where('certificates_required_id', $required['id'])->get()->take($request->selected_plots);
+
+//                return $certificates;
+//            return count($certificates);
+
+//            echo "<h1>". $required['id'].'</h1>';
+//            echo $certificates;
+//            echo "<hr>";
+
+
+//            echo "<br><h1>".$ids."</h1>";
+//            return $ids;
+                for ($z = 0; $z < count($certificates); $z++) {
+//                    echo "<h1>" .$z . "</h1>";
+                    $plot_id = $plot_arr[$z];
+//                    echo $plot = $z +1;
+//                    echo $certificates[$z];
+
+                    $plot_certificates->attach($certificates[$z], ['plot_id'=> $plot_id]);
 
 //            var_dump( $plot_id);
+                }
+                $count ++;
+            }
+            return redirect('/admin/certificates');
 
-            $plot_certificates->attach($ids[$z], ['plot_id'=> $plot_id]);
         }
+//        return $ids;
 
-        return redirect('/admin/certificates');
+
     }
 
     /**

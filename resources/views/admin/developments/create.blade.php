@@ -66,8 +66,9 @@
         <div id="smartwizard">
             <ul>
                 <li><a href="#step-1">Create Development<br /><small>Input development details</small></a></li>
-                <li><a href="#step-2">Add House Types<br /><small>Input house type details</small></a></li>
-                <li><a href="#step-3">Assign Consultants to Development<br /><small>Input consultant details</small></a></li>
+                <li><a href="#step-2">Add Phases in Development<br /><small>Input several phases in development</small></a></li>
+                <li><a href="#step-3">Add House Types<br /><small>Input house type details</small></a></li>
+                <li><a href="#step-4">Assign Consultants to Development<br /><small>Input consultant details</small></a></li>
                 {{--<li><a href="#step-4">Step Title<br /><small>Step description</small></a></li>--}}
             </ul>
 
@@ -84,10 +85,10 @@
                         {!! Form::text('development_location', null, ['class'=>'form-control']) !!}
                     </div>
 
-                    <div class="form-group">
-                        {!! Form::label('development_num_plots', 'Number of Plots:')!!}
-                        {!! Form::number('development_num_plots', null, ['class'=>'form-control']) !!}
-                    </div>
+                    {{--<div class="form-group">--}}
+                        {{--{!! Form::label('development_num_plots', 'Number of Plots:')!!}--}}
+                        {{--{!! Form::number('development_num_plots', null, ['class'=>'form-control']) !!}--}}
+                    {{--</div>--}}
 
                     <div class="form-group">
                         {!! Form::label('development_description', 'Development Description:')!!}
@@ -100,6 +101,26 @@
                     </div>
                 </div>
                 <div id="step-2" class="">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="dynamic_field_phase">
+                            <tr>
+                                <td>
+                                    {!! Form::text('phase_name_disabled', null, ['class'=>'form-control phase_name_list', 'name'=>'phase_name[]', 'placeholder' => 'Phase 1', 'disabled']) !!}
+                                    {!! Form::text('phase_name', 'Phase 1', ['class'=>'form-control phase_name_list hidden', 'name'=>'phase_name[]', 'placeholder' => 'Phase 1']) !!}
+                                </td>
+                                <td>{!! Form::number('phase_num_plots', null, ['class'=>'form-control phase_name_list', 'name'=>'phase_num_plots[]', 'placeholder' => 'Number of plots']) !!}</td>
+{{--                                <td class="col-xs-3">{!! Form::textarea('house_type_desc', null, ['class'=>'form-control name_list', 'name' => 'house_type_desc[]', 'placeholder' => 'Description']) !!}</td>--}}
+                                {{--<td class="col-xs-2">{!! Form::file('floor_plan', null, ['class'=>'form-control', 'name'=>'floor_plan[]', 'id'=>'floor_plan_0', 'placeholder'=>'']) !!}</td>--}}
+                                {{--<td class="col-xs-2">{!! Form::file('house_img', null, ['class'=>'form-control', 'name'=>'house_img[]', 'id'=>'house_img_0', 'placeholder'=>'']) !!}</td>--}}
+                                {{--<td class="col-xs-2"><input type="file" id="floor_plan_0" name="floor_plan[]" class="form-control"/></td>--}}
+                                {{--<td class="col-xs-2"><input type="file" id="house_img_0" name="house_img[]" class="form-control" /></td>--}}
+                                <td><button type="button" name="add_phase" id="add_phase" class="btn btn-success"><i class="fa fa-fw fa-plus"></i></button></td>
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div id="step-3" class="">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped" id="dynamic_field">
                             <tr>
@@ -115,7 +136,7 @@
                         </table>
                     </div>
                 </div>
-                <div id="step-3" class="">
+                <div id="step-4" class="">
                     <div class="pull-right">
                         <button type="button" class="btn btn-success" data-toggle='modal' data-target='#myModal' id='modalClick'><i class="fa fa-fw fa-plus"></i> Add consultant account</button>
                     </div>
@@ -129,34 +150,31 @@
                         </tr>
                         </thead>
                         <tbody>
-                            @php ($count = 0)
-                            @foreach($certificates as $certificate)
-                                <tr>
-                                    <td>
-                                        {!! Form::text('certificate_name_disabled', null, ['class'=>'form-control name_list', 'name'=>'certificate_name[]', 'placeholder' =>  $certificate->name,'disabled']) !!}
-                                        {!! Form::text('certificate_name', $certificate->id, ['class'=>'form-control name_list hidden', 'name'=>'certificate_name[]']) !!}
+                        @php ($count = 0)
+                        @foreach($certificates as $certificate)
+                            <tr>
+                                <td>
+                                    {!! Form::text('certificate_name_disabled', null, ['class'=>'form-control name_list', 'name'=>'certificate_name[]', 'placeholder' =>  $certificate->name,'disabled']) !!}
+                                    {!! Form::text('certificate_name', $certificate->id, ['class'=>'form-control name_list hidden', 'name'=>'certificate_name[]']) !!}
 
-                                    </td>
-                                    <td>
-                                        <div class="form-group">
-                                            {!! Form::select('consultant_id', ['' => 'Select Consultant Responsible'] + $consultants, null, ['class'=>'form-control consultantSelect select', 'name' => 'consultant_id[]'])!!}
-                                        </div>
-                                        <div class="form-group" id="consultantDetails">
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        {!! Form::select('consultant_id', ['' => 'Select Consultant Responsible'] + $consultants, null, ['class'=>'form-control consultantSelect select', 'name' => 'consultant_id[]'])!!}
+                                    </div>
+                                    <div class="form-group" id="consultantDetails">
 
-                                        </div>
-                                    </td>
-                                </tr>
-                                @php ($count++)
-                            @endforeach
+                                    </div>
+                                </td>
+                            </tr>
+                            @php ($count++)
+                        @endforeach
                         </tbody>
                     </table>
                     {!! Form::submit('Create Development', ['class'=>'btn btn-primary']) !!}
                     {!! Form::close() !!}
                 </div>
             </div>
-                {{--<div id="step-4" class="">--}}
-                    {{--Step Content--}}
-                {{--</div>--}}
         </div>
     </div>
 
@@ -190,6 +208,32 @@
         $(document).on('click', '.btn_remove', function(){
             var button_id = $(this).attr("id");
             $('#row'+button_id+'').remove();
+        });
+
+        var x=1;
+        $('#add_phase').click(function(){
+            x++;
+            $('#dynamic_field_phase').append('' +
+                '<tr id="row'+x+'" class="dynamic-added">' +
+                '  <td>'+
+                    '<input type="text" id="phase_name_'+x+'_disabled" name="phase_name[]" class="form-control" placeholder="Phase '+x+'" disabled/>'+
+                    '<input type="text" id="phase_name_'+x+'" name="phase_name[]" class="form-control hidden" placeholder="Phase '+x+'" value="Phase '+x+'"/>'+
+                '</td><td>'+
+                    '{!! Form::number('phase_num_plots', null, ['class'=>'form-control phase_name_list', 'name'=>'phase_num_plots[]', 'placeholder' => 'Number of plots']) !!}'+
+                    // '<input id="phase_name_disabled'+i+'" name="phase_name[]" class="form-control"placeholder="Phase "'+x+' disabled/>'+
+                    // '<input id="phase_name'+i+'" name="phase_name[]" class="form-control" placeholder="Phase "'+x+'"/>'+
+                '  </td>'+
+                '   <td class="remove_phase"><button type="button" name="remove" id="'+x+'" class="btn btn-danger btn_remove_phase"><i class="fa fa-fw fa-minus"></i></button></td></tr>'
+            );
+            var previousRow = 'row'+(x-1);
+            // console.log(previousRow);
+            $('#'+previousRow).find(".btn_remove_phase").remove();
+        });
+        $(document).on('click', '.btn_remove_phase', function(){
+            var button_id = $(this).attr("id");
+            $('#row' + button_id + '').remove();
+            x--;
+            $('#row'+x).find('.remove_phase').append('<button type="button" name="remove" id="'+x+'" class="btn btn-danger btn_remove_phase"><i class="fa fa-fw fa-minus"></i></button>')
         });
 
 

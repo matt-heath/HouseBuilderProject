@@ -9,6 +9,7 @@ use App\Consultant;
 use App\Development;
 use App\HouseType;
 use App\Http\Requests\DevelopmentsCreateRequest;
+use App\Phases;
 use App\Photo;
 use App\Plot;
 use App\Role;
@@ -85,16 +86,31 @@ class AdminDevelopmentsController extends Controller
     public function store(Request $request)
     {
         //
+//        return $request->input();
 //        dd( $request->input() );
         $formInput = Input::all();
-        $num_of_plots = $formInput['development_num_plots'];
+        $number_of_plots = $formInput['phase_num_plots'];
+
+        $num_of_plots = 0;
+        foreach($number_of_plots as $num_plot){
+            $num_of_plots += $num_plot;
+        }
+
+
+
+//        return $num_of_plots;
+//        $num_of_plots = $formInput['development_num_plots'];
         $consultant_id = $formInput['consultant_id'];
 //        $plots = Plot::where('plot_name_id', '<=', $num_of_plots)->where('house_type', $request->house_type)->get();
         $items = array();
         $itemsHouseType = array();
+        $phases_arr = array();
         $ids = array();
 
         $cert_name = $formInput['certificate_name'];
+        $phase_name = $formInput['phase_name'];
+
+
 
         for($z = 0; $z< count($cert_name); $z++){
             $certificates = CertificateRequired::where('certificate_category_id', '=', $cert_name[$z])->get();
@@ -133,6 +149,8 @@ class AdminDevelopmentsController extends Controller
 
         $input = $request->all();
         $houseTypesArray = $request->input('house_type_name');
+
+        $input['development_num_plots'] = $num_of_plots;
 
 
         if ($file = $request->file('photo_id')) {
@@ -197,6 +215,22 @@ class AdminDevelopmentsController extends Controller
         $dev_id = $development->id;
 
             //        dd(Input::file('floor_plan'));
+//        return count($phase_name);
+
+
+        for($p = 0; $p < count($phase_name); $p++){
+            $itemsPhases = array(
+                'development_id' => $dev_id,
+                'phase_name' => $phase_name[$p],
+                'num_plots' => $number_of_plots[$p]
+            );
+
+            $phases_arr[] = $itemsPhases;
+        }
+//        return $itemsPhases;
+        Phases::insert($phases_arr);
+
+//        return null;
 
         for ($i = 0; $i < count($houseTypesArray); $i++) {
             $itemHouseType = array(
@@ -211,7 +245,7 @@ class AdminDevelopmentsController extends Controller
         }
 
         HouseType::insert($itemsHouseType);
-//        return null;
+        return null;
         return redirect('/admin/developments');
     }
 

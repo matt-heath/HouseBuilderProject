@@ -1,9 +1,10 @@
 @extends('layouts.admin')
 
-@section('content')
-
+@section('title')
     <h1>Assign Consultant to Plots</h1>
+@endsection
 
+@section('content')
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -91,22 +92,36 @@
                     <div class="step2">
                         <div class="step_21">
                             <div class="row">
-                                <div class="form-group">
-                                    {!! Form::label('certificate_category_id', 'Certificate:')!!}
-                                    {!! Form::select('certificate_category_id', [''=>'Choose Certificate'] + $certificates, 'default', ['class'=>'form-control']) !!}
-                                </div>
+                                <table id="myTable" width="100%" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Consultant Description</th>
+                                        <th>Select a consultant</th>
+                                        {{--<th>Add new consultant to dropdown</th>--}}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @php ($count = 0)
+                                    @foreach($certificates as $certificate)
+                                        <tr>
+                                            <td>
+                                                {!! Form::text('certificate_name_disabled', null, ['class'=>'form-control name_list', 'name'=>'certificate_name[]', 'placeholder' =>  $certificate->certificate_name,'disabled']) !!}
+                                                {!! Form::text('certificate_name', $certificate->id, ['class'=>'form-control name_list hidden', 'name'=>'certificate_name[]']) !!}
 
-                                {{--<div class="form-group">--}}
-                                {{--<div class="form-group">--}}
-                                {{--{!! Form::label('certificate_doc', 'Certificate/doc:')!!}--}}
-                                {{--{!! Form::file('certificate_doc', null, ['class'=>'form-control']) !!}--}}
-                                {{--</div>--}}
-                                {{--</div>--}}
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    {!! Form::select('consultant_id', ['' => 'Select Consultant Responsible'] + $consultants, null, ['class'=>'form-control consultantSelect select', 'name' => 'consultant_id[]'])!!}
+                                                </div>
+                                                <div class="form-group" id="consultantDetails">
 
-                                <div class="form-group">
-                                    {!! Form::label('consultant_id', 'Certificate:')!!}
-                                    {!! Form::select('consultant_id', [''=>'Choose Consultant Responsible'] + $options,  null, ['class'=>'form-control']) !!}
-                                </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @php ($count++)
+                                    @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -143,7 +158,7 @@
     <script>
         $(document).ready(function(){
             // e.preventDefault();
-
+            $('.consultantSelect').select2();
             $('.selectPlot').select2();
             $('.selectMultiple').select2();
 

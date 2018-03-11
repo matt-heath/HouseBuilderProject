@@ -43,11 +43,10 @@
                     {{--{{$certificate}}--}}
                     <tr>
                         @foreach($plots as $plot)
-                        {{--{{$plot}}--}}
                             <td>{{$plot->plot_name}}</td>
                             <td>{{$plot->houseTypes->house_type_name}}</td>
                         @endforeach
-                        <td>{{$certificate->category->name}}</td>
+                        <td>{{$certificate->certificatesRequired[0]->certificate_name}}</td>
                         <td>{{$certificate->build_status}}</td>
                         <td>{!! $certificate->build_status === "Not ready" ? "<a href='' data-toggle='modal' data-target='#myModal' id='modalClick' data-id='$certificate->id'>Update Status</a>" : $certificate->build_status !!}</td>
                     </tr>

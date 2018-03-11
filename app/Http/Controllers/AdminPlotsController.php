@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Development;
 use App\HouseType;
 use App\Http\Requests\PlotsRequest;
+use App\Phases;
 use App\Plot;
 use Illuminate\Http\Request;
 
@@ -21,6 +22,7 @@ class AdminPlotsController extends Controller
     {
         //get plots with a pivot relation certificates and return to plots index view
         $plots = Plot::with('certificates')->get();
+//        return $plots;
 
         return view('admin.plots.index', compact('plots'));
     }
@@ -54,7 +56,7 @@ class AdminPlotsController extends Controller
     {
         //return all inputs from the form and assign to 'all'
         $all = $request->all();
-
+//        return $all;
         //get housetype from housetype model where id = house type id and return the first house_type_name
         $houseType = HouseType::where('id', $all['house_type'])->pluck('house_type_name')->first();
 
@@ -94,6 +96,7 @@ class AdminPlotsController extends Controller
 //
         Plot::insert($items);
 //
+        return null;
         return redirect('/admin/plots');
     }
 
@@ -179,7 +182,8 @@ class AdminPlotsController extends Controller
     }
 
     public function developmentPhases(Request $request) {
-        $phases = Development::where('id', $request->id)->pluck('phase')->all();
+        $phases = Phases::where('development_id', $request->id)->get();
+//        return $phases;
         return response()->json($phases);
     }
 }

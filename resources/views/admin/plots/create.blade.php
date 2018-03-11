@@ -1,8 +1,10 @@
 @extends('layouts.admin')
 
-@section('content')
-
+@section('title')
     <h1>Create Plots</h1>
+@endsection
+
+@section('content')
     {{-- Wizard found and adapted from https://bootsnipp.com/snippets/featured/form-wizard-using-tabs --}}
     <div class="row">
         <div class="wizard">
@@ -68,7 +70,7 @@
                                 {{-- TODO: Add number of phases to migration? --}}
                                 <div class="form-group">
                                     {!! Form::label('phase', 'Phase:')!!}
-                                    {!! Form::number('phase', null, ['class'=>'form-control', 'placeholder' => 'Phase']) !!}
+                                    {!! Form::select('phase', [''=>'Choose Development Phase'], null, ['class'=>'form-control phaseSelect', 'placeholder' => 'Phase']) !!}
                                 </div>
                                 <div class="form-group">
                                     {!! Form::label('sqft', 'SqFt:') !!}
@@ -113,6 +115,7 @@
     <script>
         $(document).ready(function(){
             $('.selectPlot').select2();
+            $('.phaseSelect').select2();
 
             //Initialize tooltips
             $('.nav-tabs > li a[title]').tooltip();
@@ -178,6 +181,7 @@
             var dev_id=$(this).val();
             // console.log(dev_id);
             var option = "";
+            var phase_option = "";
 
             $.ajax({
                 type: 'get',
@@ -201,6 +205,35 @@
                     $(".houseTypeSelect").html(" ").append(option);
 
                     // console.log(option);
+
+                },
+                error: function () {
+                    console.log("Failed...")
+                }
+            });
+
+            $.ajax({
+                type: 'get',
+                url: '{!! URL::to('developmentPhases') !!}',
+                data: {'id': dev_id},
+                success: function (phases) {
+                    console.log('Success!!');
+                    console.log(phases);
+                    console.log(phases.length);
+                    if(phases.length != 0){
+                        phase_option +='<option value="" selected disabled>Choose Development Phase</option>';
+                    }else{
+                        phase_option +='<option value="" selected disabled>No phases available - Create one!</option>';
+                    }
+
+                    for(var i = 0; i < phases.length; i++){
+                        phase_option+='<option value="'+phases[i].id+'">'+phases[i].phase_name+'</option>';
+                    }
+
+
+                    $(".phaseSelect").html(" ").append(phase_option);
+
+                    console.log(phase_option);
 
                 },
                 error: function () {

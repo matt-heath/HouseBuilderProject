@@ -1,9 +1,10 @@
 @extends('layouts.admin')
 
-@section('content')
-
+@section('title')
     <h1>Plots</h1>
+@endsection
 
+@section('content')
     <div class="col-sm-12">
         @if($plots)
             <table class="table" id="myTable">
@@ -20,12 +21,13 @@
                 </thead>
                 <tbody>
                 @foreach($plots as $plot)
+                    {{$plot->phases ? $plot->phases->plot_name : "NOT FOUND"}}
                     <tr>
                         <td><a href="{{route('admin.plotsbydevelopment', ['id'=>$plot->development_id])}}">{{$plot->development ? $plot->development->development_name : "Development Not Set"}}</a></td>
                         <td>{{$plot->plot_name}}</td>
                         <td>{{$plot->houseTypes ? $plot->houseTypes->house_type_name : "NOT FOUND"}}</td>
                         <td>{{$plot->sqft}}</td>
-                        <td>{{$plot->phase}}</td>
+                        <td>{{$plot->phases ? $plot->phases->phase_name : "SHIT"}}</td>
                         <td>{{$plot->status}}</td>
                         <td>
                             @if(!$plot->certificates->isEmpty())

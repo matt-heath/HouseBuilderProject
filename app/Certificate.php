@@ -30,4 +30,8 @@ class Certificate extends Model
     public function rejection(){
         return $this->hasMany('App\CertificateRejection');
     }
+
+    public function certificatesRequired(){
+        return $this->hasMany('App\CertificateRequired', 'id', 'certificates_required_id');
+    }
 }

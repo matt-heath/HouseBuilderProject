@@ -32,4 +32,8 @@ class Plot extends Model
         return $this->belongsToMany('App\Certificate');
     }
 
+    public function phases(){
+        return $this->hasOne('App\Phases', 'id', 'phase');
+    }
+
 }
