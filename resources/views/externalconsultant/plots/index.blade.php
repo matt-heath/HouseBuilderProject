@@ -1,9 +1,10 @@
 @extends('layouts.admin')
 
-@section('content')
-
+@section('title')
     <h1>Plots Assigned To</h1>
+@endsection
 
+@section('content')
     <div class="col-sm-12">
         @if($plots)
             <table class="table" id="myTable">
@@ -30,7 +31,7 @@
 
                         {{--{{$certificate}}--}}
 
-                        {{--*/ $status = $certificate->build_status /*--}}
+                        @php ($status = $certificate->build_status)
 
                     @endforeach
                     {{--{{$certificate_id}}--}}

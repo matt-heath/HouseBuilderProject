@@ -22,7 +22,7 @@ class AdminPlotsController extends Controller
     {
         //get plots with a pivot relation certificates and return to plots index view
         $plots = Plot::with('certificates')->get();
-//        return $plots;
+
 
         return view('admin.plots.index', compact('plots'));
     }
@@ -96,7 +96,7 @@ class AdminPlotsController extends Controller
 //
         Plot::insert($items);
 //
-        return null;
+//        return null;
         return redirect('/admin/plots');
     }
 

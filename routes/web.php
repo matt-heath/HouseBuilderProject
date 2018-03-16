@@ -94,7 +94,9 @@ Route::group(['middleware'=>'admin'], function(){
     Route::get('/findHouseTypes', 'AdminPlotsController@findHouseTypes');
     Route::get('/developmentPhases', 'AdminPlotsController@developmentPhases');
     Route::get('/findPhases', 'AdminConsultantsController@findPhases');
+    Route::get('/getPhases', 'AdminCertificatesController@getPhases');
     Route::get('/findPlots', 'AdminConsultantsController@findPlots');
+    Route::get('/getHouseTypes', 'AdminConsultantsController@getHouseTypes');
     Route::get('/getRejectionReasons', 'AdminCertificatesController@getRejectionReasons');
     Route::get('/download/{file}', 'DownloadsController@download');
     Route::post('/addUser', 'AdminUsersController@addUser');

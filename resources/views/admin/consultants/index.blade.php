@@ -22,131 +22,126 @@
     @endif
 
     {{--{{count($consultant_names)}}--}}
-    {{-- Wizard found and adapted from https://bootsnipp.com/snippets/featured/form-wizard-using-tabs --}}
     <div class="row">
-        <div class="wizard">
-            <div class="wizard-inner">
-                <div class="connecting-line"></div>
-                <ul class="nav nav-tabs" role="tablist">
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Consultant Account</h4>
+                    </div>
+                    <div class="modal-body">
+                        {!! Form::open(['method'=>'POST', 'class'=> 'contact', 'id'=>'contact'])!!}
+                        <div class="form-group">
+                            {!! Form::label('name', 'Name:') !!}
+                            {!! Form::text('name', null, ['class'=>'form-control'])!!}
+                        </div>
 
-                    <li role="presentation" class="active">
-                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1">
-                            <span class="round-tab">
-                                <i class="fa fa-home"></i>
-                            </span>
-                        </a>
-                    </li>
 
-                    <li role="presentation" class="disabled">
-                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2">
-                            <span class="round-tab">
-                                <i class="fa fa-building"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li role="presentation" class="disabled">
-                        <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3">
-                            <span class="round-tab">
-                                <i class="fa fa-map-marker"></i>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
+                        <div class="form-group">
+                            {!! Form::label('email', 'Email:') !!}
+                            {!! Form::email('email', null, ['class'=>'form-control'])!!}
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('role_id', 'Role:') !!}
+                            {!! Form::select('role_id', $roles, null, ['class'=>'form-control roleSelect select'])!!}
+                            {{--                                                            {!! Form::select('role_id', $roles , null, ['class'=>'form-control roleSelect hidden'])!!}--}}
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('consultant_description', 'Consultant Description:') !!}
+                            {!! Form::textarea('consultant_description', null, ['class'=>'form-control name_list', 'placeholder' => 'Consultant Description', 'rows' => 2, 'cols' => 40]) !!}
+                        </div>
+
+
+                        <div class="form-group">
+                            {!! Form::label('is_active', 'Status:') !!}
+                            {!! Form::select('is_active', array(1 => 'Active', 0=> 'Not Active'), 0 , ['class'=>'form-control'])!!}
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('password', 'Password:') !!}
+                            {!! Form::password('password', ['class'=>'form-control'])!!}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="form-group">
+                            {!! Form::button('Add account', ['class'=>'btn btn-primary', 'data-role' => "button",  'id' => 'addUser']) !!}
+                        </div>
+                        {!! Form::close() !!}
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
-
-            {!! Form::open(['method'=>'POST', 'action'=>'AdminCertificatesController@store', 'files' => true])!!}
-
-            <div class="tab-content">
-                <div class="tab-pane active" role="tabpanel" id="step1">
-                    <div class="step1">
-                        <div class="row">
-
-                            <div class="form-group">
-                                {!! Form::label('development_id', 'Development Name:')!!}
-                                {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control selectPlot developmentSelect']) !!}
-                            </div>
-
-                            <div class="form-group hidden" id="typeSelect">
-                                {!! Form::label('house_type', 'House Type:')!!}
-                                {!! Form::select('house_type', [''=>'Choose House Type'], null, ['class'=>'form-control selectPlot houseTypeSelect']) !!}
-                            </div>
-
-                            <div class="form-group hidden" id="phaseSelect">
-                                {!! Form::label('phase', 'Development Phase:')!!}
-                                {!! Form::select('phase', [''=>'Choose Phase Number'], null, ['class'=>'form-control selectPlot phaseSelect']) !!}
-                            </div>
-
-                            {{--<div class="form-group">--}}
-                            {{--{!! Form::label('certificate_check', 'Certificate checked?')!!}--}}
-                            {{--{!! Form::text('certificate_check_disabled', 'False', ['class'=>'form-control', 'disabled']) !!}--}}
-                            {{--{!! Form::text('certificate_check', 'False', ['class'=>'form-control hidden']) !!}--}}
-                            {{--</div>--}}
-                        </div>
+        </div>
+    </div>
+    <div class="row">
+        {!! Form::open(['method'=>'POST', 'action'=>'AdminCertificatesController@store', 'files' => true])!!}
+        <div id="smartwizard">
+            <ul>
+                <li><a href="#step-1">Select Development<br /><small>Select development details</small></a></li>
+                <li><a href="#step-2">Select consultants responsible for phase<br /><small>Assign consultants to certificate(s)</small></a></li>
+                {{--<li><a href="#step-3">Add House Types<br /><small>Input house type details</small></a></li>--}}
+            </ul>
+            <div>
+                <div id="step-1" class="">
+                    <div class="form-group">
+                        {!! Form::label('development_id', 'Development Name:')!!}
+                        {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control selectPlot developmentSelect']) !!}
                     </div>
-                    <ul class="list-inline pull-right">
-                        <li><button type="button" class="btn btn-primary next-step">Save and continue</button></li>
-                    </ul>
+                    {{--<div class="form-group hidden" id="typeSelect">--}}
+                        {{--{!! Form::label('house_type', 'House Type:')!!}--}}
+                        {{--{!! Form::select('house_type', [''=>'Choose House Type'], null, ['class'=>'form-control selectPlot houseTypeSelect']) !!}--}}
+                    {{--</div>--}}
+                    <div class="form-group hidden" id="phaseSelect">
+                        {!! Form::label('phase', 'Development Phase:')!!}
+                        {!! Form::select('phase', [''=>'Choose Phase Number'], null, ['class'=>'form-control selectPlot phaseSelect']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        {!! Form::text('certificate_check', 'False', ['class'=>'form-control hidden']) !!}
+                    </div>
                 </div>
 
-                <div class="tab-pane" role="tabpanel" id="step2">
-                    <div class="step2">
-                        <div class="step_21">
-                            <div class="row">
-                                <table id="myTable" width="100%" class="table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Consultant Description</th>
-                                        <th>Select a consultant</th>
-                                        {{--<th>Add new consultant to dropdown</th>--}}
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @php ($count = 0)
-                                    @foreach($certificates as $certificate)
-                                        <tr>
-                                            <td>
-                                                {!! Form::text('certificate_name_disabled', null, ['class'=>'form-control name_list', 'name'=>'certificate_name[]', 'placeholder' =>  $certificate->certificate_name,'disabled']) !!}
-                                                {!! Form::text('certificate_name', $certificate->id, ['class'=>'form-control name_list hidden', 'name'=>'certificate_name[]']) !!}
-
-                                            </td>
-                                            <td>
-                                                <div class="form-group">
-                                                    {!! Form::select('consultant_id', ['' => 'Select Consultant Responsible'] + $consultants, null, ['class'=>'form-control consultantSelect select', 'name' => 'consultant_id[]'])!!}
-                                                </div>
-                                                <div class="form-group" id="consultantDetails">
-
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @php ($count++)
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                <div id="step-2" class="">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" data-toggle='modal' data-target='#myModal' id='modalClick'><i class="fa fa-fw fa-plus"></i> Add consultant account</button>
                     </div>
-                    <ul class="list-inline pull-right">
-                        <li><button type="button" class="btn btn-default prev-step">Previous</button></li>
-                        <li><button type="button" class="btn btn-primary next-step">Save and continue</button></li>
-                    </ul>
-                </div>
-                <div class="tab-pane" role="tabpanel" id="step3">
-                    <div class="step33">
-                        <h5><strong>Plot Details</strong></h5>
-                        <hr>
-                        <div class="row">
+                    <br><br>
+                    <table id="myTable" width="100%" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Consultant Description</th>
+                                <th>Select a consultant</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php ($count = 0)
+                            @foreach($certificates as $certificate)
+                                <tr>
+                                    <td>
+                                        {!! Form::text('certificate_name_disabled', null, ['class'=>'form-control name_list', 'name'=>'certificate_name[]', 'placeholder' =>  $certificate->certificate_name,'disabled']) !!}
+                                        {!! Form::text('certificate_name', $certificate->id, ['class'=>'form-control name_list hidden', 'name'=>'certificate_name[]']) !!}
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            {!! Form::select('consultant_id', ['' => 'Select Consultant Responsible'] + $consultants, null, ['class'=>'form-control consultantSelect select', 'name' => 'consultant_id[]'])!!}
+                                        </div>
+                                        <div class="form-group" id="consultantDetails">
 
-                            <div class="form-group hidden" id="plotSelect">
-
-                            </div>
-
-
-                            <div class="form-group">
-                                {!! Form::submit('Upload Certificate', ['class'=>'btn btn-primary']) !!}
-                            </div>
-                            {!! Form::close() !!}
-                        </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @php ($count++)
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <div class="form-group">
+                        {!! Form::submit('Add consultants to phase', ['class'=>'btn btn-primary']) !!}
                     </div>
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
@@ -158,6 +153,7 @@
     <script>
         $(document).ready(function(){
             // e.preventDefault();
+            $('#smartwizard').smartWizard();
             $('.consultantSelect').select2();
             $('.selectPlot').select2();
             $('.selectMultiple').select2();
@@ -206,76 +202,63 @@
 
                 var dev_id=$(this).val();
                 console.log(dev_id);
-                var option = "";
+                // var option = "";
+                var phase_option = "";
 
+                {{--$.ajax({--}}
+                    {{--type: 'get',--}}
+                    {{--url: '{!! URL::to('getHouseTypes') !!}',--}}
+                    {{--data: {'id': dev_id},--}}
+                    {{--success: function (data) {--}}
+                        {{--console.log('Success!!');--}}
+                        {{--console.log(data);--}}
+                        {{--console.log(data.length);--}}
+                        {{--if(data.length != 0){--}}
+                            {{--$(".houseTypeSelect").prop("disabled", false);--}}
+                            {{--option +='<option value="" selected disabled>Choose House Type</option>';--}}
+                        {{--}else{--}}
+                            {{--$(".houseTypeSelect").prop("disabled", true);--}}
+                            {{--option +='<option value="" selected disabled>No House types available - Create one!</option>';--}}
+                        {{--}--}}
+
+                        {{--for(var i = 0; i < data.length; i++){--}}
+                            {{--option+='<option value="'+data[i].id+'">'+data[i].house_type_name+'</option>';--}}
+                        {{--}--}}
+
+
+                        {{--$(".houseTypeSelect").html(" ").append(option);--}}
+                        {{--$("#typeSelect").removeClass("hidden");--}}
+
+                        {{--// console.log(option);--}}
+
+                    {{--},--}}
+                    {{--error: function () {--}}
+                        {{--console.log("Failed...")--}}
+                    {{--}--}}
+                {{--});--}}
                 $.ajax({
                     type: 'get',
-                    url: '{!! URL::to('findHouseTypes') !!}',
+                    url: '{!! URL::to('getPhases') !!}',
                     data: {'id': dev_id},
-                    success: function (data) {
+                    success: function (phases) {
                         console.log('Success!!');
-                        console.log(data);
-                        console.log(data.length);
-                        if(data.length != 0){
-                            $(".houseTypeSelect").prop("disabled", false);
-                            option +='<option value="" selected disabled>Choose House Type</option>';
+                        console.log(phases);
+                        console.log(phases.length);
+                        if(phases.length != 0){
+                            phase_option +='<option value="" selected disabled>Choose Development Phase</option>';
                         }else{
-                            $(".houseTypeSelect").prop("disabled", true);
-                            option +='<option value="" selected disabled>No House types available - Create one!</option>';
+                            phase_option +='<option value="" selected disabled>No phases available - Create one!</option>';
                         }
 
-                        for(var i = 0; i < data.length; i++){
-                            option+='<option value="'+data[i].id+'">'+data[i].house_type_name+'</option>';
-                        }
-
-
-                        $(".houseTypeSelect").html(" ").append(option);
-                        $("#typeSelect").removeClass("hidden");
-
-                        // console.log(option);
-
-                    },
-                    error: function () {
-                        console.log("Failed...")
-                    }
-                })
-            });
-
-            $(document).on('change', '.houseTypeSelect', function(){
-                // console.log("Changed");
-
-                var house_type_id=$(this).val();
-                console.log(house_type_id);
-                var option = "";
-
-                $.ajax({
-                    type: 'get',
-                    url: '{!! URL::to('findPhases') !!}',
-                    data: {'id': house_type_id},
-                    success: function (data) {
-                        console.log('Success!!');
-                        console.log(data);
-                        console.log('Phase' + data.length);
-                        if(data.length != 0){
-                            $(".phaseSelect").prop("disabled", false);
-                            option +='<option value="" selected disabled>Choose Development Phase</option>';
-                        }else{
-                            $(".phaseSelect").prop("disabled", true);
-                            option +='<option value="" selected disabled>No Phases available - Create plots associated to one!</option>';
-                        }
-
-                        // console.log("DATA PHASE"+data.phase);
-
-                        for(var i = 0; i < data.length; i++){
-                            option+='<option value="'+data[i].phase+'">'+data[i].phase+'</option>';
-                            console.log(option);
+                        for(var i = 0; i < phases.length; i++){
+                            phase_option+='<option value="'+phases[i].id+'">'+phases[i].phase_name+'</option>';
                         }
 
 
-                        $(".phaseSelect").html(" ").append(option);
+                        $(".phaseSelect").html(" ").append(phase_option);
                         $("#phaseSelect").removeClass("hidden");
 
-                        // console.log(option);
+                        console.log(phase_option);
 
                     },
                     error: function () {
@@ -290,43 +273,71 @@
                 var phase_id=$(this).val();
                 console.log(phase_id);
                 var option = "";
+                var dataObject = JSON.stringify({
+                    'phase_id': $(this).val(),
+                    'development_id': $('.developmentSelect').val(),
+                });
+
+                var development_id = $('.developmentSelect').val();
+
+                // console.log(dataObject);
+
+                {{--$.ajax({--}}
+                    {{--type: 'get',--}}
+                    {{--url: '{!! URL::to('findPlots') !!}',--}}
+                    {{--data: {'id': phase_id, 'dev_id': development_id },--}}
+                    {{--success: function (data) {--}}
+                        {{--console.log('Success!!');--}}
+                        {{--console.log(data);--}}
+                        {{--console.log(data.length);--}}
+                        {{--if(data.length == 0){--}}
+                            {{--$(".plotSelect").prop("disabled", false);--}}
+                            {{--option += '{!! Form::label('selected_plots', 'Number of plots to assign to:')!!}';--}}
+                            {{--option +='{!! Form::number('selected_plots', null, ['class'=>'form-control plotSelect', 'placeholder'=>'No plots available to assign to']) !!}';--}}
+
+                        {{--}else{--}}
+                            {{--$(".plotSelect").prop("disabled", true);--}}
+                            {{--option += '{!! Form::label('selected_plots', 'Number of plots to assign to:')!!}';--}}
+                            {{--option += '{!! Form::number('selected_plots', null, ['class'=>'form-control plotSelect']) !!}';--}}
+                        {{--}--}}
+
+                        {{--// for(var i = 0; i < data.length; i++){--}}
+                        {{--//     option+='<option value="'+data[i].plot_name_id+'">'+data[i].plot_name_id+'</option>';--}}
+                        {{--// }--}}
+
+
+                        {{--$("#plotSelect").html(" ").append(option);--}}
+                        {{--$("#plotSelect").removeClass("hidden");--}}
+
+                        {{--// console.log(option);--}}
+
+                    {{--},--}}
+                    {{--error: function () {--}}
+                        {{--console.log("Failed...")--}}
+                    {{--}--}}
+                {{--})--}}
+            });
+            $('#addUser').on('click', function (e) {
+                e.preventDefault();
+                var data = $('form.contact').serialize();
 
                 $.ajax({
-                    type: 'get',
-                    url: '{!! URL::to('findPlots') !!}',
-                    data: {'id': phase_id},
-                    success: function (data) {
-                        console.log('Success!!');
+                    type:"POST",
+                    url:'/addUser',
+                    data: data,
+                    dataType: 'json',
+                    success: function(data){
                         console.log(data);
-                        console.log(data.length);
-                        if(data.length == 0){
-                            $(".plotSelect").prop("disabled", false);
-                            option += '{!! Form::label('selected_plots', 'Number of plots to assign to:')!!}';
-                            option +='{!! Form::number('selected_plots', null, ['class'=>'form-control plotSelect', 'placeholder'=>'No plots available to assign to']) !!}';
-
-                        }else{
-                            $(".plotSelect").prop("disabled", true);
-                            option += '{!! Form::label('selected_plots', 'Number of plots to assign to:')!!}';
-                            option += '{!! Form::number('selected_plots', null, ['class'=>'form-control plotSelect']) !!}';
-                        }
-
-                        // for(var i = 0; i < data.length; i++){
-                        //     option+='<option value="'+data[i].plot_name_id+'">'+data[i].plot_name_id+'</option>';
-                        // }
-
-
-                        $("#plotSelect").html(" ").append(option);
-                        $("#plotSelect").removeClass("hidden");
-
-                        // console.log(option);
-
+                        console.log('USER ADDED'+ data.id + data.name);
+                        $('.consultantSelect').append('<option value="'+ data.id + '">' + data.name +'('+data.email+') </option>');
+                        $('#myModal').modal('hide');
+                        $('#myModal form :input').val("");
                     },
-                    error: function () {
-                        console.log("Failed...")
+                    error: function(data){
+
                     }
                 })
             });
-
         });
     </script>
 

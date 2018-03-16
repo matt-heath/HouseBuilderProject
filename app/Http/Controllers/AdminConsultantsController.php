@@ -7,6 +7,7 @@ use App\CertificateRequired;
 use App\Consultant;
 use App\Development;
 use App\Plot;
+use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -25,8 +26,9 @@ class AdminConsultantsController extends Controller
         $consultants = User::where('role_id', '=', 5)->get()->pluck('consultant_details', 'id')->all();
 
         $developments = Development::pluck('development_name', 'id')->all();
+        $roles = Role::where('id', '=', 5)->pluck('name', 'id')->all();
 
-        return view('admin.consultants.index', compact( 'certificates', 'consultants', 'developments'));
+        return view('admin.consultants.index', compact( 'certificates', 'consultants', 'developments', 'roles'));
 
     }
 
@@ -41,15 +43,21 @@ class AdminConsultantsController extends Controller
 
 //        $phases = Plot::where('house_type', $request->id)->pluck('phase')->distinct()->all();
 
-         $phases = Plot::where('house_type', $request->id)->distinct()->orderBy('phase', 'asc')->get(['phase']);
+//         $phases = Plot::where('house_type', $request->id)->distinct()->orderBy('phase', 'asc')->get(['phase']);
+        $phases = Phases::where('development_id', $request->id)->get();
+
         return response()->json($phases);
 
     }
 
     public function findPlots(Request $request){
 
-        $plots = Plot::where('phase', $request->id)->get();
+        $plots = Plot::where('phase', $request->id)->where('development_id', $request->dev_id)->get();
         return response()->json($plots);
+    }
 
+    public function getHouseTypes(Request $request){
+        $data = Plot::where('development_id', $request->id)->get();
+        return response()->json($data);
     }
 }

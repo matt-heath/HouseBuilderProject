@@ -245,7 +245,7 @@ class AdminDevelopmentsController extends Controller
         }
 
         HouseType::insert($itemsHouseType);
-        return null;
+//        return null;
         return redirect('/admin/developments');
     }
 

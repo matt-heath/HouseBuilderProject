@@ -1,8 +1,10 @@
 @extends('layouts.admin')
 
-@section('content')
-
+@section('title')
     <h1>Create House Type</h1>
+@endsection
+
+@section('content')
 
     <div class="row">
         {!! Form::open(['method'=>'POST', 'action'=>'AdminHouseTypesController@store', 'files' => true])!!}
