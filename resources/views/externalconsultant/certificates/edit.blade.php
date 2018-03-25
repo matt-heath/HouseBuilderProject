@@ -1,9 +1,10 @@
 @extends('layouts.admin')
 
-@section('content')
-
+@section('title')
     <h1>Upload Certificate For Plot</h1>
+@endsection
 
+@section('content')
     <div class="row">
         {!! Form::model($id, ['method'=>'PATCH', 'action'=>['ExternalConsultantCertificatesController@update', $id], 'files' => true])!!}
 

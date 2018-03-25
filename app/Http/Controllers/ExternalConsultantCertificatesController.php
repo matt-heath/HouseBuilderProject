@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Certificate;
 use App\CertificateCategory;
+use App\CertificateRequired;
 use App\Plot;
 use Illuminate\Http\Request;
 
@@ -71,8 +72,8 @@ class ExternalConsultantCertificatesController extends Controller
 
 //        return $id;
 
-        $certificate = Certificate::where('id', $id)->first();
-        $category = CertificateCategory::where('id', $certificate->certificate_category_id )->pluck('name', 'id')->all();
+         $certificate = Certificate::where('id', $id)->first();
+         $category = CertificateRequired::where('id', $certificate->certificates_required_id )->pluck('certificate_name', 'id')->all();
 
 //        return $plots;
 

@@ -253,6 +253,12 @@ class AdminCertificatesController extends Controller
 //            $certificate->update(['build_status' => $status]);
 
 //            return 'DONE';
+        }else if($status === 'no'){
+            $status = 'Not ready';
+            $certificate = Certificate::findOrFail($id);
+
+            $certificate->build_status = $status;
+            $certificate->save();
         }else if(isset($certificate_check)){
 //            return "hi";
 //            return $request->all();

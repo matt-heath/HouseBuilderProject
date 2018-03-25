@@ -27,8 +27,9 @@
                         <i class="fa fa-home fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">26</div>
+                        <div class="huge">{{$developments}}</div>
                         <div>Developments</div>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -49,12 +50,13 @@
                         <i class="fa fa-map-marker fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">12</div>
+                        <div class="huge">{{$plots}}</div>
                         <div>Plots</div>
+                        <br>
                     </div>
                 </div>
             </div>
-            <a href="#{{route('admin.plots.index')}}">
+            <a href="{{route('admin.plots.index')}}">
                 <div class="panel-footer">
                     <span class="pull-left">View Plots</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -71,8 +73,9 @@
                         <i class="fa fa-building fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">124</div>
+                        <div class="huge">{{$houseTypes}}</div>
                         <div>House Types</div>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -93,8 +96,13 @@
                         <i class="fa fa-certificate fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">13</div>
-                        <div>Certificates</div>
+                        <div class="huge">{{$certificates}}</div>
+                        @if($certificates > 1 || $certificates == 0)
+                            <div>Certificates Awaiting Approval</div>
+                        @else
+                            <div>Certificate Awaiting Approval</div>
+                        @endif
+
                     </div>
                 </div>
             </div>

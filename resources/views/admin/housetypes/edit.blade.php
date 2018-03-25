@@ -1,9 +1,10 @@
 @extends('layouts.admin')
 
-@section('content')
-
+@section('title')
     <h1>Edit House Type</h1>
+@endsection
 
+@section('content')
     <div class="col-sm-6">
         <table class="table table-responsive">
             <thead>

@@ -25,11 +25,13 @@ Route::get('/development/{id}', ['as'=>'home.development', 'uses'=>'AdminDevelop
 
 Route::group(['middleware'=>'admin'], function(){
 
-    Route::get('/admin', function(){
+//    Route::get('/admin', function(){
+//
+//        return view('admin.index');
+//
+//    });
 
-        return view('admin.index');
-
-    });
+    Route::get('/admin', 'DashboardController@admin');
 
     Route::resource('admin/users', 'AdminUsersController', ['names'=>[
         'index'=>'admin.users.index',
@@ -42,14 +44,16 @@ Route::group(['middleware'=>'admin'], function(){
         'index'=>'admin.developments.index',
         'create'=>'admin.developments.create',
         'store'=> 'admin.developments.store',
-        'edit'=> 'admin.developments.edit'
+        'edit'=> 'admin.developments.edit',
+        'show' => 'admin.developments.show'
     ]]);
 
     Route::resource('admin/plots', 'AdminPlotsController',  ['names'=>[
         'index'=>'admin.plots.index',
         'create'=>'admin.plots.create',
         'store'=> 'admin.plots.store',
-        'edit'=> 'admin.plots.edit'
+        'edit'=> 'admin.plots.edit',
+        'show'=> 'admin.plots.show'
     ]]);
 
     Route::resource('admin/housetypes', 'AdminHouseTypesController',  ['names'=>[
@@ -71,6 +75,11 @@ Route::group(['middleware'=>'admin'], function(){
         'create'=>'admin.consultants.create',
         'store'=> 'admin.consultants.store',
         'edit'=> 'admin.consultants.edit'
+    ]]);
+    Route::resource('admin/suppliers', 'SupplierController', ['names'=>[
+        'index'=>'admin.suppliers.index',
+        'edit'=>'admin.suppliers.edit',
+        'show' => 'admin.suppliers.show'
     ]]);
 
 

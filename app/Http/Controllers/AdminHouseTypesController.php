@@ -114,9 +114,39 @@ class AdminHouseTypesController extends Controller
     public function update(HouseTypesRequest $request, $id)
     {
         //
+        $input = $request->all();
+
+        if($input['house_type_name']){
+            $houseTypeName = $input['house_type_name'];
+            $plots = Plot::where('house_type', $id)->get();
+            $plot_count = $plots->count();
+
+            $houseTypeName = str_replace(' ', '_', $houseTypeName);
+
+            $houseNum = 1;
+
+            for($i = 0; $i < $plot_count; $i++){
+                $plots[$i]->update(['plot_name' => 'Braidwater_'.$houseTypeName.'_'.$houseNum]);
+                $houseNum++;
+            }
+        }
 
         $houseTypes = HouseType::findOrFail($id);
-        $houseTypes->update($request->all());
+
+        if($file = $request->file('floor_plan')){
+            $name = time() . $file->getClientOriginalName();
+            $file->move('images', $name);
+            $photo = Photo::create(['file'=> $name]);
+            $input['floor_plan'] = $photo->id;
+        }
+        if($file_house_img = $request->file('house_img')){
+            $name = time() . $file_house_img->getClientOriginalName();
+            $file_house_img->move('images', $name);
+            $photo = Photo::create(['file'=> $name]);
+            $input['house_img'] = $photo->id;
+        }
+
+        $houseTypes->update($input);
 
         return redirect('/admin/housetypes');
 

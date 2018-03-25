@@ -211,7 +211,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
 //        'Toastr'    => Artdarek\Toastr\Facades\Toastr::class,
 //        'Talk'      => Nahid\Talk\Facades\Talk::class,
-        'Alert' => Prologue\Alerts\Facades\Alert::class,
+        'Alert' => Prologue\Alerts\Facades\Alert::class
     ],
 
 ];

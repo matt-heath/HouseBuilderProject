@@ -7,6 +7,7 @@ use App\Http\Requests\UsersEditRequest;
 use App\Http\Requests\UsersRequest;
 use App\Photo;
 use App\Role;
+use App\Supplier;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -65,9 +66,7 @@ class AdminUsersController extends Controller
             $input = $request->except('password');
 
         } else{
-
-
-            $input = $request->except('consultant_description');
+            $input = $request->except('consultant_description', 'supplier_company_name', 'supplier_type');
 
             $this->validate($request, [
                     'name' => 'required|max:255',
@@ -84,6 +83,7 @@ class AdminUsersController extends Controller
         $userModel->save();
 
         $consultant_user_id = $userModel->id;
+        $supplier_user_id = $userModel->id;
 
         if($request->consultant_description){
             $consultant_description = $request->consultant_description;
@@ -94,6 +94,17 @@ class AdminUsersController extends Controller
 
 //            return $data;
             Consultant::create($data);
+        }elseif ($request->supplier_company_name){
+            $supplier_company_name = $request->supplier_company_name;
+            $supplier_type = $request->supplier_type;
+
+            $data = [
+                'user_id' => $supplier_user_id,
+                'supplier_company_name' => $supplier_company_name,
+                'supplier_type' => $supplier_type
+            ];
+
+            Supplier::create($data);
         }
 
 

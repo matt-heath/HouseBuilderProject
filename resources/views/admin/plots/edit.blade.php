@@ -1,9 +1,10 @@
 @extends('layouts.admin')
 
-@section('content')
-
+@section('title')
     <h1>Edit Plot</h1>
+@endsection
 
+@section('content')
     <div class="row">
         <div class="col-sm-6">
             {{--{{$image->floor_plan}}--}}

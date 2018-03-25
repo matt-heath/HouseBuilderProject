@@ -220,6 +220,20 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        <li>
+                            <a href="#"><i class="fa fa-building fa-fw"></i>Supplier Management<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{route('admin.suppliers.index')}}">All Suppliers</a>
+                                </li>
+
+                                {{--<li>--}}
+                                    {{--<a href="{{route('admin.housetypes.create')}}">Create House Types</a>--}}
+                                {{--</li>--}}
+
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
 
                     @elseif (Auth::user()->isEstateAgent())
                         <li>

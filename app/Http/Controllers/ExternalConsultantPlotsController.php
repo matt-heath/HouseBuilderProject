@@ -20,7 +20,8 @@ class ExternalConsultantPlotsController extends Controller
     public function index()
     {
         //
-
+        $status = array();
+        $certificate_ids = array();
 
 //        return $certificate = Certificate::with('consultants')->first();
 
@@ -39,63 +40,49 @@ class ExternalConsultantPlotsController extends Controller
 
 //            echo $consultant;
             $certificate_id = $consultant->pivot->certificate_id;
+
+            $certificate_ids[] = $certificate_id;
         }
 
-        $plots = Plot::with('certificates')->get();
-
-//        return $plots;
-
-        $ids = array();
-        $cert_ids = array();
-
-//        echo count($plots);
-        foreach ($plots as $plot) {
-//            echo $plot->certificates;
-//            echo$cert_id = $plot->pivot->certificate_id;
-
-//            for($i = 0; $i<= count($plot); $i++){
-
-                foreach($plot->certificates as $plot_cert){
-
-//                    echo "hi";
-
-//                    echo( $plot_cert->pivot);
-
-                    $plot_id = $plot_cert->pivot->plot_id;
-                    $cert_id = $plot_cert->pivot->certificate_id;
-
-                    $ids[] = $plot_id;
-                    $cert_ids[] = $cert_id;
-                }
+//        return $certificate_ids;
 
 
-//            echo $plot_certificate = $plot;
-//            }
 
-        }
+        $plots = Plot::whereHas('certificates', function ($query) use ($certificate_ids){
+            $query->whereIn('certificate_id', $certificate_ids);
+        })->get();
+
+//
 //        return $cert_ids;
+//
+//        $plots = $plots->whereIn('id', $ids)->all();
+//
+//        foreach($plots as $certs){
+//            foreach($certs->certificates as $cert){
+////                echo $cert->id;
+//
+//            }
+//        }
 
-        $plots = $plots->whereIn('id', $ids)->all();
+        foreach($plots as $plot){
+//            echo $plot;
 
-        foreach($plots as $certs){
-            foreach($certs->certificates as $cert){
-//                echo $cert->id;
-
+            foreach($plot->certificates as $certificate) {
+                if (in_array($certificate->id, $certificate_ids)) {
+                    $status[] = $certificate->build_status;
+                }
             }
         }
-
-//        foreach($plots as $plot){
-//            echo $plot;
-//        }
 ////
+//        return $status;
 ////        foreach ($plots as $plot){
 ////            echo "PLOT:: $plot";
 ////        }
-
-//        return $cert_ids;
+//        return $plots;
+//        return $certificate_ids;
 //        return $cert_id;
 ////
-        return view('externalconsultant.plots.index', compact( 'plots', 'cert_ids'));
+        return view('externalconsultant.plots.index', compact( 'plots', 'certificate_ids', 'status'));
     }
 
     /**
@@ -177,6 +164,7 @@ class ExternalConsultantPlotsController extends Controller
 //
 //            $plot->update(['build_status' => $status]);
         }else{
+//          TODO:: return redirect back a page
             return redirect('/externalconsultant/plots');
         }
 

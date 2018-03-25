@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Certificate;
 use App\Development;
 use App\HouseType;
 use App\Http\Requests\PlotsRequest;
@@ -109,6 +110,13 @@ class AdminPlotsController extends Controller
     public function show($id)
     {
         //
+//        return $id;
+        $plot = Plot::where('id', $id)->first();
+        $image = HouseType::where('id', $plot->house_type)->first();
+        $certificates = $plot->certificates;
+
+
+        return view('admin.plots.show', compact('plot', 'image', 'certificates'));
     }
 
     /**

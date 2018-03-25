@@ -258,7 +258,13 @@ class AdminDevelopmentsController extends Controller
     public function show($id)
     {
         //
-        return view('admin.developments.show');
+//        return $id;
+
+        $development = Development::where('id', $id)->first();
+        $plots = Plot::where('development_id', $id)->get();
+        $num_of_plots_available = Plot::where('development_id', $id)->get();
+        $houseTypes = HouseType::where('development_id', $id)->get();
+        return view('admin.developments.show', compact('plots', 'development', 'num_of_plots_available', 'houseTypes'));
     }
 
     /**
@@ -286,8 +292,8 @@ class AdminDevelopmentsController extends Controller
     public function update(DevelopmentsCreateRequest $request, $id)
     {
         //
-
         $input = $request->all();
+
         $development = Development::findOrFail($id);
 
         if($file = $request->file('photo_id')){

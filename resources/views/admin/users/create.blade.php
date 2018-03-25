@@ -24,9 +24,9 @@
             {!! Form::select('role_id', [''=>'Choose Options'] + $roles , null, ['class'=>'form-control roleSelect select'])!!}
         </div>
 
-        <div class="form-group" id="consultantDetails">
-
-        </div>
+        <div class="form-group" id="consultantDetails"></div>
+        <div class="form-group" id="supplierDetails"></div>
+        <div class="form-group" id="supplierName"></div>
 
 
         <div class="form-group">
@@ -69,6 +69,22 @@
                 }else{
                     console.log("NOT EXT CONSULTANT");
                     $('#consultantDetails').html(" ");
+                }
+
+                if(role === '3') {
+                    console.log('Supplier');
+                    $('#supplierDetails').append(''+
+                        '{!! Form::label('supplier_company_name', 'Supplier Company Name') !!}' +
+                        '{!! Form::text('supplier_company_name', null, ['class'=>'form-control']) !!}'
+                    );
+                    $('#supplierName').append(''+
+                        '{!! Form::label('supplier_type', 'Supplier Type') !!}' +
+                        '{!! Form::select('supplier_type', ['' => 'Select a supplier type', 'Kitchen'], null, ['class'=>'form-control dynamicSelect']) !!}'
+                    );
+                    $('.dynamicSelect').select2();
+                }else{
+                    console.log("Not supplier");
+                    $('#supplierDetails').html(" ");
                 }
             });
         });

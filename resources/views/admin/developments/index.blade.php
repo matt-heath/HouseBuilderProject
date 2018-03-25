@@ -39,7 +39,7 @@
                          </td>
                          <td>
                              <div class="btn-group">
-                                 <a href="{{route('home.development', $development->id)}}" class="btn btn-warning"><i class="fa fa-fw fa-eye fa-sm"></i></a>
+                                 <a href="{{route('admin.developments.show', $development->id)}}" class="btn btn-warning"><i class="fa fa-fw fa-eye fa-sm"></i></a>
                              </div>
                              <div class="btn-group">
                                  <a href="{{route('admin.developments.edit', $development->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
