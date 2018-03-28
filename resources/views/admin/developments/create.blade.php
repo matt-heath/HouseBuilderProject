@@ -59,6 +59,62 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="myModalSupplier" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Consultant Account</h4>
+                    </div>
+                    <div class="modal-body">
+                        {!! Form::open(['method'=>'POST', 'class'=> 'supplier', 'id'=>'contact'])!!}
+                        <div class="form-group">
+                            {!! Form::label('name', 'Name:') !!}
+                            {!! Form::text('name', null, ['class'=>'form-control'])!!}
+                        </div>
+
+
+                        <div class="form-group">
+                            {!! Form::label('email', 'Email:') !!}
+                            {!! Form::email('email', null, ['class'=>'form-control'])!!}
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('role_id', 'Role:') !!}
+                            {!! Form::select('role_id_disabled', $supplierRoles, null, ['class'=>'form-control', 'disabled'])!!}
+                            {!! Form::select('role_id', $supplierRoles , null, ['class'=>'form-control roleSelect hidden'])!!}
+                        </div>
+
+                        <div class="form-group" id="supplierDetails">
+                            {!! Form::label('supplier_company_name', 'Supplier Company Name') !!}
+                            {!! Form::text('supplier_company_name', null, ['class'=>'form-control']) !!}
+                        </div>
+                        <div class="form-group" id="supplierName">
+                            {!! Form::label('supplier_type', 'Supplier Type') !!}
+                            {!! Form::select('supplier_type', ['' => 'Select a supplier type'] + $supplier_types_select, null, ['class'=>'form-control']) !!}
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('is_active', 'Status:') !!}
+                            {!! Form::select('is_active', array(1 => 'Active', 0=> 'Not Active'), 0 , ['class'=>'form-control'])!!}
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('password', 'Password:') !!}
+                            {!! Form::password('password', ['class'=>'form-control'])!!}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="form-group">
+                            {!! Form::button('Add account', ['class'=>'btn btn-primary', 'data-role' => "button",  'id' => 'addSupplier']) !!}
+                        </div>
+                        {!! Form::close() !!}
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
 
@@ -69,6 +125,7 @@
                 <li><a href="#step-2">Add Phases in Development<br /><small>Input several phases in development</small></a></li>
                 <li><a href="#step-3">Add House Types<br /><small>Input house type details</small></a></li>
                 <li><a href="#step-4">Assign Consultants to Development<br /><small>Input consultant details</small></a></li>
+                <li><a href="#step-5">Assign Suppliers to Development<br /><small>Input supplier details</small></a></li>
                 {{--<li><a href="#step-4">Step Title<br /><small>Step description</small></a></li>--}}
             </ul>
 
@@ -174,6 +231,41 @@
                     {!! Form::submit('Create Development', ['class'=>'btn btn-primary']) !!}
                     {!! Form::close() !!}
                 </div>
+                <div id="step-5" class="">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" data-toggle='modal' data-target='#myModalSupplier' id='modalClick'><i class="fa fa-fw fa-plus"></i> Add supplier account</button>
+                    </div>
+                    <br><br>
+                    <table id="myTable" width="100%" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Supplier Type</th>
+                            <th>Select a supplier</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @php ($count = 0)
+                        @foreach($supplier_types as $type)
+{{--                            {{$type}}--}}
+                            <tr>
+                                <td>
+                                    {!! Form::text('category_name_disabled', null, ['class'=>'form-control name_list', 'name'=>'category_name[]', 'placeholder' =>  $type->category_name,'disabled']) !!}
+                                    {!! Form::text('category_name', $type->id, ['class'=>'form-control name_list hidden', 'name'=>'category_name[]']) !!}
+
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        {!! Form::select('supplier_id', ['' => 'Select Supplier Responsible'] + $suppliers, null, ['class'=>'form-control select supplier_select', 'name' => 'supplier_id[]'])!!}
+                                    </div>
+                                </td>
+                            </tr>
+                            @php ($count++)
+                        @endforeach
+                        </tbody>
+                    </table>
+                    {!! Form::submit('Create Development', ['class'=>'btn btn-primary']) !!}
+                    {!! Form::close() !!}
+                </div>
             </div>
         </div>
     </div>
@@ -252,6 +344,28 @@
                     console.log('USER ADDED'+ data.id + data.name);
                     $('.consultantSelect').append('<option value="'+ data.id + '">' + data.name +'('+data.email+') </option>');
                     $('#myModal').modal('hide');
+                },
+                error: function(data){
+
+                }
+            })
+        });
+
+        $('#addSupplier').on('click', function (e) {
+            e.preventDefault();
+            var data = $('form.supplier').serialize();
+            // console.log(data);
+            $.ajax({
+
+                type:"POST",
+                url:'/addUser',
+                data: data,
+                dataType: 'json',
+                success: function(data){
+                    console.log(data);
+                    console.log('USER ADDED'+ data.id + data.name);
+                    $('.supplier_select').append('<option value="'+ data.id + '">' + data.name +'('+data.email+') </option>');
+                    $('#myModalSupplier').modal('hide');
                 },
                 error: function(data){
 

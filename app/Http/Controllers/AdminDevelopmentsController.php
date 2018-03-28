@@ -13,6 +13,8 @@ use App\Phases;
 use App\Photo;
 use App\Plot;
 use App\Role;
+use App\SelectionCategory;
+use App\Supplier;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -60,6 +62,7 @@ class AdminDevelopmentsController extends Controller
     {
         //
         $roles = Role::where('id', '=', 5)->pluck('name', 'id')->all();
+        $supplierRoles = Role::where('id', '=', 3)->pluck('name', 'id')->all();
         $consultants = User::where('role_id', '=', 5)->get()->pluck('consultant_details', 'id')->all();
 
         $namesArray = [
@@ -70,11 +73,14 @@ class AdminDevelopmentsController extends Controller
             "Builder's Solicitor"
         ];
 
+        $supplier_types = SelectionCategory::all();
+        $suppliers = User::where('role_id', '=', 3)->get()->pluck('supplier_details', 'id')->all();
         $certificates = CertificateCategory::whereIn('name', $namesArray)->get();
+        $supplier_types_select = $supplier_types->pluck('category_name', 'id')->all();
 
 //        return $consultantEmail = User::where('id', $consultants['id'])->pluck('email')->all();
 
-        return view('admin.developments.create', compact('roles', 'consultants', 'certificates'));
+        return view('admin.developments.create', compact('roles', 'consultants', 'certificates', 'supplier_types', 'suppliers', 'supplierRoles', 'supplier_types_select'));
     }
 
     /**
@@ -90,6 +96,11 @@ class AdminDevelopmentsController extends Controller
 //        dd( $request->input() );
         $formInput = Input::all();
         $number_of_plots = $formInput['phase_num_plots'];
+
+
+
+        $supplier_id = $formInput['supplier_id'];
+        $category_id = $formInput['category_name'];
 
         $num_of_plots = 0;
         foreach($number_of_plots as $num_plot){
@@ -213,10 +224,23 @@ class AdminDevelopmentsController extends Controller
 
         $development = Development::create($input);
         $dev_id = $development->id;
+        $development_insert = Development::where('id', '=', $dev_id)->first();
 
-            //        dd(Input::file('floor_plan'));
-//        return count($phase_name);
+//        return $supplier_id;
 
+
+        for($z = 0; $z< count($supplier_id); $z++){
+//            $certificates = CertificateRequired::where('certificate_category_id', '=', $cert_name[$z])->get();
+
+//            echo $dev_id.'<br>';
+//            echo $supplier_id[$z].'<hr>';
+
+            if($supplier_id[$z] !== ''){
+                $supplier = Supplier::where('user_id', $supplier_id[$z])->first();
+
+                $development_insert->suppliers()->attach($supplier->id);
+            }
+        }
 
         for($p = 0; $p < count($phase_name); $p++){
             $itemsPhases = array(
@@ -245,6 +269,7 @@ class AdminDevelopmentsController extends Controller
         }
 
         HouseType::insert($itemsHouseType);
+
 //        return null;
         return redirect('/admin/developments');
     }
@@ -260,11 +285,42 @@ class AdminDevelopmentsController extends Controller
         //
 //        return $id;
 
-        $development = Development::where('id', $id)->first();
+        $development = Development::with('suppliers')->where('id', $id)->first();
         $plots = Plot::where('development_id', $id)->get();
         $num_of_plots_available = Plot::where('development_id', $id)->get();
         $houseTypes = HouseType::where('development_id', $id)->get();
-        return view('admin.developments.show', compact('plots', 'development', 'num_of_plots_available', 'houseTypes'));
+        $supplier_types = SelectionCategory::all();
+        $suppliers = User::where('role_id', '=', 3)->get()->pluck('supplier_details', 'id')->all();
+        $default = $development->suppliers()->pluck('supplier_company_name','id');
+
+
+        $items = array();
+        $assigned = array();
+
+        foreach($development->suppliers as $supplier) {
+            $details = $supplier->selectionCategory->toArray();
+            $items[] = $details;
+        }
+
+//        return count($items);
+
+        for($i = 0; $i < count($items); $i++){
+//            echo $items[$i];
+            $assigned[] = $items[$i];
+        }
+
+//        return $assigned;
+
+//        $items->first();
+//                                                           @php($details = $supplier_details->selectionCategory->toArray())
+//
+//                                                           @foreach($details as $detail)
+//    {{$detail}}
+//
+//                                                                @php($items[] = $detail)
+//                                                           @endforeach
+
+        return view('admin.developments.show', compact('plots', 'development', 'num_of_plots_available', 'houseTypes', 'supplier_types', 'suppliers', 'default', 'assigned'));
     }
 
     /**

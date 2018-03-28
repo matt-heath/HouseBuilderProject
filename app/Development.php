@@ -14,7 +14,7 @@ class Development extends Model
         'development_location',
         'development_num_plots',
         'development_description',
-        'photo_id',
+        'photo_id'
 //        'phase'
 
     ];
@@ -34,5 +34,9 @@ class Development extends Model
     // each development has one photo (example picture).
     public function photo (){
         return $this->belongsTo('App\Photo');
+    }
+
+    public function suppliers (){
+        return $this->belongsToMany('App\Supplier')->withPivot('development_id', 'supplier_id');
     }
 }

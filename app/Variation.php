@@ -22,4 +22,8 @@ class Variation extends Model
     public function selectionType(){
         return $this->belongsToMany('App\SelectionType')->withPivot('selection_type_id', 'variation_id');
     }
+
+    public function photo (){
+        return $this->belongsTo('App\Photo', 'extra_img', 'id');
+    }
 }

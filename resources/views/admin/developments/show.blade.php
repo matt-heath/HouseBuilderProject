@@ -64,7 +64,7 @@
                                     <li role="presentation" class="active"><a href="#plots" aria-controls="plots" role="tab" data-toggle="tab">Plots</a></li>
                                     <li role="presentation"><a href="#housetypes" aria-controls="housetypes" role="tab" data-toggle="tab">House Types</a></li>
                                     <li role="presentation"><a href="#phases" aria-controls="phases" role="tab" data-toggle="tab">Phases</a></li>
-                                    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+                                    <li role="presentation"><a href="#suppliers" aria-controls="suppliers" role="tab" data-toggle="tab">Suppliers</a></li>
                                 </ul>
 
                                         <!-- Tab panes -->
@@ -74,7 +74,6 @@
                                             <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th>Development Name</th>
                                                         <th>Plot Name</th>
                                                         <th>House Type</th>
                                                         <th>SqFt</th>
@@ -90,7 +89,6 @@
                                                     @php ($count = 0)
                                                     @foreach($plots as $plot)
                                                         <tr>
-                                                            <td><a href="{{route('admin.plotsbydevelopment', ['id'=>$plot->development_id])}}">{{$plot->development ? $plot->development->development_name : "Development Not Set"}}</a></td>
                                                             <td>{{$plot->plot_name}}</td>
                                                             <td>{{$plot->houseTypes ? $plot->houseTypes->house_type_name : "NOT FOUND"}}</td>
                                                             <td>{{$plot->sqft}}</td>
@@ -180,10 +178,65 @@
                                         </table>
                                     </div>
                                     <div role="tabpanel" class="tab-pane" id="phases">
-                                        HI
+                                        HI0
                                     </div>
 
-                                    <div role="tabpanel" class="tab-pane" id="settings">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passage..</div>
+                                    <div role="tabpanel" class="tab-pane" id="suppliers">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Supplier Type</th>
+                                                <th>Supplier Name</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {{--TODO: Remove foreach variables into controller?--}}
+                                            @php($arr = array())
+                                            @php($assigned_supplier_arr = array())
+
+                                            @foreach($supplier_types as $type)
+                                                @php($arr[] = $type)
+                                            @endforeach
+
+                                            @foreach($development->suppliers as $assigned_supplier)
+                                                @php($assigned_supplier_arr[] = $assigned_supplier)
+                                            @endforeach
+
+                                            @php($count = 0)
+                                            @foreach($arr as $type )
+                                                @php($bool = false)
+                                                <tr>
+                                                    <td>
+                                                        {{$type->category_name}}
+                                                    </td>
+                                                    @php($count2=0)
+                                                    @foreach($assigned as $assigned_category)
+                                                        @if($type->category_name == $assigned_category['category_name'])
+                                                            <td>{{$assigned_supplier_arr[$count2]->supplier_company_name}}</td>
+                                                            @php($bool = true)
+                                                            <td>
+                                                                <a href="{{route('admin.suppliers.edit', $type->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
+                                                            </td>
+                                                            {{--@elseif($bool !== true)--}}
+                                                            {{--@php($bool = false)--}}
+                                                        @endif
+
+                                                        @php($count2++)
+                                                    @endforeach
+
+                                                    @if($bool == false && $count <= count($arr))
+                                                        <td style="color: #ff0000;">{{"No supplier assigned to this category"}}</td>
+                                                        <td>
+                                                            <a href="{{route('admin.variations.assignSupplier', $type->id)}}" class="btn btn-success"><i class="fa fa-fw fa-plus"></i></a>
+                                                        </td>
+                                                    @endif
+                                                </tr>
+                                                @php($count++)
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

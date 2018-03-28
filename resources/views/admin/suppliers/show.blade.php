@@ -7,8 +7,8 @@
 
 @section('content')
 
-    @if(Session::has('deleted_development'))
-        <p class="bg-danger">{{session('deleted_development')}}</p>
+    @if(Session::has('success'))
+        <p class="bg-danger">{{session('success')}}</p>
     @endif
 
     <div class="row">
@@ -66,6 +66,11 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="variations">
+                            <div class="pull-right">
+                                <a class="btn btn-success" href="{{route('admin.variations.create', $supplier->id)}}"><i class="fa fa-fw fa-plus"></i> Add additional variations</a>
+                                {{--<td><a href="{{route('admin.plots.edit', $plot->id)}}">{{$plot->plot_name}}</a></td>--}}
+                            </div>
+                        <br><br>
                         <div class="table-responsive">
                             <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
                                 <thead>
@@ -76,13 +81,16 @@
                                     <th>Description</th>
                                     <th>Price</th>
                                     <th>Image</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($variations as $variation)
                                     @foreach($variation->selectionType as $type)
+                                        {{--{{$type->type_name}}--}}
                                         @php($typeName = $type->type_name)
                                         @foreach($type->categories as $category)
+                                            {{--{{$category}}--}}
                                             @php($variationCategory = $category)
                                         @endforeach
                                     @endforeach
@@ -92,11 +100,21 @@
                                         <td>{{$variation->name}}</td>
                                         <td>{{$variation->description}}</td>
                                         <td>£{{$variation->price}}</td>
-                                        <td> <a href="{{'http://placehold.it/400x400' }} " data-lightbox="image-1" data-title="Example development image for: ">
-                                                <img src="{{'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
+                                        <td>
+                                            <a href="{{$variation->extra_img ? $variation->photo->file : 'http://placehold.it/400x400' }} " data-lightbox="image-1" data-title="Example image for: {{$variation->name. ' ('.$typeName.')'}}">
+                                                <img src="{{$variation->extra_img ? $variation->photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
                                             </a>
                                         </td>
-{{--                                        <td>{!! "<a href='' data-toggle='modal' data-target='#myModal' id='modalClick' class='modalClick' data-id='$certificate->id'>Update Status</a>"!!}</td>--}}
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{route('admin.variations.edit', $variation->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
+                                            </div>
+                                            <div class="btn-group">
+                                                {!! Form::open(['method'=>'DELETE', 'action'=> ['VariationController@destroy', $variation->id], 'id'=> 'confirm_delete_'.$variation->id]) !!}
+                                                {!! Form::button('<i class="fa fa-fw fa-trash"></i>', ['type'=> 'submit' ,'class'=>'btn btn-danger', 'onclick'=>'confirmDelete(' .$variation->id .')']) !!}
+                                                {!! Form::close() !!}
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -110,51 +128,6 @@
             </div>
         </div>
     </div>
-    {{--<div class="modal fade" id="myModal" role="dialog">--}}
-        {{--<div class="modal-dialog">--}}
-            {{--<!-- Modal content-->--}}
-            {{--<div class="modal-content">--}}
-                {{--<div class="modal-header">--}}
-                    {{--<button type="button" class="close" data-dismiss="modal">&times;</button>--}}
-                    {{--<h4 class="modal-title">Property ready to be inspected?</h4>--}}
-                {{--</div>--}}
-                {{--<div class="modal-body">--}}
-                    {{--{!! Form::model($certificate, ['method'=>'PATCH', 'class'=> 'modalPlot', 'action'=>['AdminCertificatesController@update', $certificate->id]])!!}--}}
-
-                    {{--<div class="form-group">--}}
-                        {{--{{ Form::label('status', 'Can the consultant inspect this aspect of the property?') }}--}}
-                        {{--<div class="form-inline">--}}
-                            {{--<div class="radio">--}}
-                                {{--{{ Form::radio('status', 'yes') }}--}}
-                                {{--{{ Form::label('yes', 'Yes') }}--}}
-                            {{--</div>--}}
-                            {{--<div class="radio">--}}
-                                {{--{{ Form::radio('status', 'no', true) }}--}}
-                                {{--{{ Form::label('no', 'No') }}--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<div class="modal-footer">--}}
-                    {{--<div class="form-group">--}}
-                        {{--{!! Form::submit('Update status', ['class'=>'btn btn-primary']) !!}--}}
-                    {{--</div>--}}
-                    {{--{!! Form::close() !!}--}}
-                    {{--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-
-        {{--</div>--}}
-    {{--</div>--}}
-    <hr>
-                    {{--</div>--}}
-                {{--<div class="panel-footer">--}}
-                    {{--HI--}}
-                {{--</div>--}}
-        {{--</div>--}}
-
-
-
 @endsection
 
 @section('script')
@@ -164,21 +137,10 @@
             $('#myTable').DataTable({
                 responsive: true,
                 "columnDefs": [
-                    { "orderable": false, "targets": 3 }
+                    { "orderable": false, "targets": [5,6] }
                 ]
 
             });
-        });
-
-        function modalClick() {
-
-        }
-
-        $('.modalClick').on('click', function () {
-
-            console.log($(this).data());
-
-            $('.modalPlot').attr('action', '/admin/certificates/'+$(this).data('id'));
         });
 
         function confirmDelete(id) {
@@ -196,22 +158,22 @@
                 buttonsStyling: true
             }).then((result) => {
                 if (result.value) {
-                swal({
-                    title: 'Deleted!',
-                    text: 'Plot has been deleted.',
-                    type: 'success',
-                    showConfirmButton: false,
-                    timer: 3000
-                }).then(function () {
-                    $("#confirm_delete_"+id).off("submit").submit()
-                })
-                // $("#confirm_delete_"+id).off("submit").submit()
-                // result.dismiss can be 'cancel', 'overlay',
-                // 'close', and 'timer'
-            } else if (result.dismiss === 'cancel') {
+                    swal({
+                        title: 'Deleted!',
+                        text: 'Variation has been deleted.',
+                        type: 'success',
+                        showConfirmButton: false,
+                        timer: 3000
+                    }).then(function () {
+                        $("#confirm_delete_"+id).off("submit").submit()
+                    })
+                    // $("#confirm_delete_"+id).off("submit").submit()
+                    // result.dismiss can be 'cancel', 'overlay',
+                    // 'close', and 'timer'
+                } else if (result.dismiss === 'cancel') {
 
-            }
-        })
+                }
+            })
         }
     </script>
 

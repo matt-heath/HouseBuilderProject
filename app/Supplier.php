@@ -24,4 +24,8 @@ class Supplier extends Model
     public function variations(){
         return $this->hasMany('App\Variation');
     }
+
+    public function developments(){
+        return $this->belongsToMany('App\Development');
+    }
 }

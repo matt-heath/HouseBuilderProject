@@ -237,6 +237,7 @@ class AdminUsersController extends Controller
             $addUserModel->save();
 
             $consultant_user_id = $addUserModel->id;
+            $supplier_user_id = $addUserModel->id;
 
             if ($request->consultant_description) {
                 $consultant_description = $request->consultant_description;
@@ -246,6 +247,17 @@ class AdminUsersController extends Controller
                 ];
 
                 Consultant::create($data);
+            }elseif ($request->supplier_company_name){
+                $supplier_company_name = $request->supplier_company_name;
+                $supplier_type = $request->supplier_type;
+
+                $data = [
+                    'user_id' => $supplier_user_id,
+                    'supplier_company_name' => $supplier_company_name,
+                    'supplier_type' => $supplier_type
+                ];
+
+                Supplier::create($data);
             }
 
             Alert::success('User added to the system.')->flash();

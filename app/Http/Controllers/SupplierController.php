@@ -68,9 +68,16 @@ class SupplierController extends Controller
      * @param  \App\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function edit(Supplier $supplier)
+    public function edit($id)
     {
-        //
+        $supplier = Supplier::where('id', $id)->first();
+        $default = $supplier->selectionCategory()->first();
+//        return $default->category_name;
+        $selectionCategories = SelectionCategory::all()->where('category_name', '!==', $default->category_name)->pluck('category_name', 'id');
+        $default = $supplier->selectionCategory()->pluck('category_name','id');
+
+
+        return view('admin.suppliers.edit', compact('supplier','default', 'selectionCategories'));
     }
 
     /**
@@ -80,9 +87,16 @@ class SupplierController extends Controller
      * @param  \App\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Supplier $supplier)
+    public function update(Request $request, $id)
     {
-        //
+//        return $id;
+        $input = $request->all();
+
+        $supplier = Supplier::findOrFail($id);
+
+        $supplier->update($input);
+
+        return redirect('/admin/suppliers/'.$supplier->id);
     }
 
     /**

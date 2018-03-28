@@ -13,6 +13,6 @@ class SelectionCategory extends Model
     ];
 
     public function selectionType(){
-        return $this->hasMany('App\SelectionType');
+        return $this->belongsToMany('App\SelectionType')->withPivot('selection_type_id', 'selection_category_id');
     }
 }

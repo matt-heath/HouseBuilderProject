@@ -97,6 +97,11 @@ Route::group(['middleware'=>'admin'], function(){
         'edit'=> 'admin.booking.edit'
     ]]);
 
+    Route::resource('admin/variations', 'VariationController', ['names' => [
+//        'create' => 'admin.variations.create',
+        'edit' => 'admin.variations.edit'
+    ]]);
+
 //    Route::post('/deleteCategory', 'AdminCertificateCategoriesController@destroy');
     Route::get('admin/viewuserbyrole/{id}', ['as'=>'admin.viewuserbyrole', 'uses'=>'AdminUsersController@viewUserByRole']);
     Route::get('admin/plotsbydevelopment/{id}', ['as'=>'admin.plotsbydevelopment', 'uses'=>'AdminPlotsController@plotsByDevelopment']);
@@ -111,6 +116,8 @@ Route::group(['middleware'=>'admin'], function(){
     Route::post('/addUser', 'AdminUsersController@addUser');
     Route::get('/getUsers', 'AdminUsersController@getUsers');
     Route::post('/createCertificate', 'AdminCertificatesController@createCertificate');
+    Route::get('admin/variations/create/{id}', ['as'=>'admin.variations.create', 'uses'=>'VariationController@createVariation']);
+    Route::get('admin/variations/assignSupplier/{id}', ['as'=>'admin.variations.assignSupplier', 'uses'=> 'VariationController@assignSupplier']);
 });
 
 

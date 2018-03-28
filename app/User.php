@@ -42,6 +42,11 @@ class User extends Authenticatable
         return $this->name . " (" . $this->email .")";
     }
 
+    public function getSupplierDetailsAttribute()
+    {
+        return $this->name . " (" . $this->email .")";
+    }
+
 
 
 //    public function photo(){
