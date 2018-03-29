@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="row">
-        {!! Form::open(['method'=>'POST', 'action'=>'VariationController@store', 'files' => true])!!}
+        {!! Form::open(['method'=>'POST', 'action'=>'AdminDevelopmentsController@assignSupplierStore'])!!}
         <table id="myTable" width="100%" class="table table-bordered table-hover">
             <thead>
             <tr>
@@ -23,9 +23,20 @@
                     </td>
                     <td>
                         <div class="form-group">
-                            {!! Form::select('supplier_id', ['' => 'Select Supplier Responsible'] + $suppliers, null, ['class'=>'form-control select supplier_select', 'name' => 'supplier_id'])!!}
+                            @if($assignedSupplier)
+                                {!! Form::select('supplier_id', $assignedSupplier + $suppliers, null, ['class'=>'form-control select supplier_select', 'name' => 'supplier_id'])!!}
+
+                            @else
+                                {!! Form::select('supplier_id', ['' => 'Select Supplier Responsible'] + $suppliers, null, ['class'=>'form-control select supplier_select', 'name' => 'supplier_id'])!!}
+
+                            @endif
                         </div>
                     </td>
+                    <div class="form-group">
+                        {!! Form::text('development_id', $devID, ['class'=>'form-control hidden', 'name'=>'development_id']) !!}
+                        {!! Form::text('previousSupplierID', $previousSupplierID, ['class'=>'form-control hidden', 'name'=>'previousSupplierID']) !!}
+                        {{--{!! Form::text('supplier_type', $id, ['class'=>'form-control hidden', 'name'=>'supplier_type']) !!}--}}
+                    </div>
                 </tr>
             </tbody>
         </table>

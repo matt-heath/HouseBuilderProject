@@ -17,6 +17,7 @@ class CreateDevelopmentSupplierPivotTable extends Migration
             $table->foreign('development_id')->references('id')->on('developments')->onDelete('cascade');
             $table->integer('supplier_id')->unsigned()->index();
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
+            $table->integer('supplier_type')->unsigned()->index();
             $table->primary(['development_id', 'supplier_id']);
         });
     }

@@ -216,7 +216,7 @@
                                                             <td>{{$assigned_supplier_arr[$count2]->supplier_company_name}}</td>
                                                             @php($bool = true)
                                                             <td>
-                                                                <a href="{{route('admin.suppliers.edit', $type->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
+                                                                <a href="{{route('admin.developments.assignSupplier', [$development->id, $type->id])}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
                                                             </td>
                                                             {{--@elseif($bool !== true)--}}
                                                             {{--@php($bool = false)--}}
@@ -228,7 +228,7 @@
                                                     @if($bool == false && $count <= count($arr))
                                                         <td style="color: #ff0000;">{{"No supplier assigned to this category"}}</td>
                                                         <td>
-                                                            <a href="{{route('admin.variations.assignSupplier', $type->id)}}" class="btn btn-success"><i class="fa fa-fw fa-plus"></i></a>
+                                                            <a href="{{route('admin.developments.assignSupplier', [$development->id, $type->id])}}" class="btn btn-success"><i class="fa fa-fw fa-plus"></i></a>
                                                         </td>
                                                     @endif
                                                 </tr>

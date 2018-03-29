@@ -117,7 +117,8 @@ Route::group(['middleware'=>'admin'], function(){
     Route::get('/getUsers', 'AdminUsersController@getUsers');
     Route::post('/createCertificate', 'AdminCertificatesController@createCertificate');
     Route::get('admin/variations/create/{id}', ['as'=>'admin.variations.create', 'uses'=>'VariationController@createVariation']);
-    Route::get('admin/variations/assignSupplier/{id}', ['as'=>'admin.variations.assignSupplier', 'uses'=> 'VariationController@assignSupplier']);
+    Route::get('admin/developments/{devID}/assignSupplier/{id}', ['as'=>'admin.developments.assignSupplier', 'uses'=> 'AdminDevelopmentsController@assignSupplier']);
+    Route::post('/assignSupplierStore', ['as'=>'admin.developments.assignSupplierStore', 'uses'=> 'AdminDevelopmentsController@assignSupplierStore']);
 });
 
 

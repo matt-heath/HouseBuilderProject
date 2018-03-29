@@ -181,16 +181,4 @@ class VariationController extends Controller
 
         return redirect()->back();
     }
-
-    public function assignSupplier($id){
-
-//        return $id;
-
-        $supplier_types = SelectionCategory::where('id', $id)->first();
-        $suppliers = User::where('role_id', '=', 3)->get()->pluck('supplier_details', 'id')->all();
-        $supplier_types_select = $supplier_types->pluck('category_name', 'id')->all();
-
-
-        return view('admin.variations.assignSupplier', compact('supplier_types', 'suppliers', 'supplier_types_select'));
-    }
 }

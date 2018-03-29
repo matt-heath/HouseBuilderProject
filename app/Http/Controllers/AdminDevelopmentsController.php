@@ -108,11 +108,7 @@ class AdminDevelopmentsController extends Controller
         }
 
 
-
-//        return $num_of_plots;
-//        $num_of_plots = $formInput['development_num_plots'];
         $consultant_id = $formInput['consultant_id'];
-//        $plots = Plot::where('plot_name_id', '<=', $num_of_plots)->where('house_type', $request->house_type)->get();
         $items = array();
         $itemsHouseType = array();
         $phases_arr = array();
@@ -149,8 +145,6 @@ class AdminDevelopmentsController extends Controller
             }
         }
 
-//        return null;
-
         if (isset($formInput['floor_plan'])) {
             $floor_plan = $formInput['floor_plan'];
         }
@@ -182,8 +176,6 @@ class AdminDevelopmentsController extends Controller
                     $file->move('images', $name);
                     $floor_plan_photo = Photo::create(['file' => $name]);
                     $item[$floor_plan_count]['floor_plan'] = $floor_plan_photo->id;
-
-//                    echo $floor_plan_photo->id;
                 }
                 $floor_plan_count++;
             }
@@ -196,8 +188,6 @@ class AdminDevelopmentsController extends Controller
                 }
             }
         }
-
-            //        dd( Input::file('house_img'));
 
         if (Input::hasFile('house_img')) {
             $count = 0;
@@ -226,15 +216,7 @@ class AdminDevelopmentsController extends Controller
         $dev_id = $development->id;
         $development_insert = Development::where('id', '=', $dev_id)->first();
 
-//        return $supplier_id;
-
-
         for($z = 0; $z< count($supplier_id); $z++){
-//            $certificates = CertificateRequired::where('certificate_category_id', '=', $cert_name[$z])->get();
-
-//            echo $dev_id.'<br>';
-//            echo $supplier_id[$z].'<hr>';
-
             if($supplier_id[$z] !== ''){
                 $supplier = Supplier::where('user_id', $supplier_id[$z])->first();
 
@@ -282,9 +264,6 @@ class AdminDevelopmentsController extends Controller
      */
     public function show($id)
     {
-        //
-//        return $id;
-
         $development = Development::with('suppliers')->where('id', $id)->first();
         $plots = Plot::where('development_id', $id)->get();
         $num_of_plots_available = Plot::where('development_id', $id)->get();
@@ -302,23 +281,9 @@ class AdminDevelopmentsController extends Controller
             $items[] = $details;
         }
 
-//        return count($items);
-
         for($i = 0; $i < count($items); $i++){
-//            echo $items[$i];
             $assigned[] = $items[$i];
         }
-
-//        return $assigned;
-
-//        $items->first();
-//                                                           @php($details = $supplier_details->selectionCategory->toArray())
-//
-//                                                           @foreach($details as $detail)
-//    {{$detail}}
-//
-//                                                                @php($items[] = $detail)
-//                                                           @endforeach
 
         return view('admin.developments.show', compact('plots', 'development', 'num_of_plots_available', 'houseTypes', 'supplier_types', 'suppliers', 'default', 'assigned'));
     }
@@ -397,11 +362,51 @@ class AdminDevelopmentsController extends Controller
 
     public function development($id) {
         $development = Development::findOrFail($id);
-
-         $plots = Plot::where('development_id', $id)->get();
+        $plots = Plot::where('development_id', $id)->get();
 //         $plots->where('development_id', '=', $id);
 
 
         return view('development', compact('development', 'plots'));
+    }
+
+    public function assignSupplier($devID, $id){
+        $assignedSupplier ='';
+        $previousSupplierID='';
+        $development = Development::where('id', $devID)->first();
+        $supplier_types = SelectionCategory::where('id', $id)->first();
+        $supplier_types_select = $supplier_types->pluck('category_name', 'id')->all();
+        $default = $development->suppliers()->get()->where('supplier_type', $id)->first();
+
+        if($default){
+            $assignedSupplier = Supplier::where('user_id', $default->user_id)->get();
+            $previousSupplierID = $assignedSupplier->pluck('id')->first();
+            $assignedSupplier = $assignedSupplier->pluck('supplier_company_name', 'id')->all();
+        }
+
+        $suppliers = Supplier::where('supplier_type', $id)->get()->pluck('supplier_company_name', 'id')->all();
+
+        return view('admin.developments.assignSupplier', compact('supplier_types', 'suppliers', 'supplier_types_select', 'devID', 'assignedSupplier', 'previousSupplierID'));
+    }
+
+    public function assignSupplierStore(Request $request){
+//        return $request->all();
+        $previousSupplierID = $request->previousSupplierID;
+        $supplier_id = $request->supplier_id;
+        $development_id = $request->development_id;
+        $supplier = Supplier::where('id', $supplier_id)->first();
+        $development_insert = Development::where('id', '=', $development_id)->first();
+
+        $val = $development_insert->suppliers()
+            ->wherePivot('supplier_type', $supplier->supplier_type)
+            ->wherePivot('development_id', $development_id)
+            ->updateExistingPivot($previousSupplierID, ['supplier_id' => $supplier->id]);
+
+//        echo "DONE:". $val;
+
+        if(empty($val)) {
+            $development_insert->suppliers()->attach($supplier->id, ['supplier_type' => $supplier->supplier_type]);
+        }
+
+        return redirect('/admin/developments/'.$development_id);
     }
 }

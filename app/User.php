@@ -83,6 +83,10 @@ class User extends Authenticatable
         return $this->hasOne('App\Consultant');
     }
 
+    public function supplier() {
+        return $this->hasOne('App\Supplier');
+    }
+
 
     public function isAdmin(){
         if($this->role->name  == "Administrator" && $this->is_active == 1){
