@@ -23,11 +23,6 @@
                         <div class="card">
                             <div class="panel-heading">
                                 <div class='page-header' style="margin: 0 !important;">
-                                    <div class='btn-toolbar pull-right'>
-                                        <div class='btn-group'>
-                                            <a href="{{route('admin.developments.edit', $development->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
-                                        </div>
-                                    </div>
                                     <h3>{{$development->development_name}} - Development Details</h3>
                                 </div>
                                 <div class="panel-body">
@@ -83,7 +78,8 @@
                                                         <th>SqFt</th>
                                                         <th>Phase</th>
                                                         <th>Status</th>
-                                                        <th></th>
+                                                        <th>Booking</th>
+                                                        {{--<th></th>--}}
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -98,24 +94,16 @@
                                                             <td>{{$plot->sqft}}</td>
                                                             <td>{{$plot->phases ? $plot->phases->phase_name : "SHIT"}}</td>
                                                             <td>{{$plot->status}}</td>
-                                                            <td>
-                                                                <div class="btn-group">
-                                                                    <a href="{{route('admin.plots.show', $plot->id)}}" class="btn btn-warning"><i class="fa fa-fw fa-eye fa-sm"></i></a>
-                                                                </div>
-                                                                @if(!$plot->certificates->isEmpty())
-                                                                    <div class="btn-group">
-                                                                        <a href="{{route('admin.certificates.edit', $plot->id)}}" class="btn btn-warning"><i class="fa fa-fw fa-certificate fa-sm"></i></a>
-                                                                    </div>
-                                                                @endif
-                                                                <div class="btn-group">
-                                                                    <a href="{{route('admin.plots.edit', $plot->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
-                                                                </div>
-                                                                    <div class="btn-group">
-                                                                        {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminPlotsController@destroy', $plot->id], 'id'=> 'confirm_delete_'.$plot->id]) !!}
-                                                                        {!! Form::button('<i class="fa fa-fw fa-trash"></i>', ['type'=> 'submit' ,'class'=>'btn btn-danger', 'onclick'=>'confirmDelete(' .$plot->id .')']) !!}
-                                                                        {!! Form::close() !!}
-                                                                    </div>
-                                                            </td>
+                                                            @if($plot->status == 'Sold' || $plot->status == 'Reserved')
+                                                                <td><a href="" class="btn btn-danger" disabled="disabled">Not Available</a> </td>
+                                                            @else
+                                                                <td><a href="{{route('booking.create', $plot->id)}}" class="btn btn-primary" >Book Property Here</a> </td>
+                                                            @endif
+                                                            {{--<td>--}}
+                                                                {{--<div class="btn-group">--}}
+                                                                    {{--<a href="{{route('admin.plots.show', $plot->id)}}" class="btn btn-warning"><i class="fa fa-fw fa-eye fa-sm"></i></a>--}}
+                                                                {{--</div>--}}
+                                                            {{--</td>--}}
                                                         </tr>
                                                         @php ($count++)
                                                     @endforeach
@@ -133,7 +121,6 @@
                                                 <th>House Type Description</th>
                                                 <th>House Image</th>
                                                 <th>Floor Plan Image</th>
-                                                <th></th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -163,19 +150,6 @@
                                                                 <img src="{{$houseType->floor_plan ? $houseType->photo->file : 'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
                                                             </a>
                                                         </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <a href="{{route('admin.housetypes.show', $houseType->id)}}" class="btn btn-warning"><i class="fa fa-fw fa-eye fa-sm"></i></a>
-                                                            </div>
-                                                            <div class="btn-group-vertical">
-                                                                <a href="{{route('admin.housetypes.edit', $houseType->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
-                                                            </div>
-                                                            <div class="btn-group-vertical">
-                                                                {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminHouseTypesController@destroy', $houseType->id], 'id'=> 'confirm_delete_'.$houseType->id]) !!}
-                                                                {!! Form::button('<i class="fa fa-fw fa-trash"></i>', ['type'=> 'submit' ,'class'=>'btn btn-danger', 'onclick'=>'confirmDelete(' .$houseType->id .')']) !!}
-                                                                {!! Form::close() !!}
-                                                            </div>
-                                                        </td>
                                                     </tr>
                                                     @php($count++)
 
@@ -186,63 +160,6 @@
                                     </div>
                                     <div role="tabpanel" class="tab-pane" id="phases">
                                         HI0
-                                    </div>
-
-                                    <div role="tabpanel" class="tab-pane" id="suppliers">
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th>Supplier Type</th>
-                                                <th>Supplier Name</th>
-                                                <th></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {{--TODO: Remove foreach variables into controller?--}}
-                                            @php($arr = array())
-                                            @php($assigned_supplier_arr = array())
-
-                                            @foreach($supplier_types as $type)
-                                                @php($arr[] = $type)
-                                            @endforeach
-
-                                            @foreach($development->suppliers as $assigned_supplier)
-                                                @php($assigned_supplier_arr[] = $assigned_supplier)
-                                            @endforeach
-
-                                            @php($count = 0)
-                                            @foreach($arr as $type )
-                                                @php($bool = false)
-                                                <tr>
-                                                    <td>
-                                                        {{$type->category_name}}
-                                                    </td>
-                                                    @php($count2=0)
-                                                    @foreach($assigned as $assigned_category)
-                                                        @if($type->category_name == $assigned_category['category_name'])
-                                                            <td>{{$assigned_supplier_arr[$count2]->supplier_company_name}}</td>
-                                                            @php($bool = true)
-                                                            <td>
-                                                                <a href="{{route('admin.developments.assignSupplier', [$development->id, $type->id])}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
-                                                            </td>
-                                                            {{--@elseif($bool !== true)--}}
-                                                            {{--@php($bool = false)--}}
-                                                        @endif
-
-                                                        @php($count2++)
-                                                    @endforeach
-
-                                                    @if($bool == false && $count <= count($arr))
-                                                        <td style="color: #ff0000;">{{"No supplier assigned to this category"}}</td>
-                                                        <td>
-                                                            <a href="{{route('admin.developments.assignSupplier', [$development->id, $type->id])}}" class="btn btn-success"><i class="fa fa-fw fa-plus"></i></a>
-                                                        </td>
-                                                    @endif
-                                                </tr>
-                                                @php($count++)
-                                            @endforeach
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -267,7 +184,7 @@
             $('#myTable').DataTable({
                 responsive: true,
                 "columnDefs": [
-                    { "orderable": false, "targets": 6 }
+                    { "orderable": false, "targets": 5 }
                 ]
 
             });

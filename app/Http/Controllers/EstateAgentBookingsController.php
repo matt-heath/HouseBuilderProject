@@ -6,6 +6,7 @@ use App\Booking;
 use App\Development;
 use App\HouseType;
 use App\Plot;
+use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -36,10 +37,12 @@ class EstateAgentBookingsController extends Controller
     {
         //
         $users = User::where('role_id', 4 )->pluck('name', 'id')->all();
-//        $plots = Plot::where('id', $id)->pluck('development_id');
+        $plot = Plot::where('id', $id)->first();
+        $image = HouseType::where('id', $plot->house_type)->first();
+        $roles = Role::where('id', 4)->pluck('name','id')->all();
 //        $developments = Development::where('id', $plots)->get();
 //        $houseTypes = HouseType::pluck('house_type_name', 'id')->all();
-        return view('/estateagent/booking/create', compact('users','id', 'plots', 'development_name'));
+        return view('/estateagent/booking/create', compact('users','id', 'plot', 'development_name', 'image', 'roles'));
     }
 
     /**

@@ -13,7 +13,9 @@
 
     <!-- Bootstrap Core CSS -->
     {{--<link href="{{asset('css/app.css')}}" rel="stylesheet"> --}}{{--looks for app.css--}}
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
+    {{--<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">--}}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.16/b-1.5.1/b-colvis-1.5.1/b-flash-1.5.1/b-html5-1.5.1/b-print-1.5.1/cr-1.4.1/fc-3.2.4/r-2.2.1/rr-1.2.3/sl-1.2.5/datatables.min.css"/>
+
     <link href="{{asset('css/webLibs.css')}}" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

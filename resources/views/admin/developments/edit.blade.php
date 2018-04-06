@@ -26,13 +26,13 @@
             </div>
 
             <div class="form-group">
-                {!! Form::label('development_num_plots', 'Number of Plots:')!!}
-                {!! Form::number('development_num_plots', null, ['class'=>'form-control']) !!}
+                {!! Form::label('development_description', 'Development Description:')!!}
+                {!! Form::textarea('development_description', null, ['class'=>'form-control','rows' => 3, 'cols' => 40]) !!}
             </div>
 
             <div class="form-group">
-                {!! Form::label('development_description', 'Development Description:')!!}
-                {!! Form::textarea('development_description', null, ['class'=>'form-control','rows' => 3, 'cols' => 40]) !!}
+                {!! Form::label('estate_agent_responsible', 'Estate Agent Responsible:')!!}
+                {!! Form::select('estate_agent_responsible', $default ? $default + $estate_select : ['' => 'Select Estate Agent Responsible'] + $estate_select, null, ['class'=>'form-control consultantSelect select'])!!}
             </div>
 
             <div class="form-group">

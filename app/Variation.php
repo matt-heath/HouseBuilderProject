@@ -26,4 +26,15 @@ class Variation extends Model
     public function photo (){
         return $this->belongsTo('App\Photo', 'extra_img', 'id');
     }
+    public function houseTypes (){
+        return $this->belongsToMany('App\HouseType')->withPivot('house_type_id', 'variation_id');
+    }
+
+    public function booking(){
+        return $this->belongsToMany('App\Booking')->withPivot('variation_id', 'booking_id');
+    }
+
+//    public function category(){
+//        return $this->belongsToMany('App\SelectionCategory')->withPivot('variation_id', 'booking_id');
+//    }
 }

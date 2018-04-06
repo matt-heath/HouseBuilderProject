@@ -7,6 +7,7 @@ use App\HouseType;
 use App\Http\Requests\HouseTypesRequest;
 use App\Photo;
 use App\Plot;
+use App\SelectionCategory;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -85,6 +86,27 @@ class AdminHouseTypesController extends Controller
     public function show($id)
     {
         //
+        $houseType = HouseType::where('id', $id)->first();
+        $supplier_categories = SelectionCategory::all();
+
+        $development = Development::where('id', $houseType->development_id)->first();
+        $assignedSuppliers = $development->suppliers()->get();
+
+        $variation_ids = $houseType->variations()->get();
+
+        $items = array();
+        foreach ($variation_ids as $variation_id){
+//            echo $variation_id->pivot;
+
+            $item = $variation_id->pivot->variation_id;
+
+                $items[] = $item;
+        }
+
+//        return $items;
+//        return null;
+
+        return view('admin.housetypes.show', compact('houseType', 'supplier_categories', 'assignedSuppliers', 'variation_ids','items'));
     }
 
     /**

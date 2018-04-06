@@ -95,6 +95,13 @@ class User extends Authenticatable
         return false;
     }
 
+    public function isBuyer(){
+        if($this->role->name  == "Buyer" && $this->is_active == 1){
+            return true;
+        }
+        return false;
+    }
+
     public function isEstateAgent(){
         if($this->role->name  == "Estate Agent" && $this->is_active == 1){
             return true;

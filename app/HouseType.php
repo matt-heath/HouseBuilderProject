@@ -29,4 +29,8 @@ class HouseType extends Model
     public function house_photo (){
         return $this->belongsTo('App\Photo', 'house_img');
     }
+
+    public function variations() {
+        return $this->belongsToMany('App\Variation')->withPivot('house_type_id', 'variation_id');
+    }
 }

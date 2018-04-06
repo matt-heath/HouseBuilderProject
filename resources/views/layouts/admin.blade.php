@@ -9,13 +9,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin</title>
+    <title>House Building Portal</title>
 
     <!-- Bootstrap Core CSS -->
 
     <link href="{{asset('css/libs.css')}}" rel="stylesheet"> {{--looks for minified libs.css--}}
     <link href="{{asset('css/app.css')}}" rel="stylesheet"> {{--looks for app.css--}}
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.5/css/select.dataTables.min.css">
 
 
 
@@ -298,6 +299,21 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+
+                    @elseif(Auth::user()->isBuyer())
+                        <li>
+                            <a href="/buyer"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+
+                        <li>
+                            <a href="{{route('buyer.plot.index')}}"><i class="fa fa-home fa-fw"></i> Your House</a>
+                            {{--<ul class="nav nav-second-level">--}}
+                                {{--<li>--}}
+                                    {{--<a href="{{route('externalconsultant.plots.index')}}">All Plots</a>--}}
+                                {{--</li>--}}
+                            {{--</ul>--}}
+                            <!-- /.nav-second-level -->
+                        </li>
                     @endif
 
 
@@ -419,7 +435,8 @@
 <script src="{{asset('js/libs.js')}}"></script>
 @include('includes.alerts')
 <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+{{--<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>--}}
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.16/b-1.5.1/b-colvis-1.5.1/b-flash-1.5.1/b-html5-1.5.1/b-print-1.5.1/cr-1.4.1/fc-3.2.4/r-2.2.1/rr-1.2.3/sl-1.2.5/datatables.min.js"></script>
 
 
 @yield('script')

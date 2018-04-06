@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Session;
+use Prologue\Alerts\Facades\Alert;
 
 class EstateAgentUsersController extends Controller
 {
@@ -151,5 +152,44 @@ class EstateAgentUsersController extends Controller
         Session::flash('deleted_user', 'The user has been deleted');
 
         return redirect('/estateagent/users'); // upon deletion, redirect to users table.
+    }
+
+    public function addBuyer(Request $request){
+        $all = $request->all();
+
+        if(isset($all)) {
+            $addUserModel = new User();
+
+            if (trim($request->password) == '') {
+
+                $input = $request->except('password');
+
+            } else {
+                $input = $request->except('consultant_description');
+
+                $this->validate($request, [
+                    'name' => 'required|max:255',
+                    'email' => 'required|email|max:255|unique:users',
+                    'password' => 'required|min:6',
+                ]);
+
+                $input['password'] = bcrypt($request->password);
+
+            }
+            //        return $input;
+
+            $addUserModel->fill($input);
+            $addUserModel->save();
+
+            Alert::success('User added to the system.')->flash();
+        }
+
+//        $data = User::where('role_id', '=', 5)->all();
+
+//        $consultants = User::where('role_id', '=', 5)->get()->pluck('consultant_details', 'id')->all();
+
+//        return $data;
+//        TODO:: add success notification
+        return response()->json($addUserModel);
     }
 }

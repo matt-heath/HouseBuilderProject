@@ -39,4 +39,8 @@ class Development extends Model
     public function suppliers (){
         return $this->belongsToMany('App\Supplier')->withPivot('development_id', 'supplier_id', 'supplier_type');
     }
+
+    public function estateAgent (){
+        return $this->belongsToMany('App\EstateAgent')->withPivot('development_id', 'estate_agent_id');
+    }
 }

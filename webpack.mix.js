@@ -8,7 +8,7 @@ mix.styles([
     'resources/assets/css/libs/bootstrap.css',
     'resources/assets/css/libs/font-awesome.css',
     'resources/assets/css/libs/metisMenu.css',
-    'resources/assets/css/libs/sb-admin-2.css',
+    'resources/assets/css/libs/sb-admin-2.min.css',
     'resources/assets/css/libs/lightbox.css',
     'resources/assets/css/libs/select2.min.css',
     'resources/assets/css/libs/dropzone.min.css',

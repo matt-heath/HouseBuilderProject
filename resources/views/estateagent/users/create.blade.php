@@ -1,11 +1,10 @@
 @extends('layouts.admin')
 
-@section('content')
-
-
+@section('title')
     <h1>Create User Account (Buyer)</h1>
+@endsection
 
-
+@section('content')
     {!! Form::open(['method'=>'POST', 'action'=> 'EstateAgentUsersController@store']) !!}
 
 

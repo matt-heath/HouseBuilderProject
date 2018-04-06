@@ -34,7 +34,7 @@
                 {{--{{$houseType}}--}}
                 <tr>
                     <td>
-                        {{$houseType->development_id ? $houseType->development->development_name : "Development Not Set" }}
+{{--                        {{$houseType->development_id ? $houseType->development->development_name : "Development Not Set" }}--}}
                     </td>
                     <td>
                         {{$houseType->house_type_name}}

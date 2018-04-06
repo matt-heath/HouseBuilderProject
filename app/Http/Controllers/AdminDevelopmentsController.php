@@ -7,6 +7,7 @@ use App\CertificateCategory;
 use App\CertificateRequired;
 use App\Consultant;
 use App\Development;
+use App\EstateAgent;
 use App\HouseType;
 use App\Http\Requests\DevelopmentsCreateRequest;
 use App\Phases;
@@ -63,6 +64,7 @@ class AdminDevelopmentsController extends Controller
         //
         $roles = Role::where('id', '=', 5)->pluck('name', 'id')->all();
         $supplierRoles = Role::where('id', '=', 3)->pluck('name', 'id')->all();
+        $estate_select = Role::where('id', '=', 2)->pluck('name', 'id')->all();
         $consultants = User::where('role_id', '=', 5)->get()->pluck('consultant_details', 'id')->all();
 
         $namesArray = [
@@ -75,12 +77,13 @@ class AdminDevelopmentsController extends Controller
 
         $supplier_types = SelectionCategory::all();
         $suppliers = User::where('role_id', '=', 3)->get()->pluck('supplier_details', 'id')->all();
+        $estate_select = User::where('role_id', '=', 2)->get()->pluck('supplier_details', 'id')->all();
         $certificates = CertificateCategory::whereIn('name', $namesArray)->get();
         $supplier_types_select = $supplier_types->pluck('category_name', 'id')->all();
 
 //        return $consultantEmail = User::where('id', $consultants['id'])->pluck('email')->all();
 
-        return view('admin.developments.create', compact('roles', 'consultants', 'certificates', 'supplier_types', 'suppliers', 'supplierRoles', 'supplier_types_select'));
+        return view('admin.developments.create', compact('roles', 'consultants', 'certificates', 'supplier_types', 'suppliers', 'supplierRoles', 'supplier_types_select', 'estate_select'));
     }
 
     /**
@@ -271,6 +274,7 @@ class AdminDevelopmentsController extends Controller
         $supplier_types = SelectionCategory::all();
         $suppliers = User::where('role_id', '=', 3)->get()->pluck('supplier_details', 'id')->all();
         $default = $development->suppliers()->pluck('supplier_company_name','id');
+        $estate_agent = $development->estateAgent()->first();
 
 
         $items = array();
@@ -285,7 +289,7 @@ class AdminDevelopmentsController extends Controller
             $assigned[] = $items[$i];
         }
 
-        return view('admin.developments.show', compact('plots', 'development', 'num_of_plots_available', 'houseTypes', 'supplier_types', 'suppliers', 'default', 'assigned'));
+        return view('admin.developments.show', compact('plots', 'development', 'num_of_plots_available', 'houseTypes', 'supplier_types', 'suppliers', 'default', 'assigned', 'estate_agent'));
     }
 
     /**
@@ -300,7 +304,13 @@ class AdminDevelopmentsController extends Controller
 
         $development = Development::findOrFail($id);
 
-        return view('admin.developments.edit', compact('development'));
+        $default = $development->estateAgent()->first();
+        $default = User::where('id', $default->user_id)->get()->pluck('supplier_details', 'id')->all();
+        $estate_select = User::where('role_id', '=', 2)->get()->pluck('supplier_details', 'id')->all();
+
+
+
+        return view('admin.developments.edit', compact('development', 'estate_select', 'default'));
     }
 
     /**
@@ -310,12 +320,23 @@ class AdminDevelopmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(DevelopmentsCreateRequest $request, $id)
+    public function update(Request $request, $id)
     {
         //
         $input = $request->all();
 
-        $development = Development::findOrFail($id);
+//        return $input['estate_agent_responsible'];
+
+        $previousEstateAgentID='';
+        $development = Development::where('id', $id)->first();
+        $default = $development->estateAgent()->get()->first();
+
+        if($default){
+            $assignedEstateAgent = EstateAgent::where('id', $default->id)->get();
+            $previousEstateAgentID = $assignedEstateAgent->pluck('id')->first();
+        }
+
+        $development = Development::where('id', $id)->first();
 
         if($file = $request->file('photo_id')){
 
@@ -329,11 +350,23 @@ class AdminDevelopmentsController extends Controller
 
         }
 
+//        $estate_select = User::where('role_id', '=', 2)->get()->pluck('supplier_details', 'id')->all();
+
+        $previousEstateAgentID = $assignedEstateAgent->pluck('id')->first();
+
+        $newEstateAgent = EstateAgent::where('user_id', $input['estate_agent_responsible'])->pluck('id')->first();
+
 //        dd(Auth::user()->developments()->whereId($id)->first()->update($input);
+
+//        return $newEstateAgent;
 
         $development->update($input);
 
-        return redirect('/admin/developments');
+        $val = $development->estateAgent()
+            ->updateExistingPivot($previousEstateAgentID, ['estate_agent_id' => $newEstateAgent]);
+
+        return "DONE";
+//        return redirect('/admin/developments/'+$id+'/edit');
     }
 
     /**

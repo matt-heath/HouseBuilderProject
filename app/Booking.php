@@ -30,4 +30,8 @@ class Booking extends Model
     public function plot(){
         return $this->hasOne('App\Plot', 'id', 'plot_id');
     }
+
+    public function variations(){
+        return $this->belongsToMany('App\Variation')->withPivot('booking_id', 'variation_id');
+    }
 }

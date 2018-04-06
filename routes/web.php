@@ -45,7 +45,8 @@ Route::group(['middleware'=>'admin'], function(){
         'create'=>'admin.developments.create',
         'store'=> 'admin.developments.store',
         'edit'=> 'admin.developments.edit',
-        'show' => 'admin.developments.show'
+        'show' => 'admin.developments.show',
+        'update' => 'admin.developments.update'
     ]]);
 
     Route::resource('admin/plots', 'AdminPlotsController',  ['names'=>[
@@ -60,7 +61,8 @@ Route::group(['middleware'=>'admin'], function(){
         'index'=>'admin.housetypes.index',
         'create'=>'admin.housetypes.create',
         'store'=> 'admin.housetypes.store',
-        'edit'=> 'admin.housetypes.edit'
+        'edit'=> 'admin.housetypes.edit',
+        'show'=> 'admin.housetypes.show'
     ]]);
 
     Route::resource('admin/certificates', 'AdminCertificatesController', ['names'=>[
@@ -119,6 +121,7 @@ Route::group(['middleware'=>'admin'], function(){
     Route::get('admin/variations/create/{id}', ['as'=>'admin.variations.create', 'uses'=>'VariationController@createVariation']);
     Route::get('admin/developments/{devID}/assignSupplier/{id}', ['as'=>'admin.developments.assignSupplier', 'uses'=> 'AdminDevelopmentsController@assignSupplier']);
     Route::post('/assignSupplierStore', ['as'=>'admin.developments.assignSupplierStore', 'uses'=> 'AdminDevelopmentsController@assignSupplierStore']);
+    Route::post('/assignToHouseType', ['as'=>'admin.housetypes.assignToHouseType', 'uses'=> 'VariationController@assignToHouseType']);
 });
 
 
@@ -140,7 +143,8 @@ Route::group(['middleware'=>'estateagent'], function() {
         'index'=>'estateagent.developments.index',
         'create'=>'estateagent.developments.create',
         'store'=> 'estateagent.developments.store',
-        'edit'=> 'estateagent.developments.edit'
+        'edit'=> 'estateagent.developments.edit',
+        'show'=> 'estateagent.developments.show'
     ]]);
 
     Route::resource('estateagent/booking', 'EstateAgentBookingsController', ['names'=>[
@@ -153,6 +157,8 @@ Route::group(['middleware'=>'estateagent'], function() {
     Route::get('estateagent/viewplots/{id}', ['as'=>'development.viewplots', 'uses'=>'EstateAgentDevelopmentsController@viewplots']);
     Route::get('estateagent/createbooking/{id}', ['as'=>'booking.create', 'uses'=>'EstateAgentBookingsController@create']);
     Route::get('/findUsersEmail', 'EstateAgentBookingsController@findUsersEmail');
+    Route::post('/addBuyer', 'EstateAgentUsersController@addBuyer');
+
 });
 
 Route::group(['middleware'=>'externalconsultant'], function() {
@@ -176,6 +182,24 @@ Route::group(['middleware'=>'externalconsultant'], function() {
     ]]);
 });
 
+Route::group(['middleware'=>'buyer'], function() {
+    Route::get('/buyer', function(){
+        return view('buyer.index');
+    });
+
+    Route::resource('buyer/plot', 'BuyerPlotController', ['names'=>[
+        'index'=>'buyer.plot.index',
+//        'create'=>'externalconsultant.plots.create',
+//        'store'=> 'externalconsultant.plots.store',
+//        'edit'=> 'externalconsultant.plots.edit'
+//        'show' => 'buyer.plot.show'
+    ]]);
+
+    Route::resource('buyer/variations', 'BuyerVariationController', ['names'=> [
+        'edit'=> 'buyer.variations.edit'
+    ]]);
+
+});
 Route::get('/home', 'HomeController@index');
 Route::get('/getRejectionReasons', 'AdminCertificatesController@getRejectionReasons');
 
