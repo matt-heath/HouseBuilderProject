@@ -36,10 +36,11 @@ class LoginController extends Controller
             return redirect()->intended('/estateagent');
         }elseif(Auth::user()->isExternalConsultant()) {
             return redirect()->intended('/externalconsultant');
+        }elseif(Auth::user()->isBuyer()){
+            return redirect()->intended('/buyer');
         }else{
             return redirect()->intended('/');
         }
-
     }
 
     /**

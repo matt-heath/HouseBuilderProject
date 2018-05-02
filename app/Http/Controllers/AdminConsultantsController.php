@@ -19,17 +19,13 @@ class AdminConsultantsController extends Controller
 
     public function index()
     {
-//        $certificates = CertificateCategory::pluck('name', 'id')->all();
         $certificatesCategory = CertificateCategory::where('name', 'Tradesmen certificates')->get()->pluck('id');
         $certificates = CertificateRequired::where('certificate_category_id', $certificatesCategory)->get();
-//        $consultants = Consultant::all();
         $consultants = User::where('role_id', '=', 5)->get()->pluck('consultant_details', 'id')->all();
-
         $developments = Development::pluck('development_name', 'id')->all();
-        $roles = Role::where('id', '=', 5)->pluck('name', 'id')->all();
+        $roles = Role::where('id', '=', 5)->pluck('name', 'id')->first();
 
         return view('admin.consultants.index', compact( 'certificates', 'consultants', 'developments', 'roles'));
-
     }
 
     public function store()

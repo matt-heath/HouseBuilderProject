@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="row">
-        {!! Form::open(['method'=>'POST', 'action'=>'VariationController@store', 'files' => true])!!}
+        {!! Form::open(['method'=>'POST', 'action'=>'VariationController@store', 'files' => true, 'data-toggle'=>'validator'])!!}
 
         <div class="form-group">
             {!! Form::label('category_id', 'Development Name:')!!}
@@ -16,27 +16,30 @@
         <div class="form-group">
             {{--{{ $selectionTypes }}--}}
             {!! Form::label('selection_type_id', 'Selection Type:')!!}
-            {!! Form::select('selection_type_id', [''=>'Choose Type'] + $selectionTypes->toArray(), 'default', ['class'=>'form-control', 'id'=>'developments', 'style'=>'height: 34px !important']) !!}
+            {!! Form::select('selection_type_id', [''=>'Choose Type'] + $selectionTypes->toArray(), 'default', ['class'=>'form-control', 'id'=>'developments', 'style'=>'height: 34px !important', 'required']) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label('name', 'Variation Name:')!!}
-            {!! Form::text('name', null, ['class'=>'form-control']) !!}
+            {!! Form::text('name', null, ['data-error' => "Please enter a name",'class'=>'form-control', 'required']) !!}
+            <div class="help-block with-errors"></div>
         </div>
 
         <div class="form-group">
             {!! Form::label('description', 'Variation Description:')!!}
-            {!! Form::textarea('description', null, ['class'=>'form-control']) !!}
+            {!! Form::textarea('description', null, ['data-error' => "Please enter a description",'class'=>'form-control', 'required']) !!}
+            <div class="help-block with-errors"></div>
         </div>
 
         <div class="form-group">
             {!! Form::label('price', 'Price:')!!}
-            {!! Form::text('price', null, ['class'=>'form-control']) !!}
+            {!! Form::number('price', null, ['data-error' => "Please enter a price",'class'=>'form-control', 'required']) !!}
+            <div class="help-block with-errors"></div>
         </div>
 
         <div class="form-group">
             {!! Form::label('extra_img', 'Variation Image:')!!}
-            {!! Form::file('extra_img', null, ['class'=>'form-control']) !!}
+            {!! Form::file('extra_img', null, ['data-error' => "Please upload a image",'class'=>'form-control']) !!}
         </div>
 
         <div class="form-group">

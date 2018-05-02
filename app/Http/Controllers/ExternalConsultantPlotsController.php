@@ -137,37 +137,23 @@ class ExternalConsultantPlotsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-//        return $request->all();
-
-//        return $id;
-
         $plots = Plot::with('certificates')->where('id', $id)->get();
-
         $status = $request->status;
 
         if($status === 'yes'){
             $status = 'Property being inspected';
-
             foreach($plots as $plot){
                 foreach($plot->certificates as $certificate){
                     $certificate = $certificate->where('build_status', 'Ready for inspection')->get();
                 }
             }
-
             for($i = 0; $i < count($certificate); $i++){
                 $certificate[$i]->build_status = $status;
                 $certificate[$i]->save();
             }
-
-//            $plot = Plot::find($id);
-//
-//            $plot->update(['build_status' => $status]);
         }else{
-//          TODO:: return redirect back a page
-            return redirect('/externalconsultant/plots');
+            return redirect()->back();
         }
-
         return redirect('/externalconsultant/plots');
     }
 

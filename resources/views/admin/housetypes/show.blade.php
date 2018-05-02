@@ -92,14 +92,18 @@
                     @foreach($assignedSuppliers as $value)
                         {{--{{$value}}--}}
                         @if($first)
-                            <li role="presentation" class="active"><a href="#{{$count}}" aria-controls="{{$count}}"
-                                                                      role="tab"
-                                                                      data-toggle="tab">{{$value->selectionCategory->category_name}}
+                            <li role="presentation" class="active"><a
+                                        href="#{{$value->selectionCategory->category_name}}"
+                                        aria-controls="{{$value->selectionCategory->category_name}}"
+                                        role="tab"
+                                        data-toggle="tab">{{$value->selectionCategory->category_name}}
                                     ({{$value->supplier_company_name}})</a></li>
                             @php($first = false)
                             @php($count++)
                         @else
-                            <li role="presentation"><a href="#{{$count}}" aria-controls="{{$count}}" role="tab"
+                            <li role="presentation"><a href="#{{$value->selectionCategory->category_name}}"
+                                                       aria-controls="{{$value->selectionCategory->category_name}}"
+                                                       role="tab"
                                                        data-toggle="tab">{{$value->selectionCategory->category_name}}
                                     ({{$value->supplier_company_name}})</a></li>
                             @php($count++)
@@ -110,141 +114,149 @@
                 <!-- Tab panes -->
 
                 @php($count1 = 0)
-                @foreach($assignedSuppliers as $value)
+                {!! Form::open(array('action' => 'VariationController@assignToHouseType', 'method' => 'post')); !!}
+                <div class="tab-content">
+                    @php($firstTab = true)
+                    @foreach($assignedSuppliers as $value)
+                        @if($firstTab)
+                            <div role="tabpanel" class="tab-pane active"
+                                 id="{{$value->selectionCategory->category_name}}">
+                                @php($firstTab = false)
+                                @else
+                                    <div role="tabpanel" class="tab-pane"
+                                         id="{{$value->selectionCategory->category_name}}">
+                                        @endif
+                                        <div class="table-responsive">
+                                            <table id="myTable" width="100%"
+                                                   class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Variation Name</th>
+                                                    <th>Type</th>
+                                                    <th>Description</th>
+                                                    <th>Price</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($value->variations as $variation)
+                                                    {{--{{$variation}}--}}
+                                                    @foreach($variation->selectionType as $type)
+                                                        {{--{{$type->type_name}}--}}
+                                                        @php($typeName = $type->type_name)
+                                                    @endforeach
 
-                    {!! Form::open(array('action' => 'VariationController@assignToHouseType', 'method' => 'post')); !!}
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="{{$count1}}">
-                            <div class="table-responsive">
-                                <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Variation Name</th>
-                                        <th>Type</th>
-                                        <th>Description</th>
-                                        <th>Price</th>
-                                        <th>Status</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($value->variations as $variation)
-                                        {{--{{$variation}}--}}
-                                        @foreach($variation->selectionType as $type)
-                                            {{--{{$type->type_name}}--}}
-                                            @php($typeName = $type->type_name)
-                                        @endforeach
+                                                    {{--{{$houseType}}--}}
+                                                    {{--{{$houseType->variations()->variation_id}}--}}
+                                                    <tr>
+                                                        @if(in_array($variation->id, $items))
+                                                            <td>{!! Form::checkbox('variations[]', $variation->id, true); !!}</td>
 
-                                        {{--{{$houseType}}--}}
-                                        {{--{{$houseType->variations()->variation_id}}--}}
-                                        <tr>
-                                            @if(in_array($variation->id, $items))
-                                                <td>{!! Form::checkbox('variations[]', $variation->id, true); !!}</td>
+                                                        @else
+                                                            <td>{!! Form::checkbox('variations[]', $variation->id); !!}</td>
+                                                        @endif
 
-                                            @else
-                                                <td>{!! Form::checkbox('variations[]', $variation->id); !!}</td>
-                                            @endif
-
-                                                {{--<td>{{$val}}</td>--}}
-                                                {{--@foreach($val->var_id as $value)--}}
-                                                    {{--{{$value}}--}}
-                                                {{--@endforeach--}}
+                                                        {{--<td>{{$val}}</td>--}}
+                                                        {{--@foreach($val->var_id as $value)--}}
+                                                        {{--{{$value}}--}}
+                                                        {{--@endforeach--}}
 
 
-                                            {{--@if(in_array($variation->id, $items) )--}}
-                                                {{--<td>{{"HI"}}</td>--}}
-                                            {{--@endif--}}
+                                                        {{--@if(in_array($variation->id, $items) )--}}
+                                                        {{--<td>{{"HI"}}</td>--}}
+                                                        {{--@endif--}}
 
-                                            <td>{{$typeName}}</td>
-                                            <td>{{$variation->name}}</td>
-                                            <td>{{$variation->description}}</td>
-                                            <td>£{{$variation->price}}</td>
-                                            <td>
-                                                <a href="{{$variation->extra_img ? $variation->photo->file : 'http://placehold.it/400x400' }} "
-                                                   data-lightbox="image-1"
-                                                   data-title="Example image for: {{$variation->name}}">
-                                                    <img src="{{$variation->extra_img ? $variation->photo->file : 'http://placehold.it/400x400' }}"
-                                                         class="img-responsive img-rounded" alt="">
-                                                </a>
-                                            </td>
-                                        </tr>
+                                                        <td>{{$typeName}}</td>
+                                                        <td>{{$variation->name}}</td>
+                                                        <td>{{$variation->description}}</td>
+                                                        <td>£{{$variation->price}}</td>
+                                                        <td>
+                                                            <a href="{{$variation->extra_img ? $variation->photo->file : 'http://placehold.it/400x400' }} "
+                                                               data-lightbox="image-1"
+                                                               data-title="Example image for: {{$variation->name}}">
+                                                                <img src="{{$variation->extra_img ? $variation->photo->file : 'http://placehold.it/400x400' }}"
+                                                                     class="img-responsive img-rounded" alt="">
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                            <div class="form-group">
+                                                {!! Form::text('house_type_id', $houseType->id, ['class'=>'form-control hidden', 'name'=>'house_type_id']) !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @php($count1++)
                                     @endforeach
-                                    </tbody>
-                                </table>
-                                <div class="form-group">
-                                    {!! Form::text('house_type_id', $houseType->id, ['class'=>'form-control hidden', 'name'=>'house_type_id']) !!}
-                                </div>
                             </div>
-                        </div>
-                    </div>
-                    {!! Form::submit('Next'); !!}
-                    {!! Form::close(); !!}
-                    @php($count1++)
-                @endforeach
+                </div>
             </div>
         </div>
-    </div>
-@endsection
+        {!! Form::submit('Next'); !!}
+        {!! Form::close(); !!}
+        @endsection
 
-@section('script')
+        @section('script')
 
-    <script>
-        $(document).ready(function () {
-            var table = $('#myTable').DataTable({
-                responsive: true,
-                "columnDefs": [
-                    {"orderable": false, "targets": [0,4]}
-                    // {"orderable" : false, "className": 'select-checkbox', 'targets': 0}
-                ],
-                // select: {
-                //     style:    'multi',
-                //     selector: 'td:first-child'
-                // },
-                // order: [[ 1, 'asc' ]]
+            <script>
+                $(document).ready(function () {
+                    var table = $('#myTable').DataTable({
+                        responsive: true,
+                        "columnDefs": [
+                            {"orderable": false, "targets": [0, 4]}
+                            // {"orderable" : false, "className": 'select-checkbox', 'targets': 0}
+                        ],
+                        // select: {
+                        //     style:    'multi',
+                        //     selector: 'td:first-child'
+                        // },
+                        // order: [[ 1, 'asc' ]]
 
-            });
-            // $('#myTable tbody').on( 'click', 'tr', function () {
-            //     $(this).toggleClass('selected');
-            // } );
-            //
-            // $('#button').click( function () {
-            //     alert( table.rows('.selected').data().length +' row(s) selected' );
-            // } );
-        });
+                    });
+                    // $('#myTable tbody').on( 'click', 'tr', function () {
+                    //     $(this).toggleClass('selected');
+                    // } );
+                    //
+                    // $('#button').click( function () {
+                    //     alert( table.rows('.selected').data().length +' row(s) selected' );
+                    // } );
+                });
 
-        function confirmDelete(id) {
-            event.preventDefault();
+                function confirmDelete(id) {
+                    event.preventDefault();
 
-            swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
-                buttonsStyling: true
-            }).then((result) => {
-                if (result.value) {
                     swal({
-                        title: 'Deleted!',
-                        text: 'Plot has been deleted.',
-                        type: 'success',
-                        showConfirmButton: false,
-                        timer: 3000
-                    }).then(function () {
-                        $("#confirm_delete_" + id).off("submit").submit()
-                    })
-                    // $("#confirm_delete_"+id).off("submit").submit()
-                    // result.dismiss can be 'cancel', 'overlay',
-                    // 'close', and 'timer'
-                } else if (result.dismiss === 'cancel') {
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'No, cancel!',
+                        buttonsStyling: true
+                    }).then((result) => {
+                        if (result.value) {
+                            swal({
+                                title: 'Deleted!',
+                                text: 'Plot has been deleted.',
+                                type: 'success',
+                                showConfirmButton: false,
+                                timer: 3000
+                            }).then(function () {
+                                $("#confirm_delete_" + id).off("submit").submit()
+                            })
+                            // $("#confirm_delete_"+id).off("submit").submit()
+                            // result.dismiss can be 'cancel', 'overlay',
+                            // 'close', and 'timer'
+                        } else if (result.dismiss === 'cancel') {
 
+                        }
+                    })
                 }
-            })
-        }
-    </script>
+            </script>
 
 @endsection
 

@@ -35,8 +35,7 @@ class EstateAgentBookingsController extends Controller
      */
     public function create($id)
     {
-        //
-        $users = User::where('role_id', 4 )->pluck('name', 'id')->all();
+        $users = User::doesntHave('booking')->where('role_id', 4 )->pluck('name', 'id')->all();
         $plot = Plot::where('id', $id)->first();
         $image = HouseType::where('id', $plot->house_type)->first();
         $roles = Role::where('id', 4)->pluck('name','id')->all();

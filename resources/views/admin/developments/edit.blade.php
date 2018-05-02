@@ -13,26 +13,30 @@
         </div>
         <div class="col-sm-6">
 
-            {!! Form::model($development, ['method'=>'PATCH', 'action'=>['AdminDevelopmentsController@update', $development->id], 'files' => true])!!}
+            {!! Form::model($development, ['method'=>'PATCH', 'action'=>['AdminDevelopmentsController@update', $development->id], 'files' => true, 'data-toggle'=>'validator'])!!}
 
             <div class="form-group">
                 {!! Form::label('development_name', 'Development Name:')!!}
-                {!! Form::text('development_name', null, ['class'=>'form-control']) !!}
+                {!! Form::text('development_name', null, ['class'=>'form-control', 'required']) !!}
+                <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group">
                 {!! Form::label('development_location', 'Development Location:')!!}
-                {!! Form::text('development_location', null, ['class'=>'form-control']) !!}
+                {!! Form::text('development_location', null, ['class'=>'form-control', 'required']) !!}
+                <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group">
                 {!! Form::label('development_description', 'Development Description:')!!}
-                {!! Form::textarea('development_description', null, ['class'=>'form-control','rows' => 3, 'cols' => 40]) !!}
+                {!! Form::textarea('development_description', null, ['class'=>'form-control','rows' => 3, 'cols' => 40, 'required']) !!}
+                <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group">
                 {!! Form::label('estate_agent_responsible', 'Estate Agent Responsible:')!!}
-                {!! Form::select('estate_agent_responsible', $default ? $default + $estate_select : ['' => 'Select Estate Agent Responsible'] + $estate_select, null, ['class'=>'form-control consultantSelect select'])!!}
+                {!! Form::select('estate_agent_responsible', $default ? $default + $estate_select : ['' => 'Select Estate Agent Responsible'] + $estate_select, null, ['class'=>'form-control consultantSelect select', 'required'])!!}
+                <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group">

@@ -33,20 +33,23 @@
     <div class="row">
         <div class="col-sm-6">
 
-            {!! Form::model($houseTypes, ['method'=>'PATCH', 'action'=> ['AdminHouseTypesController@update', $houseTypes->id], 'files' => true]) !!}
+            {!! Form::model($houseTypes, ['method'=>'PATCH', 'action'=> ['AdminHouseTypesController@update', $houseTypes->id], 'files' => true, 'data-toggle'=>'validator']) !!}
             <div class="form-group">
                 {!! Form::label('development_id', 'Development Name:')!!}
-                {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control select']) !!}
+                {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control select', 'required']) !!}
+                <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group">
                 {!! Form::label('house_type_name', 'House Type Name:')!!}
-                {!! Form::text('house_type_name', null, ['class'=>'form-control']) !!}
+                {!! Form::text('house_type_name', null, ['class'=>'form-control','required']) !!}
+                <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group">
                 {!! Form::label('house_type_desc', 'House Type Description:')!!}
-                {!! Form::textarea('house_type_desc', null, ['class'=>'form-control', 'rows' => 5, 'cols' => 40]) !!}
+                {!! Form::textarea('house_type_desc', null, ['class'=>'form-control', 'rows' => 5, 'cols' => 40, 'required']) !!}
+                <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group">

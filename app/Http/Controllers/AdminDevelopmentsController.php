@@ -23,6 +23,7 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
+use Prologue\Alerts\Facades\Alert;
 
 class AdminDevelopmentsController extends Controller
 {
@@ -94,56 +95,42 @@ class AdminDevelopmentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
-//        return $request->input();
-//        dd( $request->input() );
         $formInput = Input::all();
         $number_of_plots = $formInput['phase_num_plots'];
-
-
-
         $supplier_id = $formInput['supplier_id'];
-        $category_id = $formInput['category_name'];
-
-        $num_of_plots = 0;
-        foreach($number_of_plots as $num_plot){
-            $num_of_plots += $num_plot;
-        }
-
-
         $consultant_id = $formInput['consultant_id'];
+        $cert_name = $formInput['certificate_name'];
+        $phase_name = $formInput['phase_name'];
+        $num_of_plots = 0;
         $items = array();
         $itemsHouseType = array();
         $phases_arr = array();
         $ids = array();
+        $input = $request->all();
+        $houseTypesArray = $request->input('house_type_name');
 
-        $cert_name = $formInput['certificate_name'];
-        $phase_name = $formInput['phase_name'];
+        foreach($number_of_plots as $num_plot){
+            $num_of_plots += $num_plot;
+        }
+        $input['development_num_plots'] = $num_of_plots;
 
-
-
-        for($z = 0; $z< count($cert_name); $z++){
-            $certificates = CertificateRequired::where('certificate_category_id', '=', $cert_name[$z])->get();
-
-            foreach($certificates as $certificate){
-//                echo "<h1>".$consultant_id[$z]."</h1>";
-                for ($i = 0; $i < $num_of_plots; $i++) {
-                    $certificatesModel[$i] = new Certificate();
-
-                    $item = array(
-                        'certificate_check' => 'False',
-                        'certificate_doc' => '',
-                        'certificates_required_id' => $certificate->id
-                    );
-
-                    $certificatesModel[$i]->fill($item)->save();
-
-                    $items[] = $item;
-
-                    $ids[] = $certificatesModel[$i]->id;
-
-                    $consultant = Consultant::where('user_id', $consultant_id[$z])->first();
-                    $consultant->certificates()->attach($certificatesModel[$i]->id);
+        if(array_filter($consultant_id)){
+            for($z = 0; $z< count($cert_name); $z++){
+                $certificates = CertificateRequired::where('certificate_category_id', '=', $cert_name[$z])->get();
+                foreach($certificates as $certificate){
+                    for ($i = 0; $i < $num_of_plots; $i++) {
+                        $certificatesModel[$i] = new Certificate();
+                        $item = array(
+                            'certificate_check' => 'False',
+                            'certificate_doc' => '',
+                            'certificates_required_id' => $certificate->id
+                        );
+                        $certificatesModel[$i]->fill($item)->save();
+                        $items[] = $item;
+                        $ids[] = $certificatesModel[$i]->id;
+                        $consultant = Consultant::where('user_id', $consultant_id[$z])->first();
+                        $consultant->certificates()->attach($certificatesModel[$i]->id);
+                    }
                 }
             }
         }
@@ -155,19 +142,12 @@ class AdminDevelopmentsController extends Controller
             $houseImg = $formInput['house_img'];
         }
 
-        $input = $request->all();
-        $houseTypesArray = $request->input('house_type_name');
-
-        $input['development_num_plots'] = $num_of_plots;
-
-
         if ($file = $request->file('photo_id')) {
             $name = time() . $file->getClientOriginalName();
             $file->move('images', $name);
             $photo = Photo::create(['file' => $name]);
             $input['photo_id'] = $photo->id;
         }
-
 
         if (Input::hasFile('floor_plan')) {
             $floor_plan_count = 0;
@@ -182,7 +162,7 @@ class AdminDevelopmentsController extends Controller
                 }
                 $floor_plan_count++;
             }
-        } else {
+        }else {
             $floor_plan_count = 0;
             if (!isset(Input::file('floor_plan')[$floor_plan_count])) {
                 foreach ($houseTypesArray as $houseType) {
@@ -222,7 +202,6 @@ class AdminDevelopmentsController extends Controller
         for($z = 0; $z< count($supplier_id); $z++){
             if($supplier_id[$z] !== ''){
                 $supplier = Supplier::where('user_id', $supplier_id[$z])->first();
-
                 $development_insert->suppliers()->attach($supplier->id);
             }
         }
@@ -233,13 +212,9 @@ class AdminDevelopmentsController extends Controller
                 'phase_name' => $phase_name[$p],
                 'num_plots' => $number_of_plots[$p]
             );
-
             $phases_arr[] = $itemsPhases;
         }
-//        return $itemsPhases;
         Phases::insert($phases_arr);
-
-//        return null;
 
         for ($i = 0; $i < count($houseTypesArray); $i++) {
             $itemHouseType = array(
@@ -249,13 +224,10 @@ class AdminDevelopmentsController extends Controller
                 'floor_plan' => !isset($floor_plan[$i]) ? 0 : $item[$i]['floor_plan'],
                 'house_img' => !isset($houseImg[$i]) ? 0 : $item[$i]['house_img']
             );
-
-                $itemsHouseType[] = $itemHouseType;
+            $itemsHouseType[] = $itemHouseType;
         }
-
         HouseType::insert($itemsHouseType);
-
-//        return null;
+        Alert::success('Development added to the system.')->flash();
         return redirect('/admin/developments');
     }
 
@@ -322,11 +294,8 @@ class AdminDevelopmentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
         $input = $request->all();
-
-//        return $input['estate_agent_responsible'];
-
         $previousEstateAgentID='';
         $development = Development::where('id', $id)->first();
         $default = $development->estateAgent()->get()->first();
@@ -337,36 +306,19 @@ class AdminDevelopmentsController extends Controller
         }
 
         $development = Development::where('id', $id)->first();
-
         if($file = $request->file('photo_id')){
-
             $name = time() . $file->getClientOriginalName();
-
             $file->move('images', $name);
-
             $photo = Photo::create(['file'=> $name]);
-
             $input['photo_id'] = $photo->id;
-
         }
-
-//        $estate_select = User::where('role_id', '=', 2)->get()->pluck('supplier_details', 'id')->all();
-
         $previousEstateAgentID = $assignedEstateAgent->pluck('id')->first();
-
         $newEstateAgent = EstateAgent::where('user_id', $input['estate_agent_responsible'])->pluck('id')->first();
 
-//        dd(Auth::user()->developments()->whereId($id)->first()->update($input);
-
-//        return $newEstateAgent;
-
         $development->update($input);
-
         $val = $development->estateAgent()
             ->updateExistingPivot($previousEstateAgentID, ['estate_agent_id' => $newEstateAgent]);
-
-        return "DONE";
-//        return redirect('/admin/developments/'+$id+'/edit');
+        return redirect('/admin/developments/'.$id.'/edit');
     }
 
     /**
@@ -377,19 +329,13 @@ class AdminDevelopmentsController extends Controller
      */
     public function destroy($id)
     {
-        //
         $development = Development::findOrFail($id); // find user and delete.
-
         if($development->photo_id){
             unlink(public_path() . $development->photo->file);
         }
-
         $development->delete();
-
         Session::flash('deleted_development', 'The development has been deleted');
-
         return redirect('/admin/developments'); // upon deletion, redirect to users table.
-
     }
 
 
@@ -422,7 +368,6 @@ class AdminDevelopmentsController extends Controller
     }
 
     public function assignSupplierStore(Request $request){
-//        return $request->all();
         $previousSupplierID = $request->previousSupplierID;
         $supplier_id = $request->supplier_id;
         $development_id = $request->development_id;
@@ -434,12 +379,9 @@ class AdminDevelopmentsController extends Controller
             ->wherePivot('development_id', $development_id)
             ->updateExistingPivot($previousSupplierID, ['supplier_id' => $supplier->id]);
 
-//        echo "DONE:". $val;
-
         if(empty($val)) {
             $development_insert->suppliers()->attach($supplier->id, ['supplier_type' => $supplier->supplier_type]);
         }
-
         return redirect('/admin/developments/'.$development_id);
     }
 }

@@ -35,15 +35,9 @@ class AdminPlotsController extends Controller
      */
     public function create()
     {
-        //get all plots
         $plots = Plot::all();
-
-        //get development_name and id for use in the dropdown select box.
         $developments = Development::pluck('development_name', 'id')->all();
-
-        //get housetype name and id for use in the dropdown select box.
         $houseTypes = HouseType::pluck('house_type_name', 'id')->all();
-
         return view('admin.plots.create', compact('plots', 'developments', 'houseTypes', 'phases'));
     }
 
@@ -55,29 +49,18 @@ class AdminPlotsController extends Controller
      */
     public function store(PlotsRequest $request)
     {
-        //return all inputs from the form and assign to 'all'
         $all = $request->all();
-//        return $all;
-        //get housetype from housetype model where id = house type id and return the first house_type_name
         $houseType = HouseType::where('id', $all['house_type'])->pluck('house_type_name')->first();
-
-        //get the last entered plot name id to be used within the forloop as a starting value for $i
         $plots = Plot::where('house_type', $all['house_type'])->pluck('plot_name_id')->last();
 
         if($plots){
-            // add plots returned from query onto number of plots entered in form
             $plotsArray = $request->num_of_plots + $plots;
-
-            //add 1 onto last submitted plot_name_id to start for loop iterations.
             $plots = $plots + 1;
         }else{
             $plotsArray = $request->num_of_plots;
             $plots = 1;
         }
-
-        //replace spaces in housetype string with underscores
         $houseType = str_replace(' ', '_', $houseType);
-
         $items = array();
 
         for($i = $plots; $i <= $plotsArray; $i++){
@@ -92,12 +75,7 @@ class AdminPlotsController extends Controller
             );
             $items[] = $item;
         }
-//        var_dump( $items);
-
-//
         Plot::insert($items);
-//
-//        return null;
         return redirect('/admin/plots');
     }
 
@@ -109,13 +87,9 @@ class AdminPlotsController extends Controller
      */
     public function show($id)
     {
-        //
-//        return $id;
         $plot = Plot::where('id', $id)->first();
         $image = HouseType::where('id', $plot->house_type)->first();
         $certificates = $plot->certificates;
-
-
         return view('admin.plots.show', compact('plot', 'image', 'certificates'));
     }
 
@@ -127,14 +101,10 @@ class AdminPlotsController extends Controller
      */
     public function edit($id)
     {
-        //
-
         $plot = Plot::findOrFail($id);
         $developments = Development::pluck('development_name', 'id')->all();
         $houseType = HouseType::pluck('house_type_name', 'id')->all();
-
         $image = HouseType::where('id', $plot->house_type)->first();
-
         return view('admin.plots.edit', compact('plot', 'developments', 'houseType','image'));
     }
 
@@ -147,14 +117,9 @@ class AdminPlotsController extends Controller
      */
     public function update(PlotsRequest $request, $id)
     {
-        //
-
         $plot = Plot::findOrFail($id);
-
         $plot->update($request->all());
-
         return redirect('/admin/plots');
-
     }
 
     /**
@@ -165,10 +130,7 @@ class AdminPlotsController extends Controller
      */
     public function destroy($id)
     {
-        //
         Plot::findOrFail($id)->delete();
-
-
         return redirect('/admin/plots');
     }
 
@@ -185,7 +147,26 @@ class AdminPlotsController extends Controller
     public function findHouseTypes(Request $request) {
 //        return $request->id;
 
+//        $arr = array();
         $data = HouseType::where('development_id', $request->id)->get();
+//        $arr[] = $data;
+//
+//        $num_of_plots_available = Plot::where('development_id', $request->id)->get();
+//
+//        $count = $num_of_plots_available->count();
+//
+//        $totalPlots = Development::where('id', $request->id)->get()->pluck('development_num_plots')->first();
+//
+//        $plots_left =($totalPlots - $count);
+////        $plots_left = $totalPlots->diff($count);
+//
+//        if($plots_left == $totalPlots){
+//            $plots_left = $totalPlots;
+//        }
+//        $arr['plots_left'] = $plots_left;
+
+//        $arr = json_encode(array("a" => $data, "b" => $plots_left));
+
         return response()->json($data);
     }
 

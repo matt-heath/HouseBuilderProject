@@ -40,13 +40,8 @@ class AdminUsersController extends Controller
     public function create()
     {
         //
-
-
         $roles = Role::pluck('name','id')->all();
-
-
         return view('admin.users.create', compact('roles'));
-
     }
 
     /**
@@ -57,31 +52,21 @@ class AdminUsersController extends Controller
      */
     public function store(UsersRequest $request)
     {
-        //
-//        return $request->all();
         $userModel = new User();
-
         if(trim($request->password) == ''){
-
             $input = $request->except('password');
-
         } else{
             $input = $request->except('consultant_description', 'supplier_company_name', 'supplier_type');
-
             $this->validate($request, [
                     'name' => 'required|max:255',
                     'email' => 'required|email|max:255|unique:users',
                     'password' => 'required|min:6',
                 ]);
-
             $input['password'] = bcrypt($request->password);
-
         }
-//        return $input;
 
         $userModel->fill($input);
         $userModel->save();
-
         $consultant_user_id = $userModel->id;
         $supplier_user_id = $userModel->id;
 
@@ -92,7 +77,6 @@ class AdminUsersController extends Controller
                 'consultant_description' => $consultant_description
             ];
 
-//            return $data;
             Consultant::create($data);
         }elseif ($request->supplier_company_name){
             $supplier_company_name = $request->supplier_company_name;
@@ -103,14 +87,9 @@ class AdminUsersController extends Controller
                 'supplier_company_name' => $supplier_company_name,
                 'supplier_type' => $supplier_type
             ];
-
             Supplier::create($data);
         }
-
-
         return redirect('/admin/users');
-
-//        return $request->all();
     }
 
     /**
@@ -151,36 +130,18 @@ class AdminUsersController extends Controller
      */
     public function update(UsersEditRequest $request, $id)
     {
-
         $user = User::findOrFail($id);
-
         if(trim($request->password) == ''){
-
             $input = $request->except('password');
-
-        } else{
-
+        }else{
             $input = $request->all();
             $input['password'] = bcrypt($request->password);
-
         }
-
-//
-//        if($file = $request->file('photo_id')){
-//            $name = time() .$file->getClientOriginalName();
-//
-//            $file->move('images', $name);
-//
-//            $photo = Photo::create(['file'=>$name]);
-//
-//            $input['photo_id'] = $photo->id;
-//        }
 
         $user->update($input);
         Alert::success('User details successfully edited!')->flash();
 
         return redirect('/admin/users');
-//        return $request->all();
     }
 
     /**
@@ -192,12 +153,8 @@ class AdminUsersController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id); // find user and delete.
-//        unlink(public_path() . $user->photo->file);
-
         $user->delete();
-
         Session::flash('deleted_user', 'The user has been deleted');
-
         return redirect('/admin/users'); // upon deletion, redirect to users table.
     }
 

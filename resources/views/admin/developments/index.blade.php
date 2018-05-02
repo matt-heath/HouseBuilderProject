@@ -9,6 +9,11 @@
     @if(Session::has('deleted_development'))
         <p class="bg-danger">{{session('deleted_development')}}</p>
     @endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 
     <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
        <thead>

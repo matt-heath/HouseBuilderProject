@@ -6,45 +6,43 @@
 
 
 @section('content')
-    {!! Form::open(['method'=>'POST', 'action'=> 'AdminUsersController@store','files'=>true]) !!}
-
+    {!! Form::open(['method'=>'POST', 'action'=> 'AdminUsersController@store','files'=>true, 'data-toggle'=>'validator']) !!}
         <div class="form-group">
             {!! Form::label('name', 'Name:') !!}
-            {!! Form::text('name', null, ['class'=>'form-control'])!!}
+            {!! Form::text('name', null, ['data-error' => "Please input the users full name",'class'=>'form-control', 'required', 'placeholder'=>'Full Name'])!!}
+            <div class="help-block with-errors"></div>
         </div>
-
-
         <div class="form-group">
             {!! Form::label('email', 'Email:') !!}
-            {!! Form::email('email', null, ['class'=>'form-control'])!!}
+            {!! Form::email('email', null, ['data-error' => "Please input a valid email address",'class'=>'form-control', 'required', 'placeholder'=> 'Email Address'])!!}
+            <div class="help-block with-errors"></div>
         </div>
-
         <div class="form-group">
             {!! Form::label('role_id', 'Role:') !!}
-            {!! Form::select('role_id', [''=>'Choose Options'] + $roles , null, ['class'=>'form-control roleSelect select'])!!}
+            {!! Form::select('role_id', $roles , null, ['data-error' => "Please choose a user role", 'required','class'=>'form-control roleSelect select','placeholder' => 'Select user role'])!!}
+            <div class="help-block with-errors"></div>
         </div>
-
         <div class="form-group" id="consultantDetails"></div>
         <div class="form-group" id="supplierDetails"></div>
         <div class="form-group" id="supplierName"></div>
-
-
         <div class="form-group">
             {!! Form::label('is_active', 'Status:') !!}
-            {!! Form::select('is_active', array(1 => 'Active', 0=> 'Not Active'), 0 , ['class'=>'form-control'])!!}
+            {!! Form::select('is_active', array(1 => 'Active', 0=> 'Not Active'), 1 , ['data-error' => "Please activate/deactivate the user account", 'required', 'class'=>'form-control'])!!}
+            <div class="help-block with-errors"></div>
         </div>
-
-
         <div class="form-group">
             {!! Form::label('password', 'Password:') !!}
-            {!! Form::password('password', ['class'=>'form-control'])!!}
+            {!! Form::password('password', ['data-minlength'=>'6','required','class'=>'form-control', 'placeholder'=>'Password'])!!}
+            <div class="help-block with-errors"></div>
         </div>
-
-
+        <div class="form-group">
+            {!! Form::label('inputPasswordConfirm', 'Confirm Password:') !!}
+            {!! Form::password('inputPasswordConfirm', ['data-match'=>'#password','data-match-error'=>"Whoops, these passwords don't match",'required','class'=>'form-control', 'placeholder'=>'Confirm Password'])!!}
+            <div class="help-block with-errors"></div>
+        </div>
         <div class="form-group">
             {!! Form::submit('Create User', ['class'=>'btn btn-primary']) !!}
         </div>
-
     {!! Form::close() !!}
 @endsection
 

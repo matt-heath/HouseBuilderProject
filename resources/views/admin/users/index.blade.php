@@ -36,45 +36,52 @@
                     <h4 class="modal-title">Add User Account</h4>
                 </div>
                 <div class="modal-body">
-                    {!! Form::open(['method'=>'POST', 'class'=> 'contact', 'id'=>'contact'])!!}
+                    {!! Form::open(['method'=>'POST', 'class'=> 'contact', 'id'=>'contact','data-toggle'=>'validator'])!!}
                     <div class="form-group">
                         {!! Form::label('name', 'Name:') !!}
-                        {!! Form::text('name', null, ['class'=>'form-control'])!!}
+                        {!! Form::text('name', null, ['data-error' => "Please input the users full name",'class'=>'form-control', 'required', 'placeholder'=>'Full Name'])!!}
+                        <div class="help-block with-errors"></div>
                     </div>
-
-
                     <div class="form-group">
                         {!! Form::label('email', 'Email:') !!}
-                        {!! Form::email('email', null, ['class'=>'form-control'])!!}
+                        {!! Form::email('email', null, ['data-error' => "Please input a valid email address",'class'=>'form-control', 'required', 'placeholder'=> 'Email Address'])!!}
+                        <div class="help-block with-errors"></div>
                     </div>
-
                     <div class="form-group">
                         {!! Form::label('role_id', 'Role:') !!}
-                        {!! Form::select('role_id', $roles, null, ['class'=>'form-control roleSelect select'])!!}
+                        {!! Form::select('role_id', $roles , null, ['data-error' => "Please choose a user role", 'required','class'=>'form-control roleSelect select','placeholder' => 'Select user role'])!!}
+                        <div class="help-block with-errors"></div>
                     </div>
-
-                    <div class="form-group" id="consultantDetails">
-
-                    </div>
-
-
+                    <div class="form-group" id="consultantDetails"></div>
+                    <div class="form-group" id="supplierDetails"></div>
+                    <div class="form-group" id="supplierName"></div>
                     <div class="form-group">
                         {!! Form::label('is_active', 'Status:') !!}
-                        {!! Form::select('is_active', array(1 => 'Active', 0=> 'Not Active'), 0 , ['class'=>'form-control select'])!!}
+                        {!! Form::select('is_active', array(1 => 'Active', 0=> 'Not Active'), 1 , ['data-error' => "Please activate/deactivate the user account", 'required', 'class'=>'form-control'])!!}
+                        <div class="help-block with-errors"></div>
                     </div>
-
                     <div class="form-group">
                         {!! Form::label('password', 'Password:') !!}
-                        {!! Form::password('password', ['class'=>'form-control'])!!}
+                        {!! Form::password('password', ['pattern' =>".*@\w{2,}\.\w{2,}",'data-minlength'=>'6','required','class'=>'form-control', 'placeholder'=>'Password'])!!}
+                        <div class="help-block with-errors"></div>
                     </div>
+                    <div class="form-group">
+                        {!! Form::label('inputPasswordConfirm', 'Confirm Password:') !!}
+                        {!! Form::password('inputPasswordConfirm', ['data-match'=>'#password','data-match-error'=>"Whoops, these passwords don't match",'required','class'=>'form-control', 'placeholder'=>'Confirm Password'])!!}
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    {{--<div class="form-group">--}}
+                        {{--{!! Form::submit('Create User', ['class'=>'btn btn-primary']) !!}--}}
+                    {{--</div>--}}
                 </div>
                 <div class="modal-footer">
                     <div class="form-group">
-                        {!! Form::button('Add account', ['class'=>'btn btn-primary', 'data-role' => "button",  'id' => 'addUser']) !!}
+                        {!! Form::submit('Create User', ['class'=>'btn btn-primary']) !!}
+{{--                        {!! Form::button('Add account', ['class'=>'btn btn-primary', 'data-role' => "button",  'id' => 'addUser']) !!}--}}
                     </div>
-                    {!! Form::close() !!}
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>

@@ -46,6 +46,7 @@ mix.scripts([
     'resources/assets/js/libs/pnotify.custom.min.js',
     'resources/assets/js/libs/dropzone.js',
     'resources/assets/js/libs/jquery.smartWizard.min.js',
+    'resources/assets/js/libs/validator.min.js',
     'resources/assets/js/libs/scripts.js'
 
 ], 'public/js/libs.js');

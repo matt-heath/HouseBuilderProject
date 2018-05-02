@@ -49,46 +49,29 @@ class AdminCertificatesController extends Controller
      */
     public function store(Request $request)
     {
-        //
-//        return $request->all();
-//        $certificatesModel = new Certificate();
-
-        //Get all form submitted data.
         $input = $request->all();
-
-        //Declare arrays to be used.
         $items = array();
         $ids = array();
         $plot_arr = array();
         $last_id = "";
 
         $phase = Phases::where('id', $request->phase)->first();
-
         $num_of_plots = $phase->num_plots;
-//        return $category_id = $input['certificate_category_id'];
 
-        //Search for plots where the name ID is less than/equal to the num of plots selected and where housetype is the same as form submitted one.
         $plots = Plot::where('development_id', $request->development_id)->where('plot_name_id', '<=', $phase->num_plots)->where('phase', $request->phase)->get();
-
 
         $certificatesRequired = CertificateRequired::all();
         $consultant_id = $input['consultant_id'];
         $cert_name = $input['certificate_name'];
 
-//        echo count($cert_name);
-
         for ($z = 0; $z < count($cert_name); $z++) {
             $certificates = CertificateRequired::where('id', '=', $cert_name[$z])->get();
-//            echo $certificates;
-
             foreach ($certificates as $certificate) {
-//                echo "<h1>" . $consultant_id[$z] . "</h1>";
                 for ($count = 0; $count < $num_of_plots; $count++) {
                     $certificatesModel[$count] = new Certificate();
 
                     foreach ($plots as $plot) {
                         $plot_certificates = $plot->certificates();
-//                $certificatesModel[$i]->id;
                         $plot_id = $plot->id;
                         $plot_arr[] = $plot_id;
                     }
@@ -106,54 +89,12 @@ class AdminCertificatesController extends Controller
                     $consultant = Consultant::where('user_id', $consultant_id[$z])->first();
                     $consultant->certificates()->attach($certificatesModel[$count]->id);
                 }
-
             }
         }
         for ($y = 0; $y < count($ids); $y++) {
             $plot_id = $plot_arr[$y];
             $plot_certificates->attach($ids[$y], ['plot_id' => $plot_id]);
         }
-
-//        return null;
-
-        //Loop to create multiple certificateModels and assign items to an item array.
-//        for ($i = 1; $i <= $num_of_plots; $i++) {
-////
-//            $certificatesModel[$i] = new Certificate();
-//
-//
-//
-//            $item = array(
-//                'certificate_check' => 'False',
-//                'certificate_doc' => '',
-//                'certificates_required_id' => $input['certificate_category_id']
-//            );
-//
-//            $certificatesModel[$i]->fill($item);
-//            $items[] = $item;
-//
-//            //save certificate model item to Certificates table
-//            $certificatesModel[$i]->save($item);
-//
-//
-//            if ($request) {
-//                $consultant = Consultant::find($request->consultant_id);
-//                $consultant->certificates()->attach($certificatesModel[$i]->id);
-//            }
-//
-//            $ids[] = $certificatesModel[$i]->id;
-//        }
-
-
-//
-//
-//
-//
-//        }
-//        return count($ids);
-//        return count($plot_arr);
-
-
 
         $namesArray = [
             "Building Control",
@@ -163,36 +104,18 @@ class AdminCertificatesController extends Controller
             "Builder's Solicitor"
         ];
         $certificates_dev_id = CertificateCategory::whereIn('name', $namesArray)->get()->pluck('id');
-
-//        return $certificates_dev_id;
         $certificates_dev = CertificateRequired::whereIn('certificate_category_id', $certificates_dev_id)->get();
-
-//        return $certificates_dev
 
         foreach ($certificates_dev as $dev) {
             $certificates = Certificate::where('certificates_required_id', $dev['id'])->where('is_assigned', '!=', 1)->get()->take(5);
-//            echo $certificates;
-
-
-
                 for ($a = 0; $a < $num_of_plots; $a++) {
                     $count = count($certificates[$a]);
-//                    $plot_id = $plot_arr[$a];
-//                    echo "<h1>PLOT ID: " . $plot_arr[$a] . "</h1>";
-//                    echo $plot_arr[$a] . ' '. $certificates[$a];
-//                    echo "<h1>ATTACH PLOTID - ". $plot_arr[$a]." to ".$certificates[$a];
-
                     $plot_certificates->attach($certificates[$a], ['plot_id'=> $plot_arr[$a]]);
                     $certificates[$a]->is_assigned = 1;
                     $certificates[$a]->save();
-
                 }
         }
-
-//        return null;
-
         return redirect('/admin/certificates');
-
     }
 
     /**
@@ -236,34 +159,23 @@ class AdminCertificatesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-//        return $id;
 //        return $request->all();
-
+//        return $id;
         $certificate_check = $request->certificate_check;
         $status = $request->status;
 
         if($status === 'yes'){
             $status = 'Ready for inspection';
             $certificate = Certificate::findOrFail($id);
-
             $certificate->build_status = $status;
             $certificate->save();
-
-//            $certificate->update(['build_status' => $status]);
-
-//            return 'DONE';
         }else if($status === 'no'){
             $status = 'Not ready';
             $certificate = Certificate::findOrFail($id);
-
             $certificate->build_status = $status;
             $certificate->save();
         }else if(isset($certificate_check)){
-//            return "hi";
-//            return $request->all();
             $certificate = Certificate::findOrFail($id);
-
             if($certificate_check == 1){
                 $certificate->certificate_check = $certificate_check;
                 $certificate->build_status = 'Accepted';
@@ -273,13 +185,11 @@ class AdminCertificatesController extends Controller
                 $certificate->certificate_check = $certificate_check;
                 $certificate->build_status = 'Awaiting approval';
                 $certificate->save();
-
                 return redirect()->back();
             }else if($certificate_check == 3){
                 $certificate->certificate_check = 1;
                 $certificate->build_status = 'Rejected';
                 $certificate->save();
-
 
                 $input = [
                     'certificate_id' => $id,
@@ -287,12 +197,9 @@ class AdminCertificatesController extends Controller
                 ];
                 CertificateRejection::create($input);
             }
-
-//            return 'NOT DONE';
         }else{
             return redirect()->back();
         }
-
         return redirect()->back();
     }
 

@@ -54,10 +54,7 @@ class AdminHouseTypesController extends Controller
      */
     public function store(HouseTypesRequest $request)
     {
-        //
-
         $input = $request->all();
-
         if($file = $request->file('floor_plan')){
             $name = time() . $file->getClientOriginalName();
             $file->move('images', $name);
@@ -70,10 +67,7 @@ class AdminHouseTypesController extends Controller
             $photo = Photo::create(['file'=> $name]);
             $input['house_img'] = $photo->id;
         }
-
         HouseType::create($input);
-
-
         return redirect('/admin/housetypes');
     }
 
@@ -88,7 +82,6 @@ class AdminHouseTypesController extends Controller
         //
         $houseType = HouseType::where('id', $id)->first();
         $supplier_categories = SelectionCategory::all();
-
         $development = Development::where('id', $houseType->development_id)->first();
         $assignedSuppliers = $development->suppliers()->get();
 
@@ -96,13 +89,9 @@ class AdminHouseTypesController extends Controller
 
         $items = array();
         foreach ($variation_ids as $variation_id){
-//            echo $variation_id->pivot;
-
             $item = $variation_id->pivot->variation_id;
-
-                $items[] = $item;
+            $items[] = $item;
         }
-
 //        return $items;
 //        return null;
 
@@ -135,24 +124,19 @@ class AdminHouseTypesController extends Controller
      */
     public function update(HouseTypesRequest $request, $id)
     {
-        //
         $input = $request->all();
 
         if($input['house_type_name']){
             $houseTypeName = $input['house_type_name'];
             $plots = Plot::where('house_type', $id)->get();
             $plot_count = $plots->count();
-
             $houseTypeName = str_replace(' ', '_', $houseTypeName);
-
             $houseNum = 1;
-
             for($i = 0; $i < $plot_count; $i++){
                 $plots[$i]->update(['plot_name' => 'Braidwater_'.$houseTypeName.'_'.$houseNum]);
                 $houseNum++;
             }
         }
-
         $houseTypes = HouseType::findOrFail($id);
 
         if($file = $request->file('floor_plan')){
@@ -161,18 +145,14 @@ class AdminHouseTypesController extends Controller
             $photo = Photo::create(['file'=> $name]);
             $input['floor_plan'] = $photo->id;
         }
-        if($file_house_img = $request->file('house_img')){
+        if($file_house_img = $request->file('house_img')) {
             $name = time() . $file_house_img->getClientOriginalName();
             $file_house_img->move('images', $name);
-            $photo = Photo::create(['file'=> $name]);
+            $photo = Photo::create(['file' => $name]);
             $input['house_img'] = $photo->id;
         }
-
         $houseTypes->update($input);
-
         return redirect('/admin/housetypes');
-
-
     }
 
     /**
@@ -183,10 +163,8 @@ class AdminHouseTypesController extends Controller
      */
     public function destroy($id)
     {
-        //
-
         HouseType::findOrFail($id)->delete();
-
+        Plot::where('house_type', $id)->delete();
         return redirect('/admin/housetypes');
     }
 }

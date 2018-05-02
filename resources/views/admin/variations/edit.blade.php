@@ -27,30 +27,34 @@
                </tbody>
              </table>
         </div>
-        {{$default}}
+        {{--{{$default}}--}}
         <div class="col-sm-6">
-            {!! Form::model($variation, ['method'=>'PATCH', 'action'=> ['VariationController@update', $variation->id], 'files'=> true]) !!}
+            {!! Form::model($variation, ['method'=>'PATCH', 'action'=> ['VariationController@update', $variation->id], 'files'=> true, 'data-toggle'=>'validator']) !!}
             <div class="form-group">
                 {!! Form::label('category_id', 'Variation Category:')!!}
                 {!! Form::select('category_id', $categories->toArray(), $categories, ['class'=>'form-control', 'disabled']) !!}
             </div>
             <div class="form-group">
                 {!! Form::label('selection_type_id', 'Variation Type:')!!}
-                {!! Form::select('selection_type_id', $default->toArray() + $selectionTypes->toArray(), null, ['class'=>'form-control', 'id'=>'developments', 'style'=>'height: 34px !important']) !!}
+                {!! Form::text('selection_type_id_disabled', $default,['class'=>'form-control', 'id'=>'developments', 'style'=>'height: 34px !important', 'disabled']) !!}
+                {!! Form::text('selection_type_id', $default,['class'=>'form-control hidden', 'id'=>'developments', 'style'=>'height: 34px !important']) !!}
             </div>
             <div class="form-group">
                 {!! Form::label('name', 'Variation Name:')!!}
-                {!! Form::text('name', null, ['class'=>'form-control']) !!}
+                {!! Form::text('name', null, ['class'=>'form-control', 'required']) !!}
+                <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group">
                 {!! Form::label('description', 'Variation Description:')!!}
-                {!! Form::textarea('description', null, ['class'=>'form-control']) !!}
+                {!! Form::textarea('description', null, ['class'=>'form-control', 'required']) !!}
+                <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group">
                 {!! Form::label('price', 'Price:')!!}
-                {!! Form::text('price', null, ['class'=>'form-control']) !!}
+                {!! Form::text('price', null, ['class'=>'form-control', 'required']) !!}
+                <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group">

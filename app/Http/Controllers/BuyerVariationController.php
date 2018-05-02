@@ -82,10 +82,22 @@ class BuyerVariationController extends Controller
             $items[] = $item;
         }
 
-        $booking = Booking::where('id', $id)->get();
-        $selectionCategories = SelectionCategory::all();
+//        return $items;
+        $selectionTypes = array();
+        foreach($variation_ids as $value){
+            $selectionType = $value->selectionType;
 
-        return view('buyer.variations.edit', compact('booking', 'plot', 'houseType', 'supplier_categories', 'items', 'variation_ids', 'selectionCategories'));
+            $selectionTypes[] = $selectionType;
+        }
+
+//        return $selectionTypes;
+        $booking = Booking::where('id', $id)->first();
+        $selectionCategories = SelectionCategory::all();
+        $default = $booking->variations()->pluck('variation_id')->toArray();
+
+//        return $default;
+
+        return view('buyer.variations.edit', compact('booking', 'plot', 'houseType', 'supplier_categories', 'items', 'variation_ids', 'selectionCategories', 'selectionTypes', 'default'));
 
     }
 
@@ -99,6 +111,32 @@ class BuyerVariationController extends Controller
     public function update(Request $request, $id)
     {
         //
+//        return $request->all();
+//        return $id;
+        $booking_id = $id;
+        $input = $request->all();
+        $variations = $input['variations'];
+        $num_of_variations = count($input['variations']);
+        $booking = Booking::where('id', $booking_id)->first();
+        $variation_ids = $booking->variations()->get();
+
+        $items = array();
+        foreach($variation_ids as $variation_id){
+            $item = [
+                $variation_id->pivot->variation_id
+            ];
+            $items[] = $item;
+        }
+        foreach($variations as $variation){
+            foreach($items as $item){
+                if($item !== $variation){
+                    $booking->variations()->detach($item);
+                }
+            }
+            $booking->variations()->attach($variation);
+        }
+
+        return "DONE";
     }
 
     /**

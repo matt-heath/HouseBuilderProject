@@ -91,7 +91,7 @@
                         <div class="pull-right">
                             <button type="button" class="btn btn-success" data-toggle='modal' data-target='#myModal' id='modalClick'><i class="fa fa-fw fa-plus"></i> Add user account</button>
                         </div>
-                        {!! Form::open(['method'=>'POST', 'action'=>'EstateAgentBookingsController@store'])!!}
+                        {!! Form::open(['method'=>'POST', 'action'=>'EstateAgentBookingsController@store', 'data-toggle'=>'validator'])!!}
 
                         <div class="form-group">
                             {{--{!! Form::label('id', 'ID:')!!}--}}
@@ -100,28 +100,34 @@
                         </div>
                         <div class="form-group">
                             {!! Form::label('title', 'Buyer Name:')!!}
-                            {!! Form::select('title', ['Mr'=>'Mr', 'Mrs'=>'Mrs', 'Miss'=>'Miss', 'DR.'=>'DR.'], null, ['class'=>'form-control selectPlot']) !!}
+                            {!! Form::select('title', [''=>'Choose Title']+ ['Mr'=>'Mr', 'Mrs'=>'Mrs', 'Miss'=>'Miss', 'DR.'=>'DR.'], null, ['class'=>'form-control selectPlot', 'required']) !!}
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             {!! Form::label('user_id', 'Buyer Name:')!!}
-                            {!! Form::select('user_id', [''=>'Choose Buyer'] + $users, null, ['class'=>'form-control selectPlot buyerSelect']) !!}
+                            {!! Form::select('user_id', [''=>'Choose Buyer'] + $users, null, ['class'=>'form-control selectPlot buyerSelect', 'required']) !!}
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             {!! Form::label('correspondence_address', 'Correspondence Address')!!}
-                            {!! Form::text('correspondence_address', null, ['class'=>'form-control']) !!}
+                            {!! Form::text('correspondence_address', null, ['class'=>'form-control', 'required']) !!}
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             {!! Form::label('telephone_num', 'Telephone Number:')!!}
-                            {!! Form::text('telephone_num', null, ['class'=>'form-control']) !!}
+                            {!! Form::text('telephone_num', null, ['class'=>'form-control', 'required']) !!}
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             {!! Form::label('email_address', 'Email Address:')!!}
                             {!! Form::text('email_address_disabled', null, ['class'=>'form-control emailInput', 'disabled']) !!}
-                            {!! Form::text('email_address', null, ['class'=>'form-control emailInput hidden']) !!}
+                            {!! Form::text('email_address', null, ['class'=>'form-control emailInput hidden', 'required']) !!}
+                            <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group">
                             {!! Form::label('buyer_status', 'Buyer Status:')!!}
-                            {!! Form::select('buyer_status',['First Time Buyer'] , null, ['class'=>'form-control']) !!}
+                            {!! Form::select('buyer_status',[''=> 'Select Buyer Status'] + ['First Time Buyer', 'Owned Previous Properties'] , null, ['class'=>'form-control', 'required']) !!}
+                            <div class="help-block with-errors"></div>
                         </div>
 
                         <div class="form-group">
@@ -138,37 +144,36 @@
                                         <h4 class="modal-title">Add User Account</h4>
                                     </div>
                                     <div class="modal-body">
-                                        {!! Form::open(['method'=>'POST', 'class'=> 'contact', 'id'=>'contact'])!!}
+                                        {!! Form::open(['method'=>'POST', 'class'=> 'contact', 'id'=>'contact', 'data-toggle' => 'validator'])!!}
                                         <div class="form-group">
                                             {!! Form::label('name', 'Name:') !!}
-                                            {!! Form::text('name', null, ['class'=>'form-control'])!!}
+                                            {!! Form::text('name', null, ['class'=>'form-control', 'required'])!!}
+                                            <div class="help-block with-errors"></div>
                                         </div>
-
-
                                         <div class="form-group">
                                             {!! Form::label('email', 'Email:') !!}
-                                            {!! Form::email('email', null, ['class'=>'form-control'])!!}
+                                            {!! Form::email('email', null, ['class'=>'form-control', 'required'])!!}
+                                            <div class="help-block with-errors"></div>
                                         </div>
-
                                         <div class="form-group">
                                             {!! Form::label('role_id', 'Role:') !!}
                                             {!! Form::select('role_id_disabled', $roles , null, ['class'=>'form-control', 'disabled'])!!}
                                             {!! Form::select('role_id', $roles , null, ['class'=>'form-control hidden'])!!}
                                         </div>
-
-                                        <div class="form-group" id="consultantDetails">
-
-                                        </div>
-
-
                                         <div class="form-group">
                                             {!! Form::label('is_active', 'Status:') !!}
-                                            {!! Form::select('is_active', array(1 => 'Active', 0=> 'Not Active'), 0 , ['class'=>'form-control select'])!!}
+                                            {!! Form::select('is_active', array(1 => 'Active', 0=> 'Not Active'), 1 , ['class'=>'form-control select', 'required'])!!}
+                                            <div class="help-block with-errors"></div>
                                         </div>
-
                                         <div class="form-group">
                                             {!! Form::label('password', 'Password:') !!}
-                                            {!! Form::password('password', ['class'=>'form-control'])!!}
+                                            {!! Form::password('password', ['data-minlength'=>'6','required','class'=>'form-control', 'placeholder'=>'Password'])!!}
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            {!! Form::label('inputPasswordConfirm', 'Confirm Password:') !!}
+                                            {!! Form::password('inputPasswordConfirm', ['data-match'=>'#password','data-match-error'=>"Whoops, these passwords don't match",'required','class'=>'form-control', 'placeholder'=>'Confirm Password'])!!}
+                                            <div class="help-block with-errors"></div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">

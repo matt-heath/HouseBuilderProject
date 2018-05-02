@@ -62,7 +62,7 @@ class VariationController extends Controller
     public function store(Request $request)
     {
         //
-        return $request->all();
+//        return $request->all();
         $input = $request->all();
 //        return $input;
         $variationModel = new Variation();
@@ -124,7 +124,7 @@ class VariationController extends Controller
 
 //        return $selectionTypes;
 
-        $default = $variation->selectionType()->pluck('type_name', 'id');
+        $default = $variation->selectionType()->pluck('type_name')->first();
 
         $categories = $categories->where('id', $supplier->supplier_type)->orderByRaw("FIELD(category_name, '$default') ASC")->pluck('category_name', 'id');
 
@@ -145,7 +145,6 @@ class VariationController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->all();
-
         $variation = Variation::findOrFail($id);
 
         if ($file = $request->file('extra_img')) {
@@ -154,11 +153,8 @@ class VariationController extends Controller
             $photo = Photo::create(['file' => $name]);
             $input['extra_img'] = $photo->id;
         }
-
         $variation->update($input);
-
         return redirect('/admin/suppliers/' . $variation->supplier_id);
-
     }
 
     /**
@@ -169,63 +165,61 @@ class VariationController extends Controller
      */
     public function destroy($id)
     {
-        //
-
         $variation_del = Variation::find($id);
-
         if ($variation_del->extra_img) {
             unlink(public_path() . $variation_del->photo->file);
         }
-
         $variation_del->delete();
-
         return redirect()->back();
     }
 
     public function assignToHouseType(Request $request)
     {
-        //
 //        return $request->all();
         $input = $request->all();
-        $num_of_variations = count($input['variations']);
-        $variations = $input['variations'];
+        if (isset($input['variations'])) {
+            $num_of_variations = count($input['variations']);
+            $variations = $input['variations'];
+        }
         $house_type_id = $input['house_type_id'];
-
         $houseType = HouseType::where('id', $house_type_id)->first();
-
+//
+//        return $variation_ids;
         $variation_ids = $houseType->variations()->get();
-
         $items = array();
-        foreach ($variation_ids as $variation_id){
-//            echo $variation_id->pivot;
-
+        foreach ($variation_ids as $variation_id) {
             $item = [
                 $variation_id->pivot->variation_id
             ];
-
             $items[] = $item;
         }
 //        return $items;
-        for ($count = 0; $count < $num_of_variations; $count++) {
 
-            foreach ($items as $item){
-                if($item !== $variations[$count]){
-                    $houseType->variations()->detach($item);
+        if (isset($input['variations'])) {
+            for ($count = 0; $count < $num_of_variations; $count++) {
+                $answer = $houseType->variations()->where('variation_id', $variations[$count])->exists();
+
+                if (!$answer) {
+                    $houseType->variations()->attach($variations[$count]);
+                }
+//                echo $variations[$count];
+                foreach ($items as $item) {
+//                    dd($item[0]);
+                    if (!in_array($item[0], $variations)) {
+//                        echo "No, item: $item[0] doesn't exits in array";
+                        $houseType->variations()->detach($item[0]);
+
+                    }
                 }
             }
-//
-//            if(in_array(!$variations[$count], $items)) {
-//                foreach ($items as $item){
-//                    $houseType->variations()->detach($item);
-//
-//                }
-//            }else{
-                $houseType->variations()->attach($variations[$count]);
-//            }
-
+        }else {
+            foreach ($items as $item) {
+                $houseType->variations()->detach($item);
+            }
         }
+//        return null;
+//        return null;
 
-        return redirect('/admin/housetypes/'.$house_type_id);
-
+        return redirect('/admin/housetypes/' . $house_type_id);
     }
 }

@@ -89,27 +89,17 @@ class ExternalConsultantCertificatesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         $input = $request->all();
-
-//        return $id;
-
         $certificate = Certificate::findOrFail($id);
 
         if($file = $request->file('certificate_doc')) {
-
             $status = 'Awaiting approval';
-
-//            return $certificate;
-
             $name = time(). $file->getClientOriginalName();
             $file->move('documents', $name);
             $certificate->update(['certificate_doc'=> $name, 'certificate_check'=> 0]);
-
             $certificate->build_status = $status;
             $certificate->save();
         }
-
 
         $plots = Plot::with('certificates')->get();
 
