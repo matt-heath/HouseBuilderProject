@@ -7,17 +7,18 @@
 @section('content')
     <div class="row">
         {{--TODO: ADD photo_id to suppliers table?--}}
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <a href="{{'http://placehold.it/400x400' }} " data-lightbox="image-1" data-title="Example development image for: ">
                 <img src="{{'http://placehold.it/400x400' }}" class="img-responsive img-rounded" alt="">
             </a>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-8">
 
-            {!! Form::model($supplier, ['method'=>'PATCH', 'action'=>['SupplierController@update', $supplier->id], 'files' => true])!!}
+            {!! Form::model($supplier, ['method'=>'PATCH', 'action'=>['SupplierController@update', $supplier->id], 'files' => true, 'data-toggle'=> 'validator'])!!}
             <div class="form-group">
                 {!! Form::label('supplier_company_name', 'Supplier Company Name:')!!}
-                {!! Form::text('supplier_company_name', null, ['class'=>'form-control']) !!}
+                {!! Form::text('supplier_company_name', null, ['data-error' => "Please input the suppliers company name",'class'=>'form-control', 'required']) !!}
+                <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group">

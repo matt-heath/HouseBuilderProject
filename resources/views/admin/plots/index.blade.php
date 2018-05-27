@@ -27,7 +27,7 @@
                         <td>{{$plot->plot_name}}</td>
                         <td>{{$plot->houseTypes ? $plot->houseTypes->house_type_name : "NOT FOUND"}}</td>
                         <td>{{$plot->sqft}}</td>
-                        <td>{{$plot->phases ? $plot->phases->phase_name : "SHIT"}}</td>
+                        <td>{{$plot->phases ? $plot->phases->phase_name : "NONE"}}</td>
                         <td>{{$plot->status}}</td>
                         <td>
                             @if(!$plot->certificates->isEmpty())

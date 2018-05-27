@@ -2,39 +2,22 @@
 
 @section('title')
     <h1>Edit Certificate Status for Plot</h1>
+    <h4>({{$plots->first()->plot_name}})</h4>
 @endsection
-
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
 @section('content')
     <div class="row">
-        {{--<div class="col-sm-6">--}}
-
-
-                {{--{{$plot}}--}}
-                {{--<table id="myTable" width="100%" class="table table-striped table-bordered table-hover">--}}
-                   {{--<thead>--}}
-                     {{--<tr>--}}
-                         {{----}}
-                     {{--</tr>--}}
-                   {{--</thead>--}}
-                   {{--<tbody>--}}
-                   {{--@foreach($plots as $plot)--}}
-                       {{--{{$plot}}--}}
-                     {{--<tr>--}}
-                         {{--<td>{{$plot->plot_name}}</td>--}}
-                         {{--<td>{{$plot->houseTypes->house_type_name}}</td>--}}
-                     {{--</tr>--}}
-                   {{--@endforeach--}}
-                   {{--</tbody>--}}
-                {{--</table>--}}
-        {{--</div>--}}
-
         <div class="col-sm-12">
             <table id="myTable1" width="100%" class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th>Plot Name</th>
-                    <th>House Type</th>
+                    {{--<th>Plot Name</th>--}}
+                    {{--<th>House Type</th>--}}
                     <th>Certificate Name</th>
                     <th>Build Status</th>
                     <th></th>
@@ -44,13 +27,13 @@
                 @foreach($certificates as $certificate)
                     {{--{{$certificate}}--}}
                     <tr>
-                        @foreach($plots as $plot)
-                            <td>{{$plot->plot_name}}</td>
-                            <td>{{$plot->houseTypes->house_type_name}}</td>
-                        @endforeach
+                        {{--@foreach($plots as $plot)--}}
+                            {{--<td>{{$plot->plot_name}}</td>--}}
+                            {{--<td>{{$plot->houseTypes->house_type_name}}</td>--}}
+                        {{--@endforeach--}}
                         <td>{{$certificate->certificatesRequired[0]->certificate_name}}</td>
                         <td>{{$certificate->build_status}}</td>
-                        <td>{!! $certificate->build_status === "Not ready" ? "<a href='' data-toggle='modal' data-target='#myModal' id='modalClick' data-id='$certificate->id'>Update Status</a>" : $certificate->build_status !!}</td>
+                        <td>{!! $certificate->build_status === "Not ready" ? "<a href='' data-toggle='modal' class='modalClick' data-target='#myModal' id='modalClick' data-id='$certificate->id'>Update Status</a>" : $certificate->build_status !!}</td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -66,7 +49,6 @@
                     </div>
                     <div class="modal-body">
                         {!! Form::model($certificate, ['method'=>'PATCH', 'class'=> 'modalPlot', 'action'=>['AdminCertificatesController@update', $certificate->id]])!!}
-
                         <div class="form-group">
                             {{ Form::label('status', 'Can the consultant inspect this aspect of the property?') }}
                             <div class="form-inline">
@@ -103,7 +85,7 @@
             $('#myTable1').DataTable({
                 responsive: true,
                 "columnDefs": [
-                    { "orderable": false, "targets": [0,1,4] }
+                    { "orderable": false }
                 ]
             });
         });
@@ -114,7 +96,13 @@
         //         id = link.data('id')
         // }));
 
-        $('#modalClick').on('click', function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('.modalClick').on('click', function () {
 
             console.log("DATA: " + $(this).data('id'));
 

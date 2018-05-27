@@ -97,8 +97,10 @@
                                 <thead>
                                 <tr>
                                     <th>Certificate Name</th>
+                                    <th>Uploaded Document</th>
                                     <th>Build Status</th>
                                     <th></th>
+                                    <th>Approve/Reject</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -106,12 +108,115 @@
                                     {{--{{$certificate}}--}}
                                     <tr>
                                         <td>{{$certificate->certificatesRequired[0]->certificate_name}}</td>
+                                        {{--<td>--}}
+                                            {{--{{$certificate->certificate_doc ? $certificate->certificate_doc : "No certificate uploaded" }}--}}
+                                        {{--</td>--}}
+
+                                        {{--TODO:: make downloads controller allowing user to download and check the uploaded file before approval--}}
+                                            <td>
+                                            @if($certificate->certificate_doc)
+                                                    {{ Html::link('download/'.$certificate->certificate_doc, 'Download Document')}}
+                                            @endif
+                                            </td>
+
                                         <td>{{$certificate->build_status}}</td>
-                                        <td>{!! "<a href='' data-toggle='modal' data-target='#myModal' id='modalClick' class='modalClick' data-id='$certificate->id'>Update Status</a>"!!}</td>
+                                        @if($certificate->build_status == 'Not ready' || $certificate->build_status == 'Ready for inspection')
+                                            <td>{!! "<a href='' data-toggle='modal' data-target='#myModal' id='modalClick' class='modalClick' data-id='$certificate->id'>Update Status</a>"!!}</td>
+                                        @else
+                                            <td></td>
+                                        @endif
+                                        <td>
+                                            {{--<div class="btn-group">--}}
+                                            {{--<a href="{{route('admin.certificates.edit', $certificate->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>--}}
+                                            {{--</div>--}}
+                                            <div class="btn-group">
+                                                @if($certificate->build_status === 'Awaiting approval' && $certificate->certificate_check == 0)
+                                                    {!! Form::open(['method'=>'PATCH', 'id' => 'submitForm', 'action'=> ['AdminCertificatesController@update', $certificate->id]]) !!}
+                                                    <input type="hidden" name="certificate_check" value="1">
+                                                    <div class="btn-group">
+                                                        {!! Form::submit('Approve', ['class'=>'btn btn-info']) !!}
+                                                    </div>
+                                                    {!! Form::close() !!}
+
+                                                    <input type="hidden" name="certificate_check" value="3">
+                                                    <div class="btn-group">
+                                                        {{--{!! Form::submit('Reject', ['class'=>'btn btn-danger']) !!}--}}
+                                                        <a href='' class="btn btn-danger rejectionModal" data-toggle='modal' data-target='#rejectionReasons' id='rejection' data-id={{$certificate->id}}>Reject</a>
+                                                    </div>
+                                                @elseif($certificate->build_status==='Accepted' && $certificate->certificate_check == 1)
+                                                    {!! Form::open(['method'=>'PATCH', 'action'=> ['AdminCertificatesController@update', $certificate->id]]) !!}
+                                                    <input type="hidden" name="certificate_check" value="0">
+                                                    <div class="form-group">
+                                                        {!! Form::submit('Un-approve', ['class'=>'btn btn-success']) !!}
+                                                    </div>
+                                                    {!! Form::close() !!}
+                                                @elseif($certificate->build_status==='Rejected')
+                                                    <div class="btn-group">
+                                                        {{--{!! Form::submit('Reject', ['class'=>'btn btn-danger']) !!}--}}
+                                                        <a href='' class="btn btn-danger rejectionClick" data-toggle='modal' data-target='#rejectionModal' id='rejectionClick' data-id={{$certificate->id}}>Rejection Reasons</a>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            {{--<div class="btn-group">--}}
+                                            {{--{!! Form::open(['method'=>'DELETE', 'action'=> ['AdminCertificatesController@destroy', $certificate->id], 'id'=> 'confirm_delete_'.$certificate->id]) !!}--}}
+                                            {{--{!! Form::button('<i class="fa fa-fw fa-trash"></i>', ['type'=> 'submit' ,'class'=>'btn btn-danger', 'onclick'=>'confirmDelete(' .$certificate->id .')']) !!}--}}
+                                            {{--{!! Form::close() !!}--}}
+                                            {{--</div>--}}
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
+                            <div class="modal fade rejectionReasons" id="rejectionReasons" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Reject Certificate?</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            {!! Form::model($certificate, ['method'=>'PATCH', 'class'=> 'modalCertificate', 'action'=>['AdminCertificatesController@update', $certificate->id], 'data-toggle'=> 'validator'])!!}
+                                            <input type="hidden" name="certificate_check" value="3">
+                                            {{$certificate->id}}
+                                            <div class="form-group">
+                                                {!! Form::label('rejection_reason', 'Certificate Rejection Notes:') !!}
+                                                {!! Form::textarea('rejection_reason', null, ['data-error' => "Please enter a rejection reason", 'class'=>'form-control', 'required']) !!}
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                            <div id='certid'></div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="form-group">
+                                                {!! Form::submit('Reject Certificate', ['class'=>'btn btn-primary']) !!}
+                                            </div>
+                                            {!! Form::close() !!}
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="rejectionModal" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Rejection Reasons</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="hidden" name="certificate_check" value="3">
+                                            <div class="form-group">
+                                                {!! Form::label('rejection_reason', 'Certificate Rejection Notes:') !!}
+                                                {!! Form::textarea('rejection_reason', null, ['class'=>'form-control reject']) !!}
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="booking">
@@ -173,9 +278,9 @@
     <script>
         $(document).ready(function(){
             $('#myTable').DataTable({
-                responsive: true,
+                // responsive: true,
                 "columnDefs": [
-                    { "orderable": false, "targets": 2 }
+                    { "orderable": false, "targets": [3,4]}
                 ]
 
             });
@@ -190,6 +295,46 @@
             console.log($(this).data());
 
             $('.modalPlot').attr('action', '/admin/certificates/'+$(this).data('id'));
+        });
+
+        $('.rejectionModal').on('click', function () {
+            console.log($(this).data());
+
+            $('.modalCertificate').attr('action', '/admin/certificates/'+$(this).data('id'));
+        });
+
+        $('.rejectionClick').on('click', function () {
+            var cert_id=$(this).data('id');
+            console.log(cert_id);
+
+            $.ajax({
+                type: 'get',
+                url: '{!! URL::to('getRejectionReasons') !!}',
+                data: {'id': cert_id},
+                success: function (data) {
+                    // console.log('Success!!');
+                    console.log(data);
+                    // console.log(data.length);
+                    // console.log(data);
+                    if(data.length != 0) {
+                        console.log('Success!!');
+                        var url = '{{ route("externalconsultant.certificates.edit", ":id") }}';
+
+                        for(var i = 0; i < data.length; i++){
+                            url = url.replace(':id', data[i].certificate_id);
+                            console.log(data[i].rejection_reason);
+                            $(".reject").html(" ").append(data[i].rejection_reason).attr('disabled', true);
+                            $(".modal-footer").html(" ").append("                            <div class=\"btn-group\">\n" +
+                                "                                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n" +
+                                "                            </div>")
+                        }
+                    }
+                    // console.log(option);
+                },
+                error: function () {
+                    console.log("Failed...")
+                }
+            })
         });
 
         function confirmDelete(id) {

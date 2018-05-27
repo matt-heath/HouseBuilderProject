@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Booking;
 use App\Http\Requests\UsersEditRequest;
 use App\Http\Requests\UsersRequest;
+use App\Plot;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
@@ -73,6 +75,7 @@ class EstateAgentUsersController extends Controller
 
         User::create($input);
 
+        Alert::success('Buyer added to the system!')->flash();
 
         return redirect('/estateagent/users');
 
@@ -99,9 +102,7 @@ class EstateAgentUsersController extends Controller
     {
         //
         $user = User::findOrFail($id);
-
         $roles = Role::where('name', 'Buyer')->pluck('name', 'id')->all();
-
         return view('estateagent.users.edit', compact('user','roles'));
     }
 
@@ -132,6 +133,9 @@ class EstateAgentUsersController extends Controller
 
         $user->update($input);
 
+        Alert::success('Buyer successfully updated!')->flash();
+
+
         return redirect('/estateagent/users');
     }
 
@@ -143,13 +147,20 @@ class EstateAgentUsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $booking = Booking::where('user_id', $id)->first();
+
+        if($booking){
+            $plot = Plot::where('id', $booking->plot_id)->first();
+            $plot->status = 'Available';
+            $plot->save();
+            $booking->delete();
+        }
+
         $user = User::findOrFail($id); // find user and delete.
 //        unlink(public_path() . $user->photo->file);
-
         $user->delete();
 
-        Session::flash('deleted_user', 'The user has been deleted');
+        Alert::info('Buyer deleted from the system.')->flash();
 
         return redirect('/estateagent/users'); // upon deletion, redirect to users table.
     }

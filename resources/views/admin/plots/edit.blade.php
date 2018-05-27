@@ -35,37 +35,23 @@
 
         </div>
         <div class="col-sm-6">
-
             {!! Form::model($plot, ['method'=>'PATCH', 'action'=> ['AdminPlotsController@update', $plot->id], 'data-toggle'=>'validator']) !!}
-            <div class="form-group">
-                {!! Form::label('development_id', 'Development:')!!}
-                {{--{!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control selectPlot select', 'required']) !!}--}}
-                {!! Form::text('development_id_disabled', $plot->development->development_name, ['class'=>'form-control', 'disabled']) !!}
-                {!! Form::text('development_id', $plot->development->development_name, ['class'=>'form-control hidden']) !!}
-            </div>
             <div class="form-group">
                 {!! Form::label('plot_name', 'Plot Name:')!!}
                 {!! Form::text('plot_name', null, ['class'=>'form-control', 'required']) !!}
                 <div class="help-block with-errors"></div>
             </div>
             <div class="form-group">
-                {!! Form::label('house_type', 'House Type:')!!}
-                {{--{!! Form::select('house_type', [''=>'Choose House Type'] + $houseType, null, ['class'=>'form-control selectPlot select', 'required']) !!}--}}
-                {!! Form::text('house_type_disabled', $plot->houseTypes->house_type_name, ['class'=>'form-control', 'disabled']) !!}
-                {!! Form::text('house_type', $plot->houseTypes->house_type_name, ['class'=>'form-control hidden']) !!}
-                {{--<div class="help-block with-errors"></div>--}}
-            </div>
-            <div class="form-group">
                 {!! Form::label('sqft', 'SqFt:')!!}
                 {!! Form::number('sqft', null, ['class'=>'form-control', 'required']) !!}
                 <div class="help-block with-errors"></div>
             </div>
-            <div class="form-group">
-                {!! Form::label('phase', 'Phase:')!!}
+            {{--<div class="form-group">--}}
+                {{--{!! Form::label('phase', 'Phase:')!!}--}}
                 {{--{!! Form::number('phase', null, ['class'=>'form-control', 'required']) !!}--}}
-                {!! Form::text('phase_disabled', $plot->phases->phase_name, ['class'=>'form-control', 'disabled']) !!}
-                {!! Form::text('phase', $plot->phases->phase_name, ['class'=>'form-control hidden']) !!}
-            </div>
+                {{--{!! Form::text('phase_disabled', $plot->phases->phase_name, ['class'=>'form-control', 'disabled']) !!}--}}
+                {{--{!! Form::text('phase', $plot->phases->phase_name, ['class'=>'form-control hidden']) !!}--}}
+            {{--</div>--}}
             <div class="form-group">
                 {!! Form::label('status', 'Status:')!!}
                 {!! Form::text('status_disabled', $plot->status, ['class'=>'form-control', 'disabled']) !!}

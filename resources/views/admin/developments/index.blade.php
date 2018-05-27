@@ -5,10 +5,9 @@
 @endsection
 
 @section('content')
-
-    @if(Session::has('deleted_development'))
-        <p class="bg-danger">{{session('deleted_development')}}</p>
-    @endif
+    {{--@if(Session::has('deleted_development'))--}}
+        {{--<p class="bg-danger">{{session('deleted_development')}}</p>--}}
+    {{--@endif--}}
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}

@@ -10,6 +10,7 @@ use App\Supplier;
 use App\User;
 use App\Variation;
 use Illuminate\Http\Request;
+use Prologue\Alerts\Facades\Alert;
 
 class VariationController extends Controller
 {
@@ -61,10 +62,8 @@ class VariationController extends Controller
      */
     public function store(Request $request)
     {
-        //
-//        return $request->all();
+
         $input = $request->all();
-//        return $input;
         $variationModel = new Variation();
         $supplier_id = $input['supplier_id'];
         $type_id = $input['selection_type_id'];
@@ -82,13 +81,14 @@ class VariationController extends Controller
         $id = $variationModel->id;
 
         $variation = Variation::where('supplier_id', $supplier_id)->where('id', $id)->first();
-
         $variation->selectionType()->attach($variationModel->id, ['selection_type_id' => $type_id]);
 
 //        $plot_certificates->attach($ids[$y], ['plot_id' => $plot_id]);
 
 
-//        return "CREATED";
+//        return "CREATED"
+        Alert::success('Supplier variation added to the system!')->flash();
+
         return redirect('/admin/suppliers/' . $supplier_id);
     }
 
@@ -154,6 +154,8 @@ class VariationController extends Controller
             $input['extra_img'] = $photo->id;
         }
         $variation->update($input);
+        Alert::success('Variation details successfully updated!')->flash();
+
         return redirect('/admin/suppliers/' . $variation->supplier_id);
     }
 
@@ -170,6 +172,8 @@ class VariationController extends Controller
             unlink(public_path() . $variation_del->photo->file);
         }
         $variation_del->delete();
+        Alert::info('Variation removed from the system.')->flash();
+
         return redirect()->back();
     }
 

@@ -122,6 +122,7 @@ Route::group(['middleware'=>'admin'], function(){
     Route::get('admin/developments/{devID}/assignSupplier/{id}', ['as'=>'admin.developments.assignSupplier', 'uses'=> 'AdminDevelopmentsController@assignSupplier']);
     Route::post('/assignSupplierStore', ['as'=>'admin.developments.assignSupplierStore', 'uses'=> 'AdminDevelopmentsController@assignSupplierStore']);
     Route::post('/assignToHouseType', ['as'=>'admin.housetypes.assignToHouseType', 'uses'=> 'VariationController@assignToHouseType']);
+    Route::get('/findNumPlots', 'AdminPlotsController@findNumPlots');
 });
 
 

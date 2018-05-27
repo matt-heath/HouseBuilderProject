@@ -25,9 +25,9 @@ class PlotsRequest extends Request
     {
         return [
             //
-            'development_id' => 'required',
-            'house_type' => 'required',
-            'phase' => 'required',
+//            'development_id' => 'required',
+//            'house_type' => 'required',
+//            'phase' => 'required',
 //            'plot_name' => 'required',
             'sqft' => 'required',
             'status' => 'required'

@@ -26,6 +26,7 @@
         <div class="col-sm-12">
             @if($suppliers)
                 {{--{{$suppliers}}--}}
+            <div class="table-responsive">
                 <table class="table" id="myTable">
                     <thead>
                     <tr>
@@ -59,6 +60,8 @@
                     @endforeach
                     </tbody>
                 </table>
+            </div>
+
             @endif
         </div>
     </div>
@@ -70,7 +73,6 @@
         $(document).ready(function(){
             // e.preventDefault();
             $('#myTable').DataTable({
-                responsive: true,
                 "columnDefs": [
                     { "orderable": false, "targets": 3 }
                 ]

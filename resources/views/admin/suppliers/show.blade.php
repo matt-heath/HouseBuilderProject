@@ -7,8 +7,10 @@
 
 @section('content')
 
-    @if(Session::has('success'))
-        <p class="bg-danger">{{session('success')}}</p>
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
     @endif
 
     <div class="row">

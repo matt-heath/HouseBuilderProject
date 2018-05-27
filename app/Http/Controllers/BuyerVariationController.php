@@ -60,10 +60,6 @@ class BuyerVariationController extends Controller
      */
     public function edit($id)
     {
-        //
-
-//        return $id;
-
         $booking = Booking::where('id', $id)->first();
         $plot = Plot::where('id', $booking->plot_id)->first();
         $houseType = HouseType::where('id', $plot->house_type)->first();
@@ -136,7 +132,7 @@ class BuyerVariationController extends Controller
             $booking->variations()->attach($variation);
         }
 
-        return "DONE";
+        return redirect('/buyer/plot');
     }
 
     /**

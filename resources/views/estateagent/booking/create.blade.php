@@ -144,7 +144,7 @@
                                         <h4 class="modal-title">Add User Account</h4>
                                     </div>
                                     <div class="modal-body">
-                                        {!! Form::open(['method'=>'POST', 'class'=> 'contact', 'id'=>'contact', 'data-toggle' => 'validator'])!!}
+                                        {!! Form::open(['method'=>'POST', 'class'=> 'contact', 'id'=>'contact', 'data-toggle'=>"validator"])!!}
                                         <div class="form-group">
                                             {!! Form::label('name', 'Name:') !!}
                                             {!! Form::text('name', null, ['class'=>'form-control', 'required'])!!}
@@ -175,12 +175,10 @@
                                             {!! Form::password('inputPasswordConfirm', ['data-match'=>'#password','data-match-error'=>"Whoops, these passwords don't match",'required','class'=>'form-control', 'placeholder'=>'Confirm Password'])!!}
                                             <div class="help-block with-errors"></div>
                                         </div>
+                                        {!! Form::button('Add account', ['class'=>'btn btn-primary', 'data-role' => "button",  'id' => 'addUser']) !!}
+                                        {!! Form::close() !!}
                                     </div>
                                     <div class="modal-footer">
-                                        <div class="form-group">
-                                            {!! Form::button('Add account', ['class'=>'btn btn-primary', 'data-role' => "button",  'id' => 'addUser']) !!}
-                                        </div>
-                                        {!! Form::close() !!}
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                     </div>
                                 </div>

@@ -4,6 +4,12 @@
     <h1>Edit Development</h1>
 @endsection
 
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
 @section('content')
     <div class="row">
         <div class="col-sm-6">

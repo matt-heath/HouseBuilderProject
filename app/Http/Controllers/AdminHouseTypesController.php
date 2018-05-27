@@ -11,6 +11,7 @@ use App\SelectionCategory;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Prologue\Alerts\Facades\Alert;
 
 class AdminHouseTypesController extends Controller
 {
@@ -52,9 +53,10 @@ class AdminHouseTypesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(HouseTypesRequest $request)
+    public function store(Request $request)
     {
         $input = $request->all();
+        $development_id = $input['development_id'];
         if($file = $request->file('floor_plan')){
             $name = time() . $file->getClientOriginalName();
             $file->move('images', $name);
@@ -68,7 +70,9 @@ class AdminHouseTypesController extends Controller
             $input['house_img'] = $photo->id;
         }
         HouseType::create($input);
-        return redirect('/admin/housetypes');
+        Alert::success('House Type added to the system!')->flash();
+
+        return redirect('/admin/developments/'.$development_id);
     }
 
     /**
@@ -109,7 +113,7 @@ class AdminHouseTypesController extends Controller
         //
 
         $houseTypes = HouseType::findOrFail($id);
-        $developments = Development::pluck('development_name', 'id')->all();
+        $developments = Development::where('id', $houseTypes->development_id)->pluck('development_name', 'id')->all();
 
         return view('admin.housetypes.edit', compact('houseTypes', 'developments'));
 
@@ -152,7 +156,9 @@ class AdminHouseTypesController extends Controller
             $input['house_img'] = $photo->id;
         }
         $houseTypes->update($input);
-        return redirect('/admin/housetypes');
+        Alert::success('House Type successfully updated!')->flash();
+
+        return redirect('/admin/developments/'.$input['development_id']);
     }
 
     /**
@@ -163,8 +169,11 @@ class AdminHouseTypesController extends Controller
      */
     public function destroy($id)
     {
-        HouseType::findOrFail($id)->delete();
+        $houseType = HouseType::findOrFail($id);
+        $houseType->delete();
         Plot::where('house_type', $id)->delete();
-        return redirect('/admin/housetypes');
+        Alert::info('House Type deleted from the system.')->flash();
+
+        return redirect('/admin/developments/'.$houseType->development_id);
     }
 }

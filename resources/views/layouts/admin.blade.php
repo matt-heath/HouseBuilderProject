@@ -151,12 +151,12 @@
                         <li>
                             <a href="#"><i class="fa fa-map-marker fa-fw"></i> Plots<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="{{route('admin.plots.index')}}">All Plots</a>
-                                </li>
-                                <li>
-                                    <a href="{{route('admin.plots.create')}}">Add Plots to development</a>
-                                </li>
+                                {{--<li>--}}
+                                    {{--<a href="{{route('admin.plots.index')}}">All Plots</a>--}}
+                                {{--</li>--}}
+                                {{--<li>--}}
+                                    {{--<a href="{{route('admin.plots.create')}}">Add Plots to development</a>--}}
+                                {{--</li>--}}
                                 <li>
                                     <a href="{{route('admin.consultants.index')}}">Assign Consultant to phase in development</a>
                                 </li>
@@ -165,48 +165,48 @@
                         </li>
 
 
-                        <li>
-                            <a href="#"><i class="fa fa-building fa-fw"></i>House Types<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="{{route('admin.housetypes.index')}}">All House Types</a>
-                                </li>
-
-                                <li>
-                                    <a href="{{route('admin.housetypes.create')}}">Create House Types</a>
-                                </li>
-
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-certificate fa-fw"></i>Certificate Management<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="{{route('admin.certificates.index')}}">All Certificates</a>
-                                </li>
+                        {{--<li>--}}
+                            {{--<a href="#"><i class="fa fa-building fa-fw"></i>House Types<span class="fa arrow"></span></a>--}}
+                            {{--<ul class="nav nav-second-level">--}}
                                 {{--<li>--}}
-                                    {{--<a href="{{route('admin.certificates.create')}}">Create Required Certificates</a>--}}
+                                    {{--<a href="{{route('admin.housetypes.index')}}">All House Types</a>--}}
                                 {{--</li>--}}
-                                <li>
-                                    <a href="#">Certificate Categories <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="{{route('admin.certificatecategories.index')}}">All Categories</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{route('admin.certificatecategories.create')}}">Create Categories</a>
-                                        </li>
-                                    </ul>
-                                </li>
 
                                 {{--<li>--}}
                                     {{--<a href="{{route('admin.housetypes.create')}}">Create House Types</a>--}}
                                 {{--</li>--}}
 
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
+                            {{--</ul>--}}
+                            {{--<!-- /.nav-second-level -->--}}
+                        {{--</li>--}}
+                        {{--<li>--}}
+                            {{--<a href="#"><i class="fa fa-certificate fa-fw"></i>Certificate Management<span class="fa arrow"></span></a>--}}
+                            {{--<ul class="nav nav-second-level">--}}
+                                {{--<li>--}}
+                                    {{--<a href="{{route('admin.certificates.index')}}">All Certificates</a>--}}
+                                {{--</li>--}}
+                                {{--<li>--}}
+                                    {{--<a href="{{route('admin.certificates.create')}}">Create Required Certificates</a>--}}
+                                {{--</li>--}}
+                                {{--<li>--}}
+                                    {{--<a href="#">Certificate Categories <span class="fa arrow"></span></a>--}}
+                                    {{--<ul class="nav nav-third-level">--}}
+                                        {{--<li>--}}
+                                            {{--<a href="{{route('admin.certificatecategories.index')}}">All Categories</a>--}}
+                                        {{--</li>--}}
+                                        {{--<li>--}}
+                                            {{--<a href="{{route('admin.certificatecategories.create')}}">Create Categories</a>--}}
+                                        {{--</li>--}}
+                                    {{--</ul>--}}
+                                {{--</li>--}}
+
+                                {{--<li>--}}
+                                    {{--<a href="{{route('admin.housetypes.create')}}">Create House Types</a>--}}
+                                {{--</li>--}}
+
+                            {{--</ul>--}}
+                            {{--<!-- /.nav-second-level -->--}}
+                        {{--</li>--}}
                         <li>
                             <a href="#"><i class="fa fa-building fa-fw"></i>Bookings<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -271,15 +271,6 @@
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="{{route('estateagent.booking.index')}}">All Bookings</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-envelope fa-fw"></i> Messages<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="">All Chats</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

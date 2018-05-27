@@ -89,6 +89,7 @@ class AdminUsersController extends Controller
             ];
             Supplier::create($data);
         }
+        Alert::success('User successfully added to the system.')->flash();
         return redirect('/admin/users');
     }
 
@@ -154,7 +155,9 @@ class AdminUsersController extends Controller
     {
         $user = User::findOrFail($id); // find user and delete.
         $user->delete();
-        Session::flash('deleted_user', 'The user has been deleted');
+//        Session::flash('deleted_user', 'The user has been deleted');
+        Alert::info('User successfully deleted')->flash();
+
         return redirect('/admin/users'); // upon deletion, redirect to users table.
     }
 
@@ -217,7 +220,7 @@ class AdminUsersController extends Controller
                 Supplier::create($data);
             }
 
-            Alert::success('User added to the system.')->flash();
+//            $addUserModel['success'] = Alert::success('User successfully added to the system.')->flash();
         }
 
 //        $data = User::where('role_id', '=', 5)->all();

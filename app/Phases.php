@@ -14,7 +14,7 @@ class Phases extends Model
         'updated_at'
     ];
 //
-//    public function plot (){
-//        return $this->belongsTo('App\Plot');
-//    }
+   public function plot (){
+       return $this->belongsTo('App\Plot');
+   }
 }

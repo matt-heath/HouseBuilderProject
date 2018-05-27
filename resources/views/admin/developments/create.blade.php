@@ -67,13 +67,13 @@
         <div class="modal fade" id="myModalSupplier" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
+                {!! Form::open(['method'=>'POST', 'class'=> 'supplier', 'id'=>'contact', 'data-toggle'=>'validator'])!!}
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Add Consultant Account</h4>
                     </div>
                     <div class="modal-body">
-                        {!! Form::open(['method'=>'POST', 'class'=> 'supplier', 'id'=>'contact', 'data-toggle'=>'validator'])!!}
                         <div class="form-group">
                             {!! Form::label('name', 'Name:') !!}
                             {!! Form::text('name', null, ['data-error' => "Please input the users full name",'class'=>'form-control', 'required', 'placeholder'=>'Full Name'])!!}
@@ -119,10 +119,10 @@
                         <div class="form-group">
                             {!! Form::button('Add account', ['class'=>'btn btn-primary', 'data-role' => "button",  'id' => 'addSupplier']) !!}
                         </div>
-                        {!! Form::close() !!}
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
+                {!! Form::close() !!}
             </div>
         </div>
         <div class="modal fade" id="myModalEstAgent" role="dialog">

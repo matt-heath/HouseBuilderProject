@@ -11,6 +11,7 @@ use App\Plot;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Prologue\Alerts\Facades\Alert;
 
 class AdminPlotsController extends Controller
 {
@@ -76,7 +77,9 @@ class AdminPlotsController extends Controller
             $items[] = $item;
         }
         Plot::insert($items);
-        return redirect('/admin/plots');
+        Alert::success('Plot(s) added to the development!')->flash();
+
+        return redirect('/admin/developments/'.$all['development_id']);
     }
 
     /**
@@ -115,11 +118,14 @@ class AdminPlotsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PlotsRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $plot = Plot::findOrFail($id);
+        $plot = Plot::where('id', $id)->first();
+        $dev_id = $plot->development_id;
         $plot->update($request->all());
-        return redirect('/admin/plots');
+        Alert::success('Plot successfully updated!')->flash();
+
+        return redirect('/admin/developments/'.$dev_id);
     }
 
     /**
@@ -130,18 +136,35 @@ class AdminPlotsController extends Controller
      */
     public function destroy($id)
     {
-        Plot::findOrFail($id)->delete();
-        return redirect('/admin/plots');
+        $plot = Plot::findOrFail($id);
+        Alert::info('Plot successfully deleted.')->flash();
+        $plot->delete();
+        return redirect('/admin/developments/'.$plot->development_id);
     }
 
 
     public function plotsByDevelopment($id) {
         $development = Development::findOrFail($id);
-
         $plots = Plot::where('development_id', $id)->get();
 //         $plots->where('development_id', '=', $id);
-
         return view('/admin/plots/plotsbydevelopment', compact('development', 'plots'));
+    }
+
+    public function findNumPlots(Request $request){
+        $num_of_plots_available = Plot::where('development_id', $request->id)->get();
+
+        $count = $num_of_plots_available->count();
+
+        $totalPlots = Development::where('id', $request->id)->get()->pluck('development_num_plots')->first();
+
+        $plots_left =($totalPlots - $count);
+//        $plots_left = $totalPlots->diff($count);
+
+        if($plots_left == $totalPlots){
+            $plots_left = $totalPlots;
+        }
+        $arr['plots_left'] = $plots_left;
+        return response()->json($plots_left);
     }
 
     public function findHouseTypes(Request $request) {

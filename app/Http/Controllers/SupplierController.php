@@ -6,6 +6,7 @@ use App\SelectionCategory;
 use App\Supplier;
 use App\Variation;
 use Illuminate\Http\Request;
+use Prologue\Alerts\Facades\Alert;
 
 class SupplierController extends Controller
 {
@@ -95,6 +96,7 @@ class SupplierController extends Controller
         $supplier = Supplier::findOrFail($id);
 
         $supplier->update($input);
+        Alert::success('Supplier details successfully updated!')->flash();
 
         return redirect('/admin/suppliers/'.$supplier->id);
     }

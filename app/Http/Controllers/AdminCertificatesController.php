@@ -12,6 +12,7 @@ use App\Plot;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Prologue\Alerts\Facades\Alert;
 
 class AdminCertificatesController extends Controller
 {
@@ -54,11 +55,13 @@ class AdminCertificatesController extends Controller
         $ids = array();
         $plot_arr = array();
         $last_id = "";
+        $phase = $input['phase'];
+        $development_id = $input['development_id'];
 
-        $phase = Phases::where('id', $request->phase)->first();
+        $phase = Phases::where('id', $phase)->first();
         $num_of_plots = $phase->num_plots;
 
-        $plots = Plot::where('development_id', $request->development_id)->where('plot_name_id', '<=', $phase->num_plots)->where('phase', $request->phase)->get();
+        $plots = Plot::where('development_id', $development_id)->where('plot_name_id', '<=', $phase->num_plots)->where('phase', $phase->id)->get();
 
         $certificatesRequired = CertificateRequired::all();
         $consultant_id = $input['consultant_id'];
@@ -92,7 +95,7 @@ class AdminCertificatesController extends Controller
             }
         }
         for ($y = 0; $y < count($ids); $y++) {
-            $plot_id = $plot_arr[$y];
+//            $plot_id = $plot_arr[$y];
             $plot_certificates->attach($ids[$y], ['plot_id' => $plot_id]);
         }
 
@@ -115,7 +118,12 @@ class AdminCertificatesController extends Controller
                     $certificates[$a]->save();
                 }
         }
-        return redirect('/admin/certificates');
+
+        $phase->is_assigned = 1;
+        $phase->save();
+        Alert::success('Consultants successfully assigned!')->flash();
+
+        return redirect('/admin/developments/'.$request->development_id);
     }
 
     /**
@@ -169,22 +177,26 @@ class AdminCertificatesController extends Controller
             $certificate = Certificate::findOrFail($id);
             $certificate->build_status = $status;
             $certificate->save();
+            Alert::success('Certificate Status Updated!')->flash();
         }else if($status === 'no'){
             $status = 'Not ready';
             $certificate = Certificate::findOrFail($id);
             $certificate->build_status = $status;
             $certificate->save();
+            Alert::success('Certificate Status Updated!')->flash();
         }else if(isset($certificate_check)){
             $certificate = Certificate::findOrFail($id);
             if($certificate_check == 1){
                 $certificate->certificate_check = $certificate_check;
                 $certificate->build_status = 'Accepted';
                 $certificate->save();
+                Alert::success('Certificate Accepted!')->flash();
                 return redirect()->back();
             }else if ($certificate_check == 0){
                 $certificate->certificate_check = $certificate_check;
                 $certificate->build_status = 'Awaiting approval';
                 $certificate->save();
+                Alert::success('Certificate Unapproved.')->flash();
                 return redirect()->back();
             }else if($certificate_check == 3){
                 $certificate->certificate_check = 1;
@@ -196,10 +208,13 @@ class AdminCertificatesController extends Controller
                     'rejection_reason' => $request->rejection_reason
                 ];
                 CertificateRejection::create($input);
+
+                Alert::success('Certificate Rejected.')->flash();
             }
         }else{
             return redirect()->back();
         }
+
         return redirect()->back();
     }
 

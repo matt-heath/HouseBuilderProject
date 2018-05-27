@@ -128,7 +128,7 @@
                                         @endif
                                         <div class="table-responsive">
                                             <table id="myTable" width="100%"
-                                                   class="table table-striped table-bordered table-hover">
+                                                   class="table table-striped table-bordered table-hover myTable">
                                                 <thead>
                                                 <tr>
                                                     <th></th>
@@ -202,8 +202,8 @@
 
             <script>
                 $(document).ready(function () {
-                    var table = $('#myTable').DataTable({
-                        responsive: true,
+                    var table = $('.myTable').DataTable({
+                        // responsive: true,
                         "columnDefs": [
                             {"orderable": false, "targets": [0, 4]}
                             // {"orderable" : false, "className": 'select-checkbox', 'targets': 0}

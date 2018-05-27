@@ -62,7 +62,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('password', 'Password:') !!}
-                        {!! Form::password('password', ['pattern' =>".*@\w{2,}\.\w{2,}",'data-minlength'=>'6','required','class'=>'form-control', 'placeholder'=>'Password'])!!}
+                        {!! Form::password('password', ['data-minlength'=>'6','required','class'=>'form-control', 'placeholder'=>'Password'])!!}
                         <div class="help-block with-errors"></div>
                     </div>
                     <div class="form-group">
@@ -86,47 +86,47 @@
         </div>
     </div>
     <br><br>
+    <div class="table-responsive">
+        <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
 
-    <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>Created</th>
-            <th>Updated</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-
-        @if($users)
-            @foreach($users as $user)
-                <tr>
-                    <td>{{$user->name}}</td>
-                    <td>{{$user->email}}</td>
-                    <td>{{$user->role ? $user->role->name : 'User has no role'}}</td>
-                    <td>{{$user->is_active == 1 ? 'Active' : 'Not Active' }}</td>
-                    <td>{{$user->created_at->diffForHumans()}}</td>
-                    <td>{{$user->updated_at->diffForHumans()}}</td>
-                    <td>
-                        <div class="btn-group">
-                            <a href="{{route('admin.users.edit', $user->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
-                        </div>
-                        <div class="btn-group">
-                            {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminUsersController@destroy', $user->id], 'id'=> 'confirm_delete_'.$user->id]) !!}
+            @if($users)
+                @foreach($users as $user)
+                    <tr>
+                        <td>{{$user->name}}</td>
+                        <td>{{$user->email}}</td>
+                        <td>{{$user->role ? $user->role->name : 'User has no role'}}</td>
+                        <td>{{$user->is_active == 1 ? 'Active' : 'Not Active' }}</td>
+                        <td>{{$user->created_at->diffForHumans()}}</td>
+                        <td>{{$user->updated_at->diffForHumans()}}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="{{route('admin.users.edit', $user->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
+                            </div>
+                            <div class="btn-group">
+                                {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminUsersController@destroy', $user->id], 'id'=> 'confirm_delete_'.$user->id]) !!}
                                 {!! Form::button('<i class="fa fa-fw fa-trash"></i>', ['type'=> 'submit' ,'class'=>'btn btn-danger', 'onclick'=>'confirmDelete(' .$user->id .')']) !!}
-                            {!! Form::close() !!}
-                        </div>
-                    </td>
-                </tr>
-            @endforeach
-        @endif
+                                {!! Form::close() !!}
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
 
-        </tbody>
-    </table>
-
+            </tbody>
+        </table>
+    </div>
 @endsection
 
 @section('script')
@@ -135,7 +135,6 @@
         $(document).ready(function(){
             $('.select').select2();
             var table = $('#myTable').DataTable({
-                responsive: true,
                 "columnDefs": [
                     { "orderable": false, "targets": [6] }
                 ],
@@ -169,7 +168,6 @@
 
                 console.log(data);
                 $.ajax({
-
                     type:"POST",
                     url:'/addUser',
                     data: data,

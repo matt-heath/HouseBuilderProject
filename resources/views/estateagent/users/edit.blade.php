@@ -1,50 +1,46 @@
 @extends('layouts.admin')
 
-
+@section('title')
+    <h1>Edit User</h1>
+@endsection
 
 
 @section('content')
-
-
-    <h1>Edit User</h1>
-
     <div class="row">
 
         <div class="col-sm-12">
 
-            {!! Form::model($user,['method'=>'PATCH', 'action'=> ['EstateAgentUsersController@update', $user->id]]) !!}
-
-
+            {!! Form::model($user,['method'=>'PATCH', 'action'=> ['EstateAgentUsersController@update', $user->id], 'data-toggle'=>'validator']) !!}
             <div class="form-group">
                 {!! Form::label('name', 'Name:') !!}
-                {!! Form::text('name', null, ['class'=>'form-control'])!!}
+                {!! Form::text('name', null, ['class'=>'form-control', 'required'])!!}
+                <div class="help-block with-errors"></div>
             </div>
-
-
             <div class="form-group">
                 {!! Form::label('email', 'Email:') !!}
-                {!! Form::email('email', null, ['class'=>'form-control'])!!}
+                {!! Form::email('email', null, ['class'=>'form-control', 'required'])!!}
+                <div class="help-block with-errors"></div>
             </div>
-
             <div class="form-group">
                 {!! Form::label('role_id', 'Role:') !!}
                 {!! Form::select('role_id_disabled', $roles , null, ['class'=>'form-control', 'disabled'])!!}
                 {!! Form::select('role_id', $roles , null, ['class'=>'form-control hidden'])!!}
             </div>
-
-
             <div class="form-group">
                 {!! Form::label('is_active', 'Status:') !!}
-                {!! Form::select('is_active', array(1 => 'Active', 0=> 'Not Active'), null , ['class'=>'form-control'])!!}
+                {!! Form::select('is_active', array(1 => 'Active', 0=> 'Not Active'), null , ['class'=>'form-control', 'required'])!!}
+                <div class="help-block with-errors"></div>
             </div>
-
-
             <div class="form-group">
                 {!! Form::label('password', 'Password:') !!}
-                {!! Form::password('password', ['class'=>'form-control'])!!}
+                {!! Form::password('password', ['data-minlength'=>'6','class'=>'form-control', 'placeholder'=>'Password'])!!}
+                <div class="help-block with-errors"></div>
             </div>
-
-
+            <div class="form-group">
+                {!! Form::label('inputPasswordConfirm', 'Confirm Password:') !!}
+                {!! Form::password('inputPasswordConfirm', ['data-match'=>'#password','data-match-error'=>"Whoops, these passwords don't match",'class'=>'form-control', 'placeholder'=>'Confirm Password'])!!}
+                <div class="help-block with-errors"></div>
+            </div>
             <div class="form-group">
                 {!! Form::submit('Edit User', ['class'=>'btn btn-primary col-sm-3']) !!}
             </div>

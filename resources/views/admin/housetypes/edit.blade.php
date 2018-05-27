@@ -36,7 +36,8 @@
             {!! Form::model($houseTypes, ['method'=>'PATCH', 'action'=> ['AdminHouseTypesController@update', $houseTypes->id], 'files' => true, 'data-toggle'=>'validator']) !!}
             <div class="form-group">
                 {!! Form::label('development_id', 'Development Name:')!!}
-                {!! Form::select('development_id', [''=>'Choose Development'] + $developments, null, ['class'=>'form-control select', 'required']) !!}
+                {!! Form::select('development_id_disabled', $developments, null, ['class'=>'form-control select', 'disabled']) !!}
+                {!! Form::select('development_id', $developments , null, ['class'=>'form-control hidden'])!!}
                 <div class="help-block with-errors"></div>
             </div>
 

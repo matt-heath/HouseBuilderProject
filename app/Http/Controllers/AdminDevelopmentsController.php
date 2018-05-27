@@ -14,6 +14,7 @@ use App\Phases;
 use App\Photo;
 use App\Plot;
 use App\Role;
+use DB;
 use App\SelectionCategory;
 use App\Supplier;
 use App\User;
@@ -197,7 +198,11 @@ class AdminDevelopmentsController extends Controller
 
         $development = Development::create($input);
         $dev_id = $development->id;
+        $estate_agent = $input['estate_agent_responsible'];
+        $estate_insert = EstateAgent::where('user_id', $estate_agent)->get()->pluck('id')->first();
         $development_insert = Development::where('id', '=', $dev_id)->first();
+
+        $development_insert->estateAgent()->attach($estate_insert);
 
         for($z = 0; $z< count($supplier_id); $z++){
             if($supplier_id[$z] !== ''){
@@ -227,7 +232,8 @@ class AdminDevelopmentsController extends Controller
             $itemsHouseType[] = $itemHouseType;
         }
         HouseType::insert($itemsHouseType);
-        Alert::success('Development added to the system.')->flash();
+//        Alert::success('Development added to the system.')->flash();
+        Alert::success('Development details successfully added to the system!')->flash();
         return redirect('/admin/developments');
     }
 
@@ -243,6 +249,61 @@ class AdminDevelopmentsController extends Controller
         $plots = Plot::where('development_id', $id)->get();
         $num_of_plots_available = Plot::where('development_id', $id)->get();
         $houseTypes = HouseType::where('development_id', $id)->get();
+        $certificatesCategory = CertificateCategory::where('name', 'Tradesmen certificates')->get()->pluck('id');
+        $certificates = CertificateRequired::where('certificate_category_id', $certificatesCategory)->get();
+        $consultants = User::where('role_id', '=', 5)->get()->pluck('consultant_details', 'id')->all();
+        $roles = Role::where('id', '=', 5)->pluck('name', 'id')->first();
+
+
+        // $phaseCount = Plot::all()->groupBy('phase');
+
+        $phaseCount = DB::table('plots')
+            ->select('phase', DB::raw('count(*) as total'))
+            ->where('development_id', $id)
+            ->groupBy('phase')->get()->toArray();
+
+        $phases = Phases::where('development_id', $id)->get();
+        // return $phases->num_plots;
+
+        $phaseArray = array();
+        foreach($phases as $phase){
+            foreach($phaseCount as $test){
+//                 echo $phase->id. ' ' .$phase->num_plots.'<br>';
+//                 return $test->phase;
+                if($phase->id == $test->phase){
+                    if($phase->num_plots !== $test->total){
+//                         echo $phase->num_plots. ' '. $test->total;
+//                         return "MAX NOT REACHED";
+                        $phaseArr = [
+                            $phase->id
+                        ];
+                        // return $phaseArr;
+                        $phaseArray[] = $phaseArr;
+                    }else{
+//                         echo $phase->phase_name. " MAX REACHED <br>";
+//                         echo "NOT EQUAL";
+                    }
+                }else if(!$test->phase){
+//                     return  "NO PLOTS in ". $phase->phase_name;
+                    $phaseArr = [
+                            $phase->id
+                        ];
+                        // return $phaseArr;
+                    $phaseArray[] = $phaseArr;
+                }
+            }
+
+            if(!$phaseCount){
+                $phaseArr = [
+                    $phase->id
+                ];
+                $phaseArray[] = $phaseArr;
+            }
+        }
+
+        $phases = Phases::whereIn('id', $phaseArray)->get()->pluck('phase_name', 'id')->all();
+        $phase = Phases::where('development_id', $id)->where('is_assigned', '!==', 1)->first();
+
         $supplier_types = SelectionCategory::all();
         $suppliers = User::where('role_id', '=', 3)->get()->pluck('supplier_details', 'id')->all();
         $default = $development->suppliers()->pluck('supplier_company_name','id');
@@ -261,7 +322,12 @@ class AdminDevelopmentsController extends Controller
             $assigned[] = $items[$i];
         }
 
-        return view('admin.developments.show', compact('plots', 'development', 'num_of_plots_available', 'houseTypes', 'supplier_types', 'suppliers', 'default', 'assigned', 'estate_agent'));
+        $development_select = $development::where('id', $id)->pluck('development_name','id');
+        $houseTypes_select = HouseType::where('development_id', $id)->get()->pluck('house_type_name', 'id')->all();
+
+        return view('admin.developments.show', compact('plots', 'development', 'num_of_plots_available',
+            'houseTypes', 'supplier_types', 'suppliers', 'default', 'assigned', 'estate_agent', 'development_select', 'houseTypes_select', 'phases', 'certificates', 'consultants',
+            'phase', 'roles'));
     }
 
     /**
@@ -318,7 +384,8 @@ class AdminDevelopmentsController extends Controller
         $development->update($input);
         $val = $development->estateAgent()
             ->updateExistingPivot($previousEstateAgentID, ['estate_agent_id' => $newEstateAgent]);
-        return redirect('/admin/developments/'.$id.'/edit');
+        Alert::success('Development details successfully updated!')->flash();
+        return redirect('/admin/developments/'.$id);
     }
 
     /**
@@ -334,7 +401,8 @@ class AdminDevelopmentsController extends Controller
             unlink(public_path() . $development->photo->file);
         }
         $development->delete();
-        Session::flash('deleted_development', 'The development has been deleted');
+//        Session::flash('deleted_development', 'The development has been deleted');
+        Alert::info('The development has been deleted')->flash();
         return redirect('/admin/developments'); // upon deletion, redirect to users table.
     }
 
@@ -382,6 +450,8 @@ class AdminDevelopmentsController extends Controller
         if(empty($val)) {
             $development_insert->suppliers()->attach($supplier->id, ['supplier_type' => $supplier->supplier_type]);
         }
+        Alert::success('Supplier added to development!')->flash();
+
         return redirect('/admin/developments/'.$development_id);
     }
 }
