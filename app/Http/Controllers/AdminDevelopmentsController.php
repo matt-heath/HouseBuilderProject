@@ -303,6 +303,7 @@ class AdminDevelopmentsController extends Controller
 
         $phases = Phases::whereIn('id', $phaseArray)->get()->pluck('phase_name', 'id')->all();
         $phase = Phases::where('development_id', $id)->where('is_assigned', '!==', 1)->first();
+        $phaseDetails = Phases::where('development_id', $id)->get();
 
         $supplier_types = SelectionCategory::all();
         $suppliers = User::where('role_id', '=', 3)->get()->pluck('supplier_details', 'id')->all();
@@ -327,7 +328,7 @@ class AdminDevelopmentsController extends Controller
 
         return view('admin.developments.show', compact('plots', 'development', 'num_of_plots_available',
             'houseTypes', 'supplier_types', 'suppliers', 'default', 'assigned', 'estate_agent', 'development_select', 'houseTypes_select', 'phases', 'certificates', 'consultants',
-            'phase', 'roles'));
+            'phase', 'roles', 'phaseDetails'));
     }
 
     /**
@@ -453,5 +454,79 @@ class AdminDevelopmentsController extends Controller
         Alert::success('Supplier added to development!')->flash();
 
         return redirect('/admin/developments/'.$development_id);
+    }
+
+
+    public function addPhase(Request $request){
+        $input = $request->all();
+        $dev_id = $input['development_id'];
+        $num_plots = $input['num_plots'];
+        $phases = Phases::where('development_id', $dev_id)->orderBy('phase_name', 'desc')->first();
+        $newstring = substr($phases->phase_name, -1) + 1;
+
+        $phaseName = "Phase ".$newstring;
+
+        $itemsPhase = array(
+            'development_id' => $dev_id,
+            'phase_name' => $phaseName,
+            'num_plots' => $num_plots
+        );
+
+        $plot = Plot::where('development_id', $dev_id)->first();
+        $cert_ids = $plot->certificates->take(6)->pluck('id');
+
+        $consultant_id = Consultant::whereHas('certificates', function ($query) use ($cert_ids) {
+            $query->whereIn('certificate_id', $cert_ids);
+        })->get()->pluck('id')->toArray();
+
+//        $certificates = Certificate::whereHas('consultant', function($query) use ($consultant_id){
+//            $query->whereIn('consultant_id', $consultant_id);
+//        })->get()->pluck('id');
+
+        $namesArray = [
+            "Building Control",
+            "NHBC",
+            "Site manager",
+            "Architect",
+            "Builder's Solicitor"
+        ];
+
+        $cert_name = CertificateCategory::whereIn('name', $namesArray)->get()->pluck('id');
+
+        if(array_filter($consultant_id)){
+            for($z = 0; $z< count($cert_name); $z++){
+                 $certificates = CertificateRequired::where('certificate_category_id', '=', $cert_name[$z])->get();
+                foreach($certificates as $certificate){
+//                    echo $certificate;
+                    for ($i = 0; $i < $num_plots; $i++) {
+                        $certificatesModel[$i] = new Certificate();
+                        $item = array(
+                            'certificate_check' => 'False',
+                            'certificate_doc' => '',
+                            'certificates_required_id' => $certificate->id
+                        );
+                        $certificatesModel[$i]->fill($item)->save();
+                        $items[] = $item;
+                        $ids[] = $certificatesModel[$i]->id;
+                        $consultant = Consultant::where('id', $consultant_id[$z])->first();
+                        $consultant->certificates()->attach($certificatesModel[$i]->id);
+                    }
+                }
+            }
+        }
+
+
+//        return $consultants = Consultant::with('certificates')->whereIn('certificate_id',$cert_ids)->get();
+        Phases::insert($itemsPhase);
+
+        $dev = Development::where('id', $dev_id)->pluck('development_num_plots')->first();
+
+        $newNumber = $dev + $num_plots;
+
+        $development = Development::where('id', $dev_id)->first();
+        $development->update(['development_num_plots' => $newNumber]);
+
+        Alert::success('Phase successfully added to development!')->flash();
+        return redirect('/admin/developments/'.$dev_id);
     }
 }

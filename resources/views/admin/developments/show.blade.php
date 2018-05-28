@@ -364,7 +364,60 @@
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="phases">
-                        HI0
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success" data-toggle='modal' data-target='#addPhaseModal'
+                                    id='addPhaseClick'><i class="fa fa-fw fa-plus"></i> Add Phase to Development
+                            </button>
+                        </div>
+                        <div class="modal fade" id="addPhaseModal" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Add Phase to Development</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{-- {!! Form::open(['method'=>'POST', 'class'=> 'contact', 'id'=>'contact', 'data-toggle'=>"validator"])!!} --}}
+                                        {!! Form::open(['method'=>'POST', 'action'=>'AdminDevelopmentsController@addPhase', 'data-toggle'=>'validator'])!!}
+
+                                        <div class="form-group">
+                                            {!! Form::label('num_plots', 'Number of Plots in New Phase:')!!}
+                                            {!! Form::number('num_plots', null, ['class'=>'form-control', 'style'=>'height: 34px !important']) !!}
+                                            {!! Form::text('development_id', $development->id,['class'=>'form-control hidden', 'style'=>'height: 34px !important']) !!}
+                                        </div>
+
+                                        <div class="form-group">
+                                            {!! Form::submit('Create Phase', ['class'=>'btn btn-primary']) !!}
+                                        </div>
+                                        {!! Form::close() !!}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="table-responsive">
+                            <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Phase Name</th>
+                                    <th>Number of Plots</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    @foreach($phaseDetails as $detail)
+                                        <td>{{$detail->phase_name}}</td>
+                                        <td>{{$detail->num_plots}}</td>
+                                    @endforeach
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="consultants">

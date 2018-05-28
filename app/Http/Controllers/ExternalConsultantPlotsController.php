@@ -28,7 +28,7 @@ class ExternalConsultantPlotsController extends Controller
         //get current user ID
         $user_id = Auth::id();
 
-        $consultants = Consultant::with('certificates')->where('user_id', $user_id)->first();
+       $consultants = Consultant::with('certificates')->where('user_id', $user_id)->first();
 
 
 //        return $consultants->pluck('id')
@@ -40,11 +40,11 @@ class ExternalConsultantPlotsController extends Controller
 
 //            echo $consultant;
             $certificate_id = $consultant->pivot->certificate_id;
-
+            $certificate_required_ids[]= $consultant->certificates_required_id;
             $certificate_ids[] = $certificate_id;
         }
-
-//        return $certificate_ids;
+//return null;
+//        return $certificate_required_ids;
 
         $plots = Plot::whereHas('certificates', function ($query) use ($certificate_ids) {
             $query->whereIn('certificate_id', $certificate_ids);
@@ -84,7 +84,7 @@ class ExternalConsultantPlotsController extends Controller
 //        return $certificate_ids;
 //        return $cert_id;
 ////
-        return view('externalconsultant.plots.index', compact('plots', 'certificate_ids', 'status'));
+        return view('externalconsultant.plots.index', compact('plots', 'certificate_ids', 'status', 'certificate_required_ids'));
     }
 
     /**

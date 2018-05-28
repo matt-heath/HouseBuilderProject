@@ -13,9 +13,9 @@
                     <tr>
                         <th>Development Name</th>
                         <th>Plot Name</th>
-                        <th>House Type</th>
                         <th>SqFt</th>
                         <th>Phase</th>
+                        <th>Certificate Required</th>
                         <th>Build Status</th>
                         <th></th>
                     </tr>
@@ -25,33 +25,42 @@
 
                     {{--Declares the variable count as 0 without printing to the screen --}}
                     @php($count = 0)
-
                     @foreach($plots as $plot)
-                        <tr>
-                            <td><a href="{{route('admin.plotsbydevelopment', ['id'=>$plot->development_id])}}">{{$plot->development ? $plot->development->development_name : "Development Not Set"}}</a></td>
-                            <td>{{$plot->plot_name}}</td>
-                            <td>{{$plot->houseTypes ? $plot->houseTypes->house_type_name : "NOT FOUND"}}</td>
-                            <td>{{$plot->sqft}}</td>
-                            <td>{{$plot->phases->phase_name}}</td>
-                            {{--<td>{{$plot->id}}</td>--}}
-                            <td>{!! $status[$count] === "Ready for inspection" ? "<a href='' data-toggle='modal' data-target='#myModal' class='modalClick' id='modalClick' data-id='$certificate_ids[$count]'>$status[$count]</a>" : $status[$count] !!}</td>
-                            <td>
-                                {{--{{$certificate_ids[$count]}}--}}
-                                @if($status[$count] === "Property being inspected")
-                                    <div class="btn-group">
-                                        <a href="{{route('externalconsultant.certificates.edit', $certificate_ids[$count])}}" class="btn btn-warning"><i class="fa fa-fw fa-certificate fa-sm"></i></a>
-                                    </div>
+                        @foreach($certificate_required_ids as $id)
+                            <tr>
+                                <td><a href="{{route('admin.plotsbydevelopment', ['id'=>$plot->development_id])}}">{{$plot->development ? $plot->development->development_name : "Development Not Set"}}</a></td>
+                                <td>{{$plot->plot_name}}</td>
+                                <td>{{$plot->sqft}}</td>
+                                <td>{{$plot->phases->phase_name}}</td>
 
-                                @elseif($status[$count] ==="Rejected")
-                                    <div class="btn-group">
-                                        <a href='' class="btn btn-danger rejectionClick" data-toggle='modal' data-target='#rejectionModal' id='rejectionClick' data-id={{$certificate_ids[$count]}}>Rejection Reasons</a>
-                                    </div>
+                                @foreach($plot->certificates as $cert)
+                                    {{--{{$id}}--}}
+                                    @if($cert->certificatesRequired->first()->id == $id)
+                                        <td>{{$cert->certificatesRequired->first()->certificate_name}}</td>
+                                    @elseif(!isset($cert->certificatesRequired->first()->certificate_name))
+                                        <td></td>
+                                    @endif
+                                @endforeach
 
-                                @endif
-                            </td>
-                        </tr>
+                                {{--<td>{{$plot->id}}</td>--}}
+                                <td>{!! $status[$count] === "Ready for inspection" ? "<a href='' data-toggle='modal' data-target='#myModal' class='modalClick' id='modalClick' data-id='$certificate_ids[$count]'>$status[$count]</a>" : $status[$count] !!}</td>
+                                <td>
+                                    {{--{{$certificate_ids[$count]}}--}}
+                                    @if($status[$count] === "Property being inspected")
+                                        <div class="btn-group">
+                                            <a href="{{route('externalconsultant.certificates.edit', $certificate_ids[$count])}}" class="btn btn-warning"><i class="fa fa-fw fa-certificate fa-sm"></i></a>
+                                        </div>
 
-                        @php($count++)
+                                    @elseif($status[$count] ==="Rejected")
+                                        <div class="btn-group">
+                                            <a href='' class="btn btn-danger rejectionClick" data-toggle='modal' data-target='#rejectionModal' id='rejectionClick' data-id={{$certificate_ids[$count]}}>Rejection Reasons</a>
+                                        </div>
+
+                                    @endif
+                                </td>
+                            </tr>
+                            @php($count++)
+                        @endforeach
                     @endforeach
                     </tbody>
                 </table>
@@ -127,7 +136,7 @@
             $('#myTable').DataTable({
                 // responsive: true,
                 "columnDefs": [
-                    { "orderable": false, "targets": [6] }
+                    { "orderable": false, "targets": [5] }
                 ]
             });
         });
