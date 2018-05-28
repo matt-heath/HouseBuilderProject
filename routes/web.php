@@ -96,7 +96,8 @@ Route::group(['middleware'=>'admin'], function(){
         'index'=>'admin.booking.index',
         'create'=>'admin.booking.create',
         'store'=> 'admin.booking.store',
-        'edit'=> 'admin.booking.edit'
+        'edit'=> 'admin.booking.edit',
+        'show'=> 'admin.booking.show'
     ]]);
 
     Route::resource('admin/variations', 'VariationController', ['names' => [
@@ -128,11 +129,13 @@ Route::group(['middleware'=>'admin'], function(){
 
 
 Route::group(['middleware'=>'estateagent'], function() {
-    Route::get('/estateagent', function(){
+//    Route::get('/estateagent', function(){
+//
+//        return view('estateagent.index');
+//
+//    });
+    Route::get('/estateagent', 'DashboardController@estateAgent');
 
-        return view('estateagent.index');
-
-    });
 
     Route::resource('estateagent/users', 'EstateAgentUsersController', ['names'=>[
         'index'=>'estateagent.users.index',
@@ -164,11 +167,12 @@ Route::group(['middleware'=>'estateagent'], function() {
 });
 
 Route::group(['middleware'=>'externalconsultant'], function() {
-    Route::get('/externalconsultant', function(){
-
-        return view('externalconsultant.index');
-
-    });
+//    Route::get('/externalconsultant', function(){
+//
+//        return view('externalconsultant.index');
+//
+//    });
+    Route::get('/externalconsultant', 'DashboardController@externalConsultant');
 
     Route::resource('externalconsultant/plots', 'ExternalConsultantPlotsController', ['names'=>[
         'index'=>'externalconsultant.plots.index',
@@ -185,9 +189,11 @@ Route::group(['middleware'=>'externalconsultant'], function() {
 });
 
 Route::group(['middleware'=>'buyer'], function() {
-    Route::get('/buyer', function(){
-        return view('buyer.index');
-    });
+//    Route::get('/buyer', function(){
+//        return view('buyer.index');
+//    });
+    Route::get('/buyer', 'DashboardController@buyer');
+
 
     Route::resource('buyer/plot', 'BuyerPlotController', ['names'=>[
         'index'=>'buyer.plot.index',

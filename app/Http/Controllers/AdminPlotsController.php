@@ -151,11 +151,12 @@ class AdminPlotsController extends Controller
     }
 
     public function findNumPlots(Request $request){
-        $num_of_plots_available = Plot::where('development_id', $request->id)->get();
+        $num_of_plots_available = Plot::where('development_id', $request->id)->where('phase', $request->phase_id)->get();
 
         $count = $num_of_plots_available->count();
 
-        $totalPlots = Development::where('id', $request->id)->get()->pluck('development_num_plots')->first();
+        $totalPlots = Phases::where('id', $request->phase_id)->get()->pluck('num_plots')->first();
+//        $totalPlots = Development::where('id', $request->id)->get()->pluck('development_num_plots')->first();
 
         $plots_left =($totalPlots - $count);
 //        $plots_left = $totalPlots->diff($count);

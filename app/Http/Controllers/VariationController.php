@@ -224,6 +224,9 @@ class VariationController extends Controller
 //        return null;
 //        return null;
 
+        Alert::success('House type variations updated!')->flash();
+
+
         return redirect('/admin/housetypes/' . $house_type_id);
     }
 }

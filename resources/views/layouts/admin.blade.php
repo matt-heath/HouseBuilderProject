@@ -148,21 +148,21 @@
                         </li>
 
 
-                        <li>
-                            <a href="#"><i class="fa fa-map-marker fa-fw"></i> Plots<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
+                        {{--<li>--}}
+                            {{--<a href="#"><i class="fa fa-map-marker fa-fw"></i> Plots<span class="fa arrow"></span></a>--}}
+                            {{--<ul class="nav nav-second-level">--}}
                                 {{--<li>--}}
                                     {{--<a href="{{route('admin.plots.index')}}">All Plots</a>--}}
                                 {{--</li>--}}
                                 {{--<li>--}}
                                     {{--<a href="{{route('admin.plots.create')}}">Add Plots to development</a>--}}
                                 {{--</li>--}}
-                                <li>
-                                    <a href="{{route('admin.consultants.index')}}">Assign Consultant to phase in development</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
+                                {{--<li>--}}
+                                    {{--<a href="{{route('admin.consultants.index')}}">Assign Consultant to phase in development</a>--}}
+                                {{--</li>--}}
+                            {{--</ul>--}}
+                            {{--<!-- /.nav-second-level -->--}}
+                        {{--</li>--}}
 
 
                         {{--<li>--}}
@@ -222,7 +222,7 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-building fa-fw"></i>Supplier Management<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-shopping-cart fa-fw"></i>Supplier Management<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="{{route('admin.suppliers.index')}}">All Suppliers</a>
@@ -278,7 +278,7 @@
                     @elseif(Auth::user()->isExternalConsultant())
 
                         <li>
-                            <a href="/estateagent"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="/externalconsultant"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
 
                         <li>

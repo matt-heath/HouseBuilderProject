@@ -257,19 +257,22 @@ class AdminDevelopmentsController extends Controller
 
         // $phaseCount = Plot::all()->groupBy('phase');
 
-        $phaseCount = DB::table('plots')
+         $phaseCount = DB::table('plots')
             ->select('phase', DB::raw('count(*) as total'))
             ->where('development_id', $id)
             ->groupBy('phase')->get()->toArray();
+
+//         return $phaseCount;
 
         $phases = Phases::where('development_id', $id)->get();
         // return $phases->num_plots;
 
         $phaseArray = array();
+        $maxReachedArr = array();
         foreach($phases as $phase){
             foreach($phaseCount as $test){
 //                 echo $phase->id. ' ' .$phase->num_plots.'<br>';
-//                 return $test->phase;
+//                 echo $test->phase;
                 if($phase->id == $test->phase){
                     if($phase->num_plots !== $test->total){
 //                         echo $phase->num_plots. ' '. $test->total;
@@ -282,6 +285,10 @@ class AdminDevelopmentsController extends Controller
                     }else{
 //                         echo $phase->phase_name. " MAX REACHED <br>";
 //                         echo "NOT EQUAL";
+                        $maxArr = [
+                            $phase->id
+                        ];
+                        $maxReachedArr[] = $maxArr;
                     }
                 }else if(!$test->phase){
 //                     return  "NO PLOTS in ". $phase->phase_name;
@@ -289,6 +296,12 @@ class AdminDevelopmentsController extends Controller
                             $phase->id
                         ];
                         // return $phaseArr;
+                    $phaseArray[] = $phaseArr;
+                }else{
+                    $phaseArr = [
+                        $phase->id
+                    ];
+                    // return $phaseArr;
                     $phaseArray[] = $phaseArr;
                 }
             }
@@ -301,7 +314,9 @@ class AdminDevelopmentsController extends Controller
             }
         }
 
-        $phases = Phases::whereIn('id', $phaseArray)->get()->pluck('phase_name', 'id')->all();
+//        return $maxReachedArr;
+
+        $phases = Phases::whereIn('id', $phaseArray)->whereNotIn('id', $maxReachedArr)->get()->pluck('phase_name', 'id')->all();
         $phase = Phases::where('development_id', $id)->where('is_assigned', '!==', 1)->first();
         $phaseDetails = Phases::where('development_id', $id)->get();
 

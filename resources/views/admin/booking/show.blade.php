@@ -1,9 +1,10 @@
 @extends('layouts.admin')
 
-@section('content')
-
+@section('title')
     <h1>Booking Information</h1>
+@endsection
 
+@section('content')
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -179,7 +180,7 @@
                 if (result.value) {
                 swal({
                     title: 'Deleted!',
-                    text: 'Your file has been deleted.',
+                    text: 'Booking has been deleted.',
                     type: 'success',
                     showConfirmButton: false,
                     timer: 3000

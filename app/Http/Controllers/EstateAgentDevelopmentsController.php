@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Development;
 use App\EstateAgent;
 use App\HouseType;
+use App\Phases;
 use App\Plot;
+use App\Supplier;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -44,9 +46,15 @@ class EstateAgentDevelopmentsController extends Controller
         $num_of_plots_available = Plot::where('development_id', $id)->get();
         $houseTypes = HouseType::where('development_id', $id)->get();
         $suppliers = User::where('role_id', '=', 3)->get()->pluck('supplier_details', 'id')->all();
+//        $supplierDetails = Supplier::with('developments')->get()
+
+        $supplierDetails = Supplier::whereHas('developments', function ($query) use ($id) {
+            $query->where('development_id', $id);
+        })->get();
         $default = $development->suppliers()->pluck('supplier_company_name','id');
         $estate_agent = $development->estateAgent()->first();
 
+        $phaseDetails = Phases::where('development_id', $id)->get();
 
         $items = array();
         $assigned = array();
@@ -60,7 +68,7 @@ class EstateAgentDevelopmentsController extends Controller
             $assigned[] = $items[$i];
         }
 
-        return view('estateagent.developments.show', compact('plots', 'development', 'num_of_plots_available', 'houseTypes', 'suppliers', 'default', 'assigned', 'estate_agent'));
+        return view('estateagent.developments.show', compact('plots', 'development', 'num_of_plots_available', 'houseTypes', 'suppliers', 'default', 'assigned', 'estate_agent', 'phaseDetails', 'supplierDetails'));
     }
 
     public function viewPlots($id){

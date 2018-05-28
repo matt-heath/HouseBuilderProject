@@ -178,7 +178,7 @@
                                         <div class="modal-body">
                                             {!! Form::model($certificate, ['method'=>'PATCH', 'class'=> 'modalCertificate', 'action'=>['AdminCertificatesController@update', $certificate->id], 'data-toggle'=> 'validator'])!!}
                                             <input type="hidden" name="certificate_check" value="3">
-                                            {{$certificate->id}}
+                                            {{--{{$certificate->id}}--}}
                                             <div class="form-group">
                                                 {!! Form::label('rejection_reason', 'Certificate Rejection Notes:') !!}
                                                 {!! Form::textarea('rejection_reason', null, ['data-error' => "Please enter a rejection reason", 'class'=>'form-control', 'required']) !!}

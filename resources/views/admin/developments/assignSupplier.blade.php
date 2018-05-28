@@ -50,6 +50,7 @@
     <script>
         $(document).ready(function(){
             $('#developments').select2();
+            $('.supplier_select').select2();
         });
     </script>
 

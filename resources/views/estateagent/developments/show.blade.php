@@ -181,7 +181,52 @@
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="phases">
-                        HI0
+                        <div class="table-responsive">
+                            <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Phase Name</th>
+                                    <th>Number of Plots</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($phaseDetails as $detail)
+                                    <tr>
+
+                                        <td>{{$detail->phase_name}}</td>
+                                        <td>{{$detail->num_plots}}</td>
+
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="suppliers">
+                        <div class="table-responsive">
+                            <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Supplier Type</th>
+                                    <th>Contact Email</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($supplierDetails as $supplier)
+                                    <tr>
+
+                                        <td>{{$supplier->supplier_company_name}}</td>
+                                        <td>{{$supplier->selectionCategory->category_name}}</td>
+                                        <td>
+                                            <a href="mailto:{{$supplier->user->email}}">
+                                                Contact Supplier
+                                            </a>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

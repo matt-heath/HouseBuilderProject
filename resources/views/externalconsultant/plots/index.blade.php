@@ -4,6 +4,12 @@
     <h1>Plots Assigned To</h1>
 @endsection
 
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
 @section('content')
     <div class="col-sm-12">
         @if($plots)

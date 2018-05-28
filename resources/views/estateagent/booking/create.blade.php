@@ -97,6 +97,7 @@
                             {{--{!! Form::label('id', 'ID:')!!}--}}
                             {{--{!! Form::text('id_disabled', $id, ['class'=>'form-control', 'disabled']) !!}--}}
                             {!! Form::text('id', $id, ['class'=>'form-control hidden']) !!}
+                            {!! Form::text('dev_id', $dev_id, ['class'=>'form-control hidden']) !!}
                         </div>
                         <div class="form-group">
                             {!! Form::label('title', 'Buyer Name:')!!}

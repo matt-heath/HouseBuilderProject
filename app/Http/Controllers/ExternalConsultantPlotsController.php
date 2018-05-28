@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Prologue\Alerts\Facades\Alert;
 
 class ExternalConsultantPlotsController extends Controller
 {
@@ -156,6 +157,9 @@ class ExternalConsultantPlotsController extends Controller
         }else{
             return redirect()->back();
         }
+
+        Alert::success('Certificate Status successfully updated!')->flash();
+
 
         return redirect('/externalconsultant/plots');
 }

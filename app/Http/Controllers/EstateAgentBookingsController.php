@@ -39,9 +39,11 @@ class EstateAgentBookingsController extends Controller
         $plot = Plot::where('id', $id)->first();
         $image = HouseType::where('id', $plot->house_type)->first();
         $roles = Role::where('id', 4)->pluck('name','id')->all();
+        $dev_id = Plot::where('id', $id)->pluck('development_id')->first();
 //        $developments = Development::where('id', $plots)->get();
 //        $houseTypes = HouseType::pluck('house_type_name', 'id')->all();
-        return view('/estateagent/booking/create', compact('users','id', 'plot', 'development_name', 'image', 'roles'));
+
+        return view('/estateagent/booking/create', compact('users','id', 'plot', 'development_name', 'image', 'roles', 'dev_id'));
     }
 
     /**
@@ -53,8 +55,11 @@ class EstateAgentBookingsController extends Controller
     public function store(Request $request)
     {
         //
+//        return null;
 
         $input = $request->all();
+
+//        return $input['dev_id'];
 
         $input['plot_id'] = $input['id'];
 
@@ -66,7 +71,10 @@ class EstateAgentBookingsController extends Controller
             $plot->save();
         }
 
-        return redirect('/estateagent/developments');
+        Alert::success('Booking successfully added!')->flash();
+
+
+        return redirect('/estateagent/developments/'. $input['dev_id']);
     }
 
     /**
@@ -109,6 +117,8 @@ class EstateAgentBookingsController extends Controller
         $booking = Booking::findOrFail($id);
 
         $booking->update($input);
+        Alert::success('Booking successfully updated!')->flash();
+
 
         return redirect('/estateagent/booking');
     }

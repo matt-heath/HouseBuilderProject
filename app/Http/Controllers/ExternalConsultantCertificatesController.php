@@ -9,6 +9,7 @@ use App\Plot;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Prologue\Alerts\Facades\Alert;
 
 class ExternalConsultantCertificatesController extends Controller
 {
@@ -138,6 +139,7 @@ class ExternalConsultantCertificatesController extends Controller
 
 //        return $ids->plot_id->where('certificate_id', $id);
 
+        Alert::success('Certificate uploaded for admin approval!')->flash();
 
         return redirect('/externalconsultant/plots');
 

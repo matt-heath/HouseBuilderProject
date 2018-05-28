@@ -32,66 +32,21 @@
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge">1</div>
-                            <div>Developments</div>
+                            <div>Your House</div>
                             <br>
                         </div>
                     </div>
                 </div>
-                <a href="{{route('admin.developments.index')}}">
+                <a href="{{route('buyer.plot.index')}}">
                     <div class="panel-footer">
-                        <span class="pull-left">View Developments</span>
+                        <span class="pull-left">View Your House</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
                 </a>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="panel panel-green">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fa fa-map-marker fa-5x"></i>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">1</div>
-                            <div>Plots</div>
-                            <br>
-                        </div>
-                    </div>
-                </div>
-                <a href="{{route('admin.plots.index')}}">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Plots</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="panel panel-yellow">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fa fa-building fa-5x"></i>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">22</div>
-                            <div>House Types</div>
-                            <br>
-                        </div>
-                    </div>
-                </div>
-                <a href="{{route('admin.housetypes.index')}}">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Housetypes</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div>
+
         <div class="col-lg-3 col-md-6">
             <div class="panel panel-red">
                 <div class="panel-heading">
@@ -100,14 +55,16 @@
                             <i class="fa fa-certificate fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">123</div>
-                                <div>Certificates Awaiting Approval</div>
+                            <div class="huge">{{$variation_count}}</div>
+                                <div>Your Selections</div>
+                            <br>
                         </div>
                     </div>
                 </div>
-                <a href="{{route('admin.certificates.index')}}">
+                <a href="/buyer/variations/{{$booking}}/edit">
+                {{--<a href="/buyer/variations/".$development."/edit">--}}
                     <div class="panel-footer">
-                        <span class="pull-left">Manage uploaded certificates</span>
+                        <span class="pull-left">Manage property selections</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>

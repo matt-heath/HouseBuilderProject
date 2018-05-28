@@ -116,6 +116,7 @@
                 @php($count1 = 0)
                 {!! Form::open(array('action' => 'VariationController@assignToHouseType', 'method' => 'post')); !!}
                 <div class="tab-content">
+                    {!! Form::submit('Update House Type Variations', ['class'=>'btn btn-primary']) !!}
                     @php($firstTab = true)
                     @foreach($assignedSuppliers as $value)
                         @if($firstTab)
@@ -194,7 +195,6 @@
                 </div>
             </div>
         </div>
-        {!! Form::submit('Next'); !!}
         {!! Form::close(); !!}
         @endsection
 

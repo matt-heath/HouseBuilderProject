@@ -1,8 +1,12 @@
 @extends('layouts.admin')
 
+@section('title')
+    <h1>All Bookings</h1>
+@endsection
+
 @section('content')
 
-    <h1>All Bookings</h1>
+
 
     @if (session('success'))
         <div class="alert alert-success">
@@ -77,7 +81,6 @@
     <script>
         $(document).ready(function(){
             $('#myTable').DataTable({
-                responsive: true,
                 "columnDefs": [
                     {
                         "orderable": false, "targets": 8

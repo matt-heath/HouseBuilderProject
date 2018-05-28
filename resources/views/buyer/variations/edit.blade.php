@@ -9,6 +9,8 @@
     {{--{!! Form::open(array('action' => 'VariationController@assignToHouseType', 'method' => 'post')); !!}--}}
     {{--{{$booking->first()->id}}--}}
     {!! Form::model($booking, ['method'=>'PATCH', 'action'=> ['BuyerVariationController@update', $booking->id]]) !!}
+    {!! Form::submit('Edit Variations', ['class'=>'btn btn-primary']) !!}
+    <hr>
 
     @php($count1 = 0)
     @php($first = true)
@@ -153,8 +155,7 @@
         @endif
     @endforeach
     @php($count1++)
-
-    {!! Form::submit('Next'); !!}
+    {{--{!! Form::submit('Next'); !!}--}}
     {!! Form::close(); !!}
 @endsection
 

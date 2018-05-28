@@ -154,9 +154,23 @@ class AdminUsersController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id); // find user and delete.
+
+
+        $supplier = Supplier::whereHas('user', function ($query) use ($id) {
+            $query->where('user_id', $id);
+        })->first();
+
         $user->delete();
+
+
+        if($supplier){
+            $supplier->delete();
+        }
+
 //        Session::flash('deleted_user', 'The user has been deleted');
         Alert::info('User successfully deleted')->flash();
+
+
 
         return redirect('/admin/users'); // upon deletion, redirect to users table.
     }

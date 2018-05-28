@@ -298,8 +298,8 @@
                                         <th>Development Name</th>
                                         <th>House Type Name</th>
                                         <th>House Type Description</th>
-                                        <th>House Image</th>
                                         <th>Floor Plan Image</th>
+                                        <th>House Image</th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -364,8 +364,9 @@
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="phases">
-                        <div class="pull-right">
-                            <button type="button" class="btn btn-success" data-toggle='modal' data-target='#addPhaseModal'
+                        <div class="pull-left">
+                            <button type="button" class="btn btn-success" data-toggle='modal'
+                                    data-target='#addPhaseModal'
                                     id='addPhaseClick'><i class="fa fa-fw fa-plus"></i> Add Phase to Development
                             </button>
                         </div>
@@ -400,23 +401,28 @@
                             </div>
                         </div>
                         <br><br>
-                        <div class="table-responsive">
-                            <table id="myTable" width="100%" class="table table-striped table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Phase Name</th>
-                                    <th>Number of Plots</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
+                        <div class="row">
+                            <div class="table-responsive">
+                                <table id="phasesTable" width="100%"
+                                       class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Phase Name</th>
+                                        <th>Number of Plots</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
                                     @foreach($phaseDetails as $detail)
-                                        <td>{{$detail->phase_name}}</td>
-                                        <td>{{$detail->num_plots}}</td>
+                                        <tr>
+
+                                            <td>{{$detail->phase_name}}</td>
+                                            <td>{{$detail->num_plots}}</td>
+
+                                        </tr>
                                     @endforeach
-                                </tr>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
@@ -515,67 +521,76 @@
                                     </div>
                                     @php($firstTab = true)
                                     @php($str1 = str_replace(' ','',$phase->phase_name))
-                                    @if($firstTab)
-                                        <div role="tabpanel" class="tab-pane active"
-                                             id="{{$str1}}">
+                                    <div class="row">
+                                        @if($firstTab)
+                                            <div role="tabpanel" class="tab-pane active"
+                                                 id="{{$str1}}">
 
-                                            @else
-                                                <div role="tabpanel" class="tab-pane" id="{{$str1}}">
-                                                    @endif
-                                                    {{--{{$str1}}--}}
-                                                    <div class="pull-right">
-                                                        <button type="button" class="btn btn-success"
-                                                                data-toggle='modal' data-target='#addConsultantModal'
-                                                                id='addConsultant'><i class="fa fa-fw fa-plus"></i> Add
-                                                            consultant account
-                                                        </button>
+                                                @else
+                                                    <div role="tabpanel" class="tab-pane" id="{{$str1}}">
+                                                        @endif
+                                                        {{--{{$str1}}--}}
+                                                        <div class="row">
+                                                            <div class="pull-left">
+                                                                <button type="button" class="btn btn-success"
+                                                                        data-toggle='modal'
+                                                                        data-target='#addConsultantModal'
+                                                                        id='addConsultant'><i
+                                                                            class="fa fa-fw fa-plus"></i>
+                                                                    Add
+                                                                    consultant account
+                                                                </button>
+                                                            </div>
+                                                            <br><br>
+                                                            {!! Form::open(['method'=>'POST', 'action'=>'AdminCertificatesController@store', 'files' => true, 'data-toggle'=>'validator'])!!}
+
+                                                            <table class="table">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>Consultant Description</th>
+                                                                    <th>Select a consultant</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                @php ($count = 0)
+
+                                                                @foreach($certificates as $certificate)
+                                                                    <tr>
+                                                                        <td>
+                                                                            {!! Form::text('certificate_name_disabled', null, ['class'=>'form-control name_list', 'name'=>'certificate_name[]', 'placeholder' =>  $certificate->certificate_name,'disabled']) !!}
+                                                                            {!! Form::text('certificate_name', $certificate->id, ['class'=>'form-control name_list hidden', 'name'=>'certificate_name[]']) !!}
+                                                                            {!! Form::text('phase', $phase->id, ['class'=>'hidden']) !!}
+                                                                            {!! Form::text('development_id', $development->id, ['class'=>'hidden']) !!}
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="form-group">
+                                                                                {!! Form::select('consultant_id', ['' => 'Select Consultant Responsible'] + $consultants, null, ['class'=>'form-control consultantSelect select', 'name' => 'consultant_id[]', 'required'])!!}
+                                                                                <div class="help-block with-errors"></div>
+                                                                            </div>
+                                                                            <div class="form-group"
+                                                                                 id="consultantDetails">
+
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    @php ($count++)
+                                                                @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            {!! Form::submit('Add consultants to phase', ['class'=>'btn btn-primary']) !!}
+                                                        </div>
+                                                        {!! Form::close() !!}
+                                                        {{--{{$str1}}--}}
                                                     </div>
-                                                    <br><br>
-                                                    <table class="table">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>Consultant Description</th>
-                                                            <th>Select a consultant</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        @php ($count = 0)
-                                                        {!! Form::open(['method'=>'POST', 'action'=>'AdminCertificatesController@store', 'files' => true, 'data-toggle'=>'validator'])!!}
+                                                    @php($firstTab = false)
 
-                                                        @foreach($certificates as $certificate)
-                                                            <tr>
-                                                                <td>
-                                                                    {!! Form::text('certificate_name_disabled', null, ['class'=>'form-control name_list', 'name'=>'certificate_name[]', 'placeholder' =>  $certificate->certificate_name,'disabled']) !!}
-                                                                    {!! Form::text('certificate_name', $certificate->id, ['class'=>'form-control name_list hidden', 'name'=>'certificate_name[]']) !!}
-                                                                    {!! Form::text('phase', $phase->id, ['class'=>'hidden']) !!}
-                                                                    {!! Form::text('development_id', $development->id, ['class'=>'hidden']) !!}
-                                                                </td>
-                                                                <td>
-                                                                    <div class="form-group">
-                                                                        {!! Form::select('consultant_id', ['' => 'Select Consultant Responsible'] + $consultants, null, ['class'=>'form-control consultantSelect select', 'name' => 'consultant_id[]', 'required'])!!}
-                                                                        <div class="help-block with-errors"></div>
-                                                                    </div>
-                                                                    <div class="form-group" id="consultantDetails">
-
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            @php ($count++)
-                                                        @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                    <div class="form-group">
-                                                        {!! Form::submit('Add consultants to phase', ['class'=>'btn btn-primary']) !!}
-                                                    </div>
-                                                    {!! Form::close() !!}
-                                                    {{--{{$str1}}--}}
-                                                </div>
-                                                @php($firstTab = false)
-
-                                        </div>
-                                    @else
-                                        <h5 style="color: green">All phases have been assigned consultants!</h5>
-                                    @endif
+                                            </div>
+                                        @else
+                                            <h5 style="color: green">All phases have been assigned consultants!</h5>
+                                        @endif
+                                    </div>
                                 </div>
                         </div>
 
@@ -659,6 +674,7 @@
 
             <script>
                 var dev_id = $('.developmentSelect').val();
+                // var phase_id = $('.phaseSelect').select2('data');
                 $(document).ready(function () {
                     // $("ul.nav-tabs a").click(function (e) {
                     //     e.preventDefault();
@@ -677,6 +693,7 @@
                         ]
 
                     });
+                    $('#phasesTable').DataTable({});
                 });
 
                 function confirmDelete(id) {
@@ -713,11 +730,14 @@
                 }
 
                 $(document).on('change', '.phaseSelect', function () {
-                    console.log("DROP A LOG" + dev_id);
+                    var phase_id = $('.phaseSelect').select2('data')[0]['id'];
+                    console.log("DROP A LOG" + dev_id + phase_id);
+                    // console.log(phase_id);
+
                     $.ajax({
                         type: 'get',
                         url: '{!! URL::to('findNumPlots') !!}',
-                        data: {'id': dev_id},
+                        data: {'id': dev_id, 'phase_id': phase_id},
                         success: function (data) {
                             console.log('Success!!');
                             console.log(data);

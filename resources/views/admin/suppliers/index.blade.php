@@ -51,7 +51,7 @@
                                     <a href="{{route('admin.suppliers.edit', $supplier->id)}}" class="btn btn-primary"><i class="fa fa-fw fa-edit fa-sm"></i></a>
                                 </div>
                                 <div class="btn-group">
-                                    {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminPlotsController@destroy', $supplier->id], 'id'=> 'confirm_delete_'.$supplier->id]) !!}
+                                    {!! Form::open(['method'=>'DELETE', 'action'=> ['AdminUsersController@destroy', $supplier->user->id], 'id'=> 'confirm_delete_'.$supplier->id]) !!}
                                     {!! Form::button('<i class="fa fa-fw fa-trash"></i>', ['type'=> 'submit' ,'class'=>'btn btn-danger', 'onclick'=>'confirmDelete(' .$supplier->id .')']) !!}
                                     {!! Form::close() !!}
                                 </div>
@@ -264,6 +264,39 @@
                 })
             });
         });
+
+        function confirmDelete(id) {
+            event.preventDefault();
+
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                buttonsStyling: true
+            }).then((result) => {
+                if (result.value) {
+                    swal({
+                        title: 'Deleted!',
+                        text: 'Successfully deleted.',
+                        type: 'success',
+                        showConfirmButton: false,
+                        timer: 3000
+                    }).then(function () {
+                        $("#confirm_delete_" + id).off("submit").submit()
+                    })
+                    // $("#confirm_delete_"+id).off("submit").submit()
+                    // result.dismiss can be 'cancel', 'overlay',
+                    // 'close', and 'timer'
+                } else if (result.dismiss === 'cancel') {
+
+                }
+            })
+        }
     </script>
 
 @endsection

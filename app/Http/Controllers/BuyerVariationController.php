@@ -7,6 +7,7 @@ use App\HouseType;
 use App\Plot;
 use App\SelectionCategory;
 use Illuminate\Http\Request;
+use Prologue\Alerts\Facades\Alert;
 
 class BuyerVariationController extends Controller
 {
@@ -131,6 +132,8 @@ class BuyerVariationController extends Controller
             }
             $booking->variations()->attach($variation);
         }
+        Alert::success('Variation choices successfully updated!')->flash();
+
 
         return redirect('/buyer/plot');
     }
